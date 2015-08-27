@@ -10,6 +10,7 @@
 	},
 	"require" : {
 		"php" : ">=5.3.3",
+		"wisembly/excelant": "*",
 		"symfony/symfony" : "2.6.*",
 		"doctrine/orm" : "~2.2,>=2.2.3,<2.5",
 		"doctrine/dbal" : "<2.5",
@@ -31,8 +32,7 @@
 		"coresphere/console-bundle" : "dev-master",
 		"jms/security-extra-bundle": "dev-master",
 		"friendsofsymfony/rest-bundle": "^1.7",
-		"jms/serializer-bundle": "^1.0",
-		"wisembly/excelant": "*"
+		"jms/serializer-bundle": "^1.0"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.3"
