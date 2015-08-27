@@ -1,0 +1,30 @@
+com_incident:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Incident:index" }
+
+com_incident_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Incident:show" }
+
+com_incident_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Incident:new" }
+
+com_incident_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Incident:create" }
+    methods:  POST
+
+com_incident_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Incident:edit" }
+
+com_incident_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Incident:update" }
+    methods:  [POST, PUT]
+
+com_incident_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Incident:delete" }
+    methods:  [POST, DELETE]

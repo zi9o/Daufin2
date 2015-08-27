@@ -1,0 +1,30 @@
+com_affecter:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Affecter:index" }
+
+com_affecter_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Affecter:show" }
+
+com_affecter_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Affecter:new" }
+
+com_affecter_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Affecter:create" }
+    methods:  POST
+
+com_affecter_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Affecter:edit" }
+
+com_affecter_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Affecter:update" }
+    methods:  [POST, PUT]
+
+com_affecter_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Affecter:delete" }
+    methods:  [POST, DELETE]

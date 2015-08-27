@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Ville" table="ville">
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="codeVille" type="string" column="CODE_VILLE" length="16" nullable="true"/>
+    <field name="libelleVille" type="string" column="LIBELLE_VILLE" length="40" nullable="true"/>
+  </entity>
+</doctrine-mapping>

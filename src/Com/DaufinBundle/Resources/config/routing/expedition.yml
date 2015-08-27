@@ -1,0 +1,30 @@
+com_Expedition:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Expedition:index" }
+
+com_Expedition_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Expedition:show" }
+
+com_Expedition_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Expedition:new" }
+
+com_Expedition_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Expedition:create" }
+    methods:  POST
+
+com_Expedition_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Expedition:edit" }
+
+com_Expedition_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Expedition:update" }
+    methods:  [POST, PUT]
+
+com_Expedition_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Expedition:delete" }
+    methods:  [POST, DELETE]

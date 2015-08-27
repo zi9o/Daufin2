@@ -1,0 +1,42 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Expedition Transport</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Expedition Transport</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_ExpeTrans') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+        <p>    
+    <div class="Formdiv" style="width:300px;">
+            {{ form_start(form) }}
+       {{ form_label(form.dateCreation) }} {{ form_errors(form.dateCreation) }} {{ form_widget(form.dateCreation) }}
+       <div id="newExp_Trsp">
+       {{ form_label(form.nbreExpedition) }} {{ form_errors(form.nbreExpedition) }} {{ form_widget(form.nbreExpedition) }}
+       {{ form_label(form.sTrajet) }} {{ form_errors(form.sTrajet) }} {{ form_widget(form.sTrajet) }}           
+       </div>
+
+    {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+//<![CDATA[
+
+$(document).ready(function() {
+$("#newExp_Trsp").hide();
+});
+
+//]]>
+</script>
+{% endblock %}

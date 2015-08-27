@@ -1,0 +1,30 @@
+com_Operer_voyage:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:index" }
+
+com_Operer_voyage_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:show" }
+
+com_Operer_voyage_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:new" }
+
+com_Operer_voyage_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:create" }
+    methods:  POST
+
+com_Operer_voyage_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:edit" }
+
+com_Operer_voyage_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:update" }
+    methods:  [POST, PUT]
+
+com_Operer_voyage_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:OpererVoyage:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,30 @@
+com_s_trajet:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:index" }
+
+com_s_trajet_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:show" }
+
+com_s_trajet_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:new" }
+
+com_s_trajet_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:create" }
+    methods:  POST
+
+com_s_trajet_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:edit" }
+
+com_s_trajet_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:update" }
+    methods:  [POST, PUT]
+
+com_s_trajet_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:SousTrajet:delete" }
+    methods:  [POST, DELETE]

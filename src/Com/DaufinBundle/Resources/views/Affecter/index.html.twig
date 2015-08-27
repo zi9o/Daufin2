@@ -1,0 +1,53 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Agence/Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li><a href="{{ path('com_affecter') }}"> Agence/Personnel </a></li>
+                  <li class="active">Liste</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container%}
+    <h1>Liste Agence/Personnel</h1>
+
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date Affectation</th>
+                <th>Personnel</th>
+                <th>agence</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_affecter_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateAffectation %}{{ entity.dateAffectation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.personnel.nomPers }} {{ entity.personnel.prenomPers }}</td>
+                <td>{{ entity.agence }} </td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_affecter_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_affecter_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,265 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Suivi des Voyages</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reporting</a></li>
+            <li class="active">Suivi des Voyages</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block container %}
+
+    <script type="text/javascript">
+        function validerRecherche()
+        {
+            var codeDec = document.getElementById("CodeDec").value;
+
+            var AD = document.getElementById("AgenceDepart");
+            var idAgenceDu = AD.options[AD.selectedIndex].value;
+
+            var AA = document.getElementById("AgenceArrivee");
+            var idAgenceAu = AA.options[AA.selectedIndex].value;
+
+            var SD = document.getElementById("SecteurDepart");
+            var idSecteurDu = SD.options[SD.selectedIndex].value;
+
+            var SA = document.getElementById("SecteurArrivee");
+            var idSecteurAu = SA.options[SA.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+            
+
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reporting_suivi_voyages_search'),
+                type: "POST",
+                data: {
+                    "codeDec": codeDec,
+                    "dateCreationDu": dateCreationDu,
+                    "dateCreationAu": dateCreationAu,
+                    "idAgenceDu": idAgenceDu,
+                    "idAgenceAu": idAgenceAu,
+                    "idSecteurDu": idSecteurDu,
+                    "idSecteurAu": idSecteurAu
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError'))
+                    {
+                        alert("ERROR : " + obj.error);
+                    }
+                    else
+                    {
+                        $('#datatable').dataTable().fnClearTable();
+                        var content = '';
+                        for (var i = 0; i < obj.length; i++) {
+
+                            content += '<tr>';
+                            content += '<td>' + obj[i].idVoyage + '</td>';
+                            content += '<td>' + obj[i].etatVoyage + '</td>';
+                            content += '<td>' + obj[i].datePlanification + '</td>';
+                            if(obj[i].dateValid!=null)
+                            {
+                                content += '<td>' + obj[i].dateValid + '</td>';
+                            }
+                            else
+                            {
+                                content += '<td bgcolor="#FF0000"></td>';
+                            }
+                            content += '<td>' + obj[i].libelleTrajet + '</td>';
+                            content += '<td>' + obj[i].matriculeVehicule + '</td>';
+                            content += '<td>' + obj[i].chauffeur + '</td>';
+                            content += '<td>' + obj[i].nbrExp + '</td>';
+                            content += '<td>' + obj[i].poidsTotal + '</td>';
+                            content += '<td>' + obj[i].nbrColis + '</td>';
+                            content += '</tr>';
+
+                        }
+                        $('#datatable tbody').html(content);
+
+                    }
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        function disableFormulaire()
+        {
+
+            document.getElementById("AgenceDepart").disabled = true;
+
+            document.getElementById("AgenceArrivee").disabled = true;
+
+            document.getElementById("SecteurDepart").disabled = true;
+
+            document.getElementById("SecteurArrivee").disabled = true;
+
+            document.getElementById("datepickerCreationDu").disabled = true;
+            document.getElementById("datepickerCreationAu").disabled = true;
+        }
+    </script>
+    <script type="text/javascript">
+        function enableFormulaire()
+        {
+
+            document.getElementById("AgenceDepart").disabled = false;
+
+            document.getElementById("AgenceArrivee").disabled = false;
+
+            document.getElementById("SecteurDepart").disabled = false;
+
+            document.getElementById("SecteurArrivee").disabled = false;
+
+            document.getElementById("datepickerCreationDu").disabled = false;
+            document.getElementById("datepickerCreationAu").disabled = false;
+        }
+    </script>
+    <script type="text/javascript">
+        function DecideFormulaire()
+        {
+            var valeur = document.getElementById("CodeDec").value;
+            if (valeur != "")
+            {
+                disableFormulaire();
+            }
+            else
+            {
+                enableFormulaire();
+            }
+        }
+    </script>
+    <div class="table" onload=" document.getElementById('date').value = Date();">   
+
+        <table>
+            <tr>
+                <td colspan="2" style=" font-size: 16px; ">Code de déclaration : </td>
+                <td colspan="2" ><input style="width: 50%" type="text" size="16" id="CodeDec" class="form-control text" onchange="DecideFormulaire();"/></td>
+                
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; " colspan="2">Date de création : </td>
+                <td> du :<input type="text" class="form-control datetime" size="16"  id="datepickerCreationDu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() - 2;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 22:00";
+                        document.getElementById('datepickerCreationDu').value = today;
+                    </script>
+                </td>
+                <td> au :
+                    <input type="text" class="form-control datetime" size="20"  id="datepickerCreationAu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 22:00";
+                        document.getElementById('datepickerCreationAu').value = today;
+                    </script>
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Agence de départ</td>
+                <td >
+                    <select id="AgenceDepart" >
+                        <option value="none"> </option>
+                        {% for agenceD in entityAgence %}
+                            <option value="{{ agenceD.ID }}"> {{ agenceD.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Agence d'arrivée</td>
+                <td >
+                    <select id="AgenceArrivee">
+                        <option value="none"> </option>
+                        {% for agenceA in entityAgence %}
+                            <option value="{{ agenceA.ID }}"> {{ agenceA.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Secteur de départ</td>
+                <td >
+                    <select id="SecteurDepart" >
+                        <option value="none"> </option>
+                        {% for secteurD in entitySecteur %}
+                            <option value="{{ secteurD.ID }}"> {{ secteurD.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Secteur d'arrivée</td>
+                <td >
+                    <select id="SecteurArrivee">
+                        <option value="none"> </option>
+                        {% for secteurA in entitySecteur %}
+                            <option value="{{ secteurA.ID }}"> {{ secteurA.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4" ><input class="btn pull-right" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+
+            </tr>
+        </table>
+    </div>
+
+    <div class="block-flat">
+        <table class="table editable" id="datatable">
+            <thead>
+                <tr>
+                    <th>Code Voyage</th>
+                    <th>Statut Voyage</th>
+                    <th>Date Planif</th>
+                    <th>Date Validation</th>
+                    <th>Trajet</th>
+                    <th>Vehicule</th>
+                    <th>Chauffeur</th>
+                    <th>Nb EXPD Transp</th>
+                    <th>Poids Totale</th>
+                    <th>Nb Colis</th>
+                </tr>
+            </thead>
+            <tbody>
+                {#{% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.dateDecl|date('Y-m-d H:i:s')  }}</td>
+                        <td>{{ entity.codeDeclaration }}</td>
+                        <td>{{ entity.nbrColis }}</td>
+                        <td>{{ entity.nbrPalets }}</td>
+                        <td>{{ entity.poidsExp }}</td>
+                        <td>{{ entity.etatExp }}</td>
+                        {%if entity.etatRegl=='nonReglee'%} 
+                            <td>Non Réglée</td>
+                        {% else%}
+                            <td> Réglée</td>
+                        {% endif%}
+                    </tr>
+                {% endfor %}#}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

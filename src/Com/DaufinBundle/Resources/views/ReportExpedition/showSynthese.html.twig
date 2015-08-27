@@ -1,0 +1,202 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Synthèse des Expeditions</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reporting</a></li>
+            <li class="active">Synthèse des Expeditions</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block container %}
+    <script type="text/javascript">
+        function validerRecherche()
+        {
+
+            var AD = document.getElementById("AgenceDepart");
+            var idAgenceDu = AD.options[AD.selectedIndex].value;
+
+            var AA = document.getElementById("AgenceArrivee");
+            var idAgenceAu = AA.options[AA.selectedIndex].value;
+
+            var SD = document.getElementById("SecteurDepart");
+            var idSecteurDu = SD.options[SD.selectedIndex].value;
+
+            var SA = document.getElementById("SecteurArrivee");
+            var idSecteurAu = SA.options[SA.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reporting_synthese_expedition_search'),
+                type: "POST",
+                data: {
+                    "dateCreationDu": dateCreationDu,
+                    "dateCreationAu": dateCreationAu,
+                    "idAgenceDu": idAgenceDu,
+                    "idAgenceAu": idAgenceAu,
+                    "idSecteurDu": idSecteurDu,
+                    "idSecteurAu": idSecteurAu
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError'))
+                    {
+                        alert("ERROR : " + obj.error);
+                    }
+                    else
+                    {
+                        $('#datatable').dataTable().fnClearTable();
+                        var content = '';
+                        var TotalPoids=Number("0");
+                        var nbrDeclaration=Number("0");
+                        var TotalColis=Number("0");
+                        if(obj.length!=Number("0"))
+                        {
+                            for (var i = 0; i < obj.length; i++) {
+                                nbrDeclaration=nbrDeclaration+Number(obj[i].nbrDec);
+                                TotalColis=TotalColis+Number(obj[i].nbColis);
+                                TotalPoids=TotalPoids+Number(obj[i].poid);
+
+                                content += '<tr><td>' + obj[i].nbrDec + '</td>';
+                                content += '<td>' + obj[i].AgenceD + '</td>';
+                                content += '<td>' + obj[i].AgenceR + '</td>';
+                                content += '<td>' + obj[i].nbColis + '</td>';
+                                content += '<td>' + obj[i].poid + '</td>';
+                                content += '<td>' + obj[i].PortDU + '</td>';
+                                content += '<td>' + obj[i].PortPaye + '</td>';
+                                content += '</tr>';
+
+                            }
+                        }
+                            $('#datatable tbody').html(content);
+                            content = "<table><tr style'width: 100%'><th style='width: 130px;'>Total Déclaration : </th><th style='width: 130px;'>Total Colis : </th><th style='width: 130px;'>Total Poids : </th></tr>";
+                            content += "<tr><td>"+nbrDeclaration+"</td><td>"+Number(TotalColis).toFixed(2)+"</td><td>"+Number(TotalPoids).toFixed(2)+"</td></tr></table>"; 
+                            $('#divdatatable').html(content);
+                        }
+                    }
+                });
+            }
+    </script>
+    <div class="table" onload=" document.getElementById('date').value = Date();">   
+
+        <table>
+            <tr>
+                <td style=" font-size: 16px; " colspan="2">Date de création : </td>
+                <td><p> du :</p><input type="text" class="form-control datetime" size="16"  id="datepickerCreationDu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() -2;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month ;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 22:00";
+                        document.getElementById('datepickerCreationDu').value = today;
+                    </script>
+                </td>
+                <td> <p>au :</p>
+                    <input type="text" class="form-control datetime" size="20"  id="datepickerCreationAu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 22:00";
+                        document.getElementById('datepickerCreationAu').value = today;
+                    </script>
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Agence de départ</td>
+                <td >
+                    <select id="AgenceDepart" >
+                        <option value="none"> </option>
+                        {% for agenceD in entityAgence %}
+                            <option value="{{ agenceD.ID }}"> {{ agenceD.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Agence d'arrivée</td>
+                <td >
+                    <select id="AgenceArrivee">
+                        <option value="none"> </option>
+                        {% for agenceA in entityAgence %}
+                            <option value="{{ agenceA.ID }}"> {{ agenceA.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Secteur de départ</td>
+                <td >
+                    <select id="SecteurDepart" >
+                        <option value="none"> </option>
+                        {% for secteurD in entitySecteur %}
+                            <option value="{{ secteurD.ID }}"> {{ secteurD.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Secteur d'arrivée</td>
+                <td >
+                    <select id="SecteurArrivee">
+                        <option value="none"> </option>
+                        {% for secteurA in entitySecteur %}
+                            <option value="{{ secteurA.ID }}"> {{ secteurA.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4" ><input class="btn pull-right" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+
+            </tr>
+        </table>
+    </div>
+
+    <div class="block-flat">
+        <table class="table editable" id="datatable">
+            <thead>
+                <tr>
+                    <th>Nombre Déclaration</th>
+                    <th>Agence Départ</th>
+                    <th>Agence Arrivée</th>
+                    <th>Nombre Colis</th>
+                    <th>Poids</th>
+                    <th>Port Dû</th>
+                    <th>Port Payé</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <table id="divdatatable">
+            <tr><th >Total Déclaration : </th>
+                    <th >Total Colis : </th>
+                    <th >Total Poids : </th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
+    </div>
+{% endblock %}

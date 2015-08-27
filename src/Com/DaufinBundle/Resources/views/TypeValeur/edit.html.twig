@@ -1,0 +1,28 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Editer Type de Valorisation</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Editer Type de Valorisation</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+
+    <a href="{{ path('com_type_valeur') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+       <div style="float:right;">
+        {{ form(delete_form) }}
+   </div>
+    <br>
+  <div   style="width:300px;"> 
+  {{ form(edit_form) }}
+  </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ContTablePrix" table="cont_table_prix">
+    <indexes>
+      <index name="FK_CONT_TABLE_PRIX" columns="ID_CONTART"/>
+      <index name="FK_CONT_TABLE_PRIX2" columns="ID_RUB"/>
+      <index name="FK_CONT_TABLE_PRIX3" columns="ID_T_VAL"/>
+      <index name="FK_CONT_TABLE_PRIX4" columns="ID_S_TRAJET"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="valeur" type="float" column="VALEUR" precision="10" scale="0" nullable="true"/>
+    <field name="tva" type="float" column="TVA" precision="10" scale="0" nullable="true"/>
+    <field name="valeurMax" type="float" column="VALEUR_MAX" precision="10" scale="0" nullable="true"/>
+    <field name="valeurMin" type="float" column="VALEUR_MIN" precision="10" scale="0" nullable="true"/>
+    <field name="dateOuverture" type="datetime" column="DATE_OUVERTURE" nullable="true"/>
+    <field name="dateFermeture" type="datetime" column="DATE_FERMETURE" nullable="true"/>
+    <field name="etat" type="string" column="ETAT" length="20" nullable="true"/>
+    <many-to-one field="idSTrajet" target-entity="SousTrajet">
+      <join-columns>
+        <join-column name="ID_S_TRAJET" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idTVal" target-entity="TypeValeur">
+      <join-columns>
+        <join-column name="ID_T_VAL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idRub" target-entity="Rubrique">
+      <join-columns>
+        <join-column name="ID_RUB" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idContart" target-entity="Contrat">
+      <join-columns>
+        <join-column name="ID_CONTART" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

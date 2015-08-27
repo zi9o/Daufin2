@@ -1,0 +1,521 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Synthèse des Services</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reporting</a></li>
+            <li class="active">Synthèse des Services</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block container %}
+    <script type="text/javascript">
+        function handleClick(cb) {
+            if (cb.name != 'activ_tous')
+            {
+                document.getElementById("activ_tous").checked = false;
+            }
+
+            if (cb.name == 'activ_simple') {
+                document.getElementById("activ_crbt").checked = (cb.checked != true);
+                document.getElementById("activ_cheque").checked = (cb.checked != true);
+                document.getElementById("activ_traite").checked = (cb.checked != true);
+                document.getElementById("activ_bon_livr").checked = (cb.checked != true);
+                document.getElementById("activ_tous").checked = (cb.checked != true);
+            }
+            else if (cb.name == 'activ_crbt') {
+
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_cheque").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_cheque') {
+
+                if (!document.getElementById("activ_crbt").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_traite') {
+
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_crbt").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_cheque").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_bon_livr') {
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_cheque").checked &&
+                        document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+
+            }
+            else if (cb.name == 'activ_tous') {
+
+                if (document.getElementById("activ_tous").checked)
+                {
+                    document.getElementById("activ_simple").checked = false;
+                    document.getElementById("activ_cheque").checked = true;
+                    document.getElementById("activ_traite").checked = true;
+                    document.getElementById("activ_crbt").checked = true;
+                    document.getElementById("activ_bon_livr").checked = true;
+                }
+                else
+                {
+                    document.getElementById("activ_simple").checked = true;
+                    document.getElementById("activ_cheque").checked = false;
+                    document.getElementById("activ_traite").checked = false;
+                    document.getElementById("activ_crbt").checked = false;
+                    document.getElementById("activ_bon_livr").checked = false;
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function validerRecherche()
+        {
+            var AD = document.getElementById("AgenceDepart");
+            var idAgenceDu = AD.options[AD.selectedIndex].value;
+
+            var AA = document.getElementById("AgenceArrivee");
+            var idAgenceAu = AA.options[AA.selectedIndex].value;
+
+            var SD = document.getElementById("SecteurDepart");
+            var idSecteurDu = SD.options[SD.selectedIndex].value;
+
+            var SA = document.getElementById("SecteurArrivee");
+            var idSecteurAu = SA.options[SA.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+            var isSimple = 1;
+            if (document.getElementById("activ_simple").checked)
+            {
+                isSimple = 1;
+            }
+            else
+            {
+                isSimple = 0;
+            }
+            var isCheque = 1;
+            if (document.getElementById("activ_cheque").checked)
+            {
+                isCheque = 1;
+            }
+            else
+            {
+                isCheque = 0;
+            }
+            var isTraite = 1;
+            if (document.getElementById("activ_traite").checked)
+            {
+                isTraite = 1;
+            }
+            else
+            {
+                isTraite = 0;
+            }
+            var isCrbt = 1;
+            if (document.getElementById("activ_crbt").checked)
+            {
+                isCrbt = 1;
+            }
+            else
+            {
+                isCrbt = 0;
+            }
+            var isBon_livr = 1;
+            if (document.getElementById("activ_bon_livr").checked)
+            {
+                isBon_livr = 1;
+            }
+            else
+            {
+                isBon_livr = 0;
+            }
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reporting_synthese_services_search'),
+                type: "POST",
+                data: {
+                    "dateCreationDu": dateCreationDu,
+                    "dateCreationAu": dateCreationAu,
+                    "idAgenceDu": idAgenceDu,
+                    "idAgenceAu": idAgenceAu,
+                    "idSecteurDu": idSecteurDu,
+                    "idSecteurAu": idSecteurAu,
+                    "isSimple": isSimple,
+                    "isCheque": isCheque,
+                    "isTraite": isTraite,
+                    "isCrbt": isCrbt,
+                    "isBon_livr": isBon_livr
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError'))
+                    {
+                        alert("ERROR : " + obj.error);
+                    }
+                    else
+                    {
+
+                        var content = "";
+                        content += " <thead> ";
+                        content += " <tr> ";
+                        content += "<th>Nombre Déclaration</th>";
+                        content += "<th>Agence Départ</th>";
+                        content += "<th>Agence Arrivée</th>";
+                        content += "<th colspan='2' scope='colgroup'>Port Dû</th>";
+                        content += "<th colspan='2' scope='colgroup'>Port Payé</th>";
+                        content += "<th>Réglée</th>";
+                        content += "<th>Non Réglée</th>";
+                        if (isCrbt == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/REMBST</th> ";
+                        }
+                        if (isCheque == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/Chéque</th> ";
+                        }
+                        if (isTraite == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/Traite</th> ";
+                        }
+                        if (isBon_livr == 1)
+                        {
+                            content += " <th >Retour BL</th> ";
+                        }
+                        content += " </tr> ";
+                        content += " <tr > ";
+                        content += " <th></th> ";
+                        content += " <th></th> ";
+                        content += " <th></th> ";
+                        content += "<th scope='col'>Nb</th>";
+                        content += " <th scope='col'>Montant</th> ";
+                        content += " <th scope='col'>Nb</th> ";
+                        content += " <th scope='col'>Montant</th> ";
+                        content += " <th></th> ";
+                        content += " <th></th>";
+                        if (isCrbt == 1)
+                        {
+                            content += " <th  scope='col'>Prix</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isCheque == 1)
+                        {
+                            content += " <th  scope='col'>Prix</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isTraite == 1)
+                        {
+                            content += " <th  scope='col'>Prix</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isBon_livr == 1)
+                        {
+                            content += " <th >Prix</th> ";
+                        }
+                        content += " </tr> ";
+                        content += " </thead> ";
+                        content += " <tbody> ";
+
+
+                        var CrbtMT = Number("0");
+                        var ChequeMT = Number("0");
+                        var TraiteMT = Number("0");
+
+                        var prix_bl =Number("0");
+                        var prix_Crbt = Number("0");
+                        var prix_Cheque = Number("0");
+                        var prix_Traite = Number("0");
+
+                        var portDu=Number("0");
+                        var portPaye=Number("0");
+
+                        for (var i = 0; i < obj.length; i++)
+                        {
+
+                            portDu= portDu+Number(obj[i].portDu);
+                            portPaye=portPaye+ Number(obj[i].portPaye);
+
+                            content += "<tr><td>" + Number(obj[i].nbrDec).toFixed(2) + "</td>";
+                            content += '<td>' + obj[i].AgenceD + '</td>';
+                            content += '<td>' + obj[i].AgenceR + '</td>';
+                            content += " <td>" + Number(obj[i].nb_portDu).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].portDu).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].nb_portPaye).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].portPaye).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].nb_Reglee).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].nb_NonReglee).toFixed(2) + "</td> ";
+                            if (isCrbt == 1)
+                            {
+
+                                content += " <td  align='center'>" + Number(obj[i].prix_crbt).toFixed(2) + "</td> ";
+                                content += " <td align='center'>" + Number(obj[i].crbt_mt).toFixed(2) + "</td> ";
+                                CrbtMT = CrbtMT + Number(obj[i].crbt_mt);
+                                prix_bl = prix_bl + Number(obj[i].prix_crbt);
+                            }
+                            if (isCheque == 1)
+                            {
+                                content += " <td  align='center'>" + Number(obj[i].prix_cheque).toFixed(2) + "</td> ";
+                                content += " <td align='center'>" + Number(obj[i].cheque_mt).toFixed(2) + "</td> ";
+                                ChequeMT = ChequeMT + Number(obj[i].cheque_mt);
+                                prix_Crbt = prix_Crbt + Number(obj[i].prix_cheque);
+                            }
+                            if (isTraite == 1)
+                            {
+                                content += " <td  align='center'>" + Number(obj[i].prix_traite).toFixed(2) + "</td> ";
+                                content += " <td  align='center'>" + Number(obj[i].traite_mt).toFixed(2) + "</td> ";
+                                TraiteMT = TraiteMT + Number(obj[i].traite_mt);
+                                prix_Cheque = prix_Cheque + Number(obj[i].prix_traite);
+                            }
+                            if (isBon_livr == 1)
+                            {
+                                content += " <td  align='center'>" + Number(obj[i].prix_BL).toFixed(2) + "</td> ";
+                                prix_Traite = prix_Traite + Number(obj[i].prix_BL);
+                            }
+                            content += " </tr> ";
+
+                        }
+                        content += "<tr>";
+
+                        content += "<th colspan='3' align='center' > Les Totaux </th>";
+                        content += "<td></td>";
+                        content += "<td  align='center' >"+Number(portDu).toFixed(2)+"</td>";
+                        content += "<td></td>";
+                        content += "<td  align='center' >"+Number(portPaye).toFixed(2)+"</td>";
+                        content += "<td></td>";
+                        content += "<td></td>";
+                        if (isCrbt == 1)
+                        {
+                            content += "<td  align='center' >"+Number(prix_bl).toFixed(2)+"</td>";
+                            content += "<td  align='center' >" + Number(CrbtMT).toFixed(2) + "</td>";
+                        }
+                        if (isCheque == 1)
+                        {
+                            content += "<td  align='center' >"+Number(prix_Crbt).toFixed(2)+"</td>";
+                            content += "<td  align='center' >" + Number(ChequeMT).toFixed(2) + "</td>";
+                        }
+                        if (isTraite == 1)
+                        {
+                            content += "<td  align='center' >"+Number(prix_Cheque).toFixed(2)+"</td>";
+                            content += "<td  align='center' >" + Number(TraiteMT).toFixed(2) + "</td>";
+                        }
+                        if (isBon_livr == 1)
+                        {
+                            content += "<td  align='center' >"+Number(prix_Traite).toFixed(2)+"</td>";
+                        }
+
+                        content += "</tr>";
+                        content += " </tbody> ";
+                        $('#datatable').html(content);
+        {#content = "<table><tr style'width: 100%'><th style='width: 130px;'>Total Déclaration : </th><th style='width: 130px;'>Total Montant : </th><th style='width: 130px;'>Total Colis : </th></tr>";
+        content += "<tr><td>" + nbrDeclaration + "</td><td>" + Number(MontantTotal).toFixed(2) + "</td><td>" + nbrColis + "</td></tr></table>";
+        $('#divdatatable').html(content);#}
+                                        }
+                                    }
+                                });
+                            }
+    </script>
+    <div class="table" onload=" document.getElementById('date').value = Date();">   
+
+        <table>
+            <tr>
+                <td style=" font-size: 16px; " colspan="3">Date de création : </td>
+                <td> <p>du :</p><input type="text" class="form-control datetime" size="16"  id="datepickerCreationDu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() - 2;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 09:00";
+                        document.getElementById('datepickerCreationDu').value = today;
+                    </script>
+                </td>
+                <td><p> au :</p>
+                    <input type="text" class="form-control datetime" size="20"  id="datepickerCreationAu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 09:00";
+                        document.getElementById('datepickerCreationAu').value = today;
+                    </script>
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Agence de départ</td>
+                <td >
+                    <select id="AgenceDepart" >
+                        <option value="none"> </option>
+                        {% for agenceD in entityAgence %}
+                            <option value="{{ agenceD.ID }}"> {{ agenceD.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Agence d'arrivée</td>
+                <td >
+                    <select id="AgenceArrivee">
+                        <option value="none"> </option>
+                        {% for agenceA in entityAgence %}
+                            <option value="{{ agenceA.ID }}"> {{ agenceA.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Secteur de départ</td>
+                <td >
+                    <select id="SecteurDepart" >
+                        <option value="none"> </option>
+                        {% for secteurD in entitySecteur %}
+                            <option value="{{ secteurD.ID }}"> {{ secteurD.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Secteur d'arrivée</td>
+                <td >
+                    <select id="SecteurArrivee">
+                        <option value="none"> </option>
+                        {% for secteurA in entitySecteur %}
+                            <option value="{{ secteurA.ID }}"> {{ secteurA.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+            </tr>
+
+            <tr class="grandTitre">
+                <td colspan="5"  >Services</td>
+            </tr>
+            <tr>
+                <td width="16%">  
+                    <input type="checkbox" value="Simple"  id="activ_simple" name="activ_simple" onclick="handleClick(this);" checked="checked"/>
+                    <label for="simple" class="">Simple</label>
+
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_crbt" id="activ_crbt" onclick="handleClick(this);" value="0" >
+                    C/Remoboursement
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_cheque" id="activ_cheque"  onclick="handleClick(this);" value="0" >
+                    C/Chéque
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_traite" id="activ_traite" onclick="handleClick(this);" value="0" >
+                    C/Traite
+                </td >
+                <td width="16%">
+                    <input type="checkbox" name="activ_bon_livr" id="activ_bon_livr"  onclick="handleClick(this);" value="0" >
+                    Retour Bon Livraison
+                </td>
+
+            </tr>  
+            <tr>
+                <td>
+                    <input type="checkbox" name="activ_tous" id="activ_tous"  onclick="handleClick(this);" value="0" >
+                    <label for="tous" class="">Tous</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" ><input class="btn pull-right" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="block-flat">
+        <table class="table editable" id="datatable">
+            <thead>
+                <tr>
+                    <th>Nombre Déclaration</th>
+                    <th>Agence Départ</th>
+                    <th>Agence Arrivée</th>
+                    <th colspan="2" scope='colgroup'>Port Dû</th>
+                    <th colspan="2" scope='colgroup'>Port Payé</th>
+                    <th>Réglée</th>
+                    <th>Non Réglée</th>
+                    <th colspan="2" scope='colgroup'>C/REMBST</th>
+                    <th colspan="2" scope='colgroup'>C/Chéque</th>
+                    <th colspan="2" scope='colgroup'>C/Traite</th>
+                    <th >Retour BL</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th scope='col'>Nb</th>
+                    <th scope='col'>Montant</th>
+                    <th scope='col'>Nb</th>
+                    <th scope='col'>Montant</th>
+                    <th></th>
+                    <th></th>
+                    <th  scope='col'>Prix</th>
+                    <th  scope='col'>Montant</th>
+                    <th  scope='col'>Prix</th>
+                    <th  scope='col'>Montant</th>
+                    <th  scope='col'>Prix</th>
+                    <th  scope='col'>Montant</th>
+                    <th >Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        
+    </div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+com_unite_manu:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:UniteManu:index" }
+
+com_unite_manu_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:UniteManu:show" }
+
+com_unite_manu_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:UniteManu:new" }
+
+com_unite_manu_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:UniteManu:create" }
+    methods:  POST
+
+com_unite_manu_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:UniteManu:edit" }
+
+com_unite_manu_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:UniteManu:update" }
+    methods:  [POST, PUT]
+
+com_unite_manu_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:UniteManu:delete" }
+    methods:  [POST, DELETE]

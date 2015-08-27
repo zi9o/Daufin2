@@ -1,0 +1,30 @@
+com_vehicule:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Vehicule:index" }
+
+com_vehicule_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Vehicule:show" }
+
+com_vehicule_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Vehicule:new" }
+
+com_vehicule_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Vehicule:create" }
+    methods:  POST
+
+com_vehicule_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Vehicule:edit" }
+
+com_vehicule_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Vehicule:update" }
+    methods:  [POST, PUT]
+
+com_vehicule_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Vehicule:delete" }
+    methods:  [POST, DELETE]

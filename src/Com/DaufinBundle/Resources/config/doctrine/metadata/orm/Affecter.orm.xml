@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Affecter" table="affecter">
+    <indexes>
+      <index name="FK_AFFECTER" columns="PERSONNEL"/>
+      <index name="FK_AFFECTER2" columns="AGENCE"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateAffectation" type="datetime" column="DATE_AFFECTATION" nullable="true"/>
+    <many-to-one field="agence" target-entity="Agence">
+      <join-columns>
+        <join-column name="AGENCE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="personnel" target-entity="Personnel">
+      <join-columns>
+        <join-column name="PERSONNEL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

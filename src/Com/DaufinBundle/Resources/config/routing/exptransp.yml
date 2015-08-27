@@ -1,0 +1,36 @@
+com_ExpeTrans:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:index" }
+
+com_ExpeTrans_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:show" }
+
+com_ExpeTrans_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:new" }
+
+com_ExpeTrans_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:create" }
+    methods:  POST
+
+com_ExpeTrans_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:edit" }
+
+com_ExpeTrans_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:update" }
+    methods:  [POST, PUT]
+
+com_ExpeTrans_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:delete" }
+    methods:  [POST, DELETE]
+com_ExpeTrans_update_auto:
+    path:     /updateAuto
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:updateAuto" }
+com_ExpeTrans_auto_creation:
+    path:     /autoCreation
+    defaults: { _controller: "ComDaufinBundle:ExpTransp:autoCreation" }

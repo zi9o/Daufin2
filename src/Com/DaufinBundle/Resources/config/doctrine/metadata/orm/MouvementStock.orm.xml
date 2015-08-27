@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="MouvementStock" table="mouvement_stock">
+    <indexes>
+      <index name="FK_MOUVEMENT_STOCK" columns="AGENCE"/>
+      <index name="FK_MOUVEMENT_STOCK2" columns="UNITE_MANU"/>
+      <index name="FK_MOUVEMENT_STOCK3" columns="PERSONNEL"/>
+      <index name="FK_MOUVEMENT_STOCK4" columns="MOUVEMENT"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateMouv" type="datetime" column="DATE_MOUV" nullable="true"/>
+    <many-to-one field="mouvement" target-entity="Mouvement">
+      <join-columns>
+        <join-column name="MOUVEMENT" referenced-column-name="ID_MOUV"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="personnel" target-entity="Personnel">
+      <join-columns>
+        <join-column name="PERSONNEL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="uniteManu" target-entity="UniteManu">
+      <join-columns>
+        <join-column name="UNITE_MANU" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="agence" target-entity="Agence">
+      <join-columns>
+        <join-column name="AGENCE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

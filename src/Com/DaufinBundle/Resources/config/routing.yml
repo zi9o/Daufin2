@@ -1,0 +1,759 @@
+com_daufin_com_voyage:
+    resource: "@ComDaufinBundle/Resources/config/routing/voyage.yml"
+    prefix:   /com_voyage
+
+com_daufin_com_incident:
+    resource: "@ComDaufinBundle/Resources/config/routing/incident.yml"
+    prefix:   /com_Incident
+#com_daufin_com_stock:
+#    resource: "@ComDaufinBundle/Resources/config/routing/stock.yml"
+#    prefix:   /com_Stock
+
+
+#com_daufin_com_mouvement_stock:
+#    resource: "@ComDaufinBundle/Resources/config/routing/mouvementstock.yml"
+#    prefix:   /com_Mouvement_Stock
+
+#com_daufin_com_mouvement:
+#    resource: "@ComDaufinBundle/Resources/config/routing/mouvement.yml"
+#    prefix:   /com_Mouvement
+
+# Caisse et Mouvement
+com_daufin_com_caisse:
+    resource: "@ComDaufinBundle/Resources/config/routing/caisse.yml"
+    prefix:   /com_caisse
+com_daufin_com_reglement:
+    resource: "@ComDaufinBundle/Resources/config/routing/reglement.yml"
+    prefix:   /com_reglement
+com_daufin_com_mouvnt_caisse:
+    resource: "@ComDaufinBundle/Resources/config/routing/mouvcaisse.yml"
+    prefix:   /com_mouvnt_caisse
+    
+    
+com_daufin_com_ville:
+    resource: "@ComDaufinBundle/Resources/config/routing/ville.yml"
+    prefix:   /com_Ville
+
+com_daufin_com_vehicule:
+    resource: "@ComDaufinBundle/Resources/config/routing/vehicule.yml"
+    prefix:   /com_Vehicule
+
+com_daufin_com_type_valeur:
+    resource: "@ComDaufinBundle/Resources/config/routing/typevaleur.yml"
+    prefix:   /com_Type_valeur
+
+com_daufin_com_unite_manu:
+    resource: "@ComDaufinBundle/Resources/config/routing/unitemanu.yml"
+    prefix:   /com_Unite_manu
+
+com_daufin_com_trajet:
+    resource: "@ComDaufinBundle/Resources/config/routing/trajet.yml"
+    prefix:   /com_Trajet
+com_daufin_com_trajet_s_trajet:
+    resource: "@ComDaufinBundle/Resources/config/routing/trajetstrajet.yml"
+    prefix:   /com_trajet_s_trajet
+
+com_daufin_com_traite:
+    resource: "@ComDaufinBundle/Resources/config/routing/traite.yml"
+    prefix:   /com_Traite
+
+com_daufin_com_table_prix:
+    resource: "@ComDaufinBundle/Resources/config/routing/tableprix.yml"
+    prefix:   /com_Table_prix
+
+com_daufin_com_suiv_service:
+    resource: "@ComDaufinBundle/Resources/config/routing/suivservice.yml"
+    prefix:   /com_Suiv_service
+
+com_daufin_com_s_trajet:
+    resource: "@ComDaufinBundle/Resources/config/routing/soustrajet.yml"
+    prefix:   /com_S_trajet
+
+com_daufin_com_site:
+    resource: "@ComDaufinBundle/Resources/config/routing/site.yml"
+    prefix:   /com_Site
+
+com_daufin_com_secteur:
+    resource: "@ComDaufinBundle/Resources/config/routing/secteur.yml"
+    prefix:   /com_Secteur
+
+com_daufin_com_rubrique:
+    resource: "@ComDaufinBundle/Resources/config/routing/rubrique.yml"
+    prefix:   /com_Rubrique
+
+com_daufin_com_Retenir:
+    resource: "@ComDaufinBundle/Resources/config/routing/retenir.yml"
+    prefix:   /com_Retenir
+
+com_daufin_com_Ramasser:
+    resource: "@ComDaufinBundle/Resources/config/routing/ramasserde.yml"
+    prefix:   /com_Ramasser
+
+com_daufin_com_Personnel:
+    resource: "@ComDaufinBundle/Resources/config/routing/personnel.yml"
+    prefix:   /com_Personnel
+
+com_daufin_com_PasserPar:
+    resource: "@ComDaufinBundle/Resources/config/routing/passerpar.yml"
+    prefix:   /com_PasserPar
+
+com_daufin_com_Ordre_Lv_Rm:
+    resource: "@ComDaufinBundle/Resources/config/routing/ordrelvrm.yml"
+    prefix:   /com_Ordre_Lv_Rm
+
+com_daufin_com_Operer_voyage:
+    resource: "@ComDaufinBundle/Resources/config/routing/operervoyage.yml"
+    prefix:   /com_Operer_voyage
+
+com_daufin_com_Operer_ordre:
+    resource: "@ComDaufinBundle/Resources/config/routing/opererordre.yml"
+    prefix:   /com_Operer_ordre
+
+com_daufin_com_Oprer_Expedition:
+    resource: "@ComDaufinBundle/Resources/config/routing/opererexpedition.yml"
+    prefix:   /com_Oprer_Expedition
+
+com_daufin_com_facture:
+    resource: "@ComDaufinBundle/Resources/config/routing/facture.yml"
+    prefix:   /com_Facture
+
+com_daufin_com_ExpeTrans:
+    resource: "@ComDaufinBundle/Resources/config/routing/exptransp.yml"
+    prefix:   /com_ExpeTrans
+
+com_daufin_com_Expedition:
+    resource: "@ComDaufinBundle/Resources/config/routing/expedition.yml"
+    prefix:   /com_Expedition
+
+com_daufin_com_Crbt:
+    resource: "@ComDaufinBundle/Resources/config/routing/crbt.yml"
+    prefix:   /com_Crbt
+
+com_daufin_com_Taxation:
+    resource: "@ComDaufinBundle/Resources/config/routing/taxation.yml"
+    prefix:   /com_taxation
+
+com_daufin_com_ContTablePrix:
+    resource: "@ComDaufinBundle/Resources/config/routing/conttableprix.yml"
+    prefix:   /com_ContTablePrix
+
+com_daufin_com_Cont_Site:
+    resource: "@ComDaufinBundle/Resources/config/routing/contsite.yml"
+    prefix:   /com_Cont_Site
+
+com_daufin_com_Contrat:
+    resource: "@ComDaufinBundle/Resources/config/routing/contrat.yml"
+    prefix:   /com_Contrat
+
+com_daufin_com_Client:
+    resource: "@ComDaufinBundle/Resources/config/routing/client.yml"
+    prefix:   /com_Client
+
+com_daufin_com_Cheque:
+    resource: "@ComDaufinBundle/Resources/config/routing/cheque.yml"
+    prefix:   /com_Cheque
+
+com_daufin_com_BLivraison:
+    resource: "@ComDaufinBundle/Resources/config/routing/blivraisonm.yml"
+    prefix:   /com_BLivraison
+
+com_daufin_com_agence:
+    resource: "@ComDaufinBundle/Resources/config/routing/agence.yml"
+    prefix:   /com_Agence
+
+com_daufin_com_affecter:
+    resource: "@ComDaufinBundle/Resources/config/routing/affecter.yml"
+    prefix:   /com_Affecter
+
+#homepage:
+#    path:     /
+#    defaults: { _controller: FrameworkBundle:Template:template, template: ComDaufinBundle:Cms:index.html.twig }
+#    requirements:
+#        _method: GET
+
+#imprint:
+#    path:   /imprint
+#    defaults: { _controller: FrameworkBundle:Template:template, template: ComDaufinBundle:Cms:imprint.html.twig }
+#    requirements:
+#        _method: GET
+        
+com_daufin_ajax_calcul_montant:
+    pattern:  /ajax/calculMontant/
+    defaults: { _controller: ComDaufinBundle:Ajax:calculMontant }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_calcul_montant_forfait:
+    pattern:  /ajax/calculMontantForfait/
+    defaults: { _controller: ComDaufinBundle:Taxation:calculMontantForfait }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_charger_site:
+    pattern:  /ajax/chargerSite/
+    defaults: { _controller: ComDaufinBundle:Ajax:chargerSite }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_save_pdf_taxation:
+    pattern:  /export/taxation/
+    defaults: { _controller: ComDaufinBundle:Ajax:save2PdfTaxation }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_get_site:
+    pattern:  /ajax/Site/
+    defaults: { _controller: ComDaufinBundle:Ajax:getSite }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_imprimer_ticket:
+    pattern:  /imprimer/Tickets/
+    defaults: { _controller: ComDaufinBundle:Ajax:imprimeTicket }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+com_daufin_ajax_charger_secteur:
+    pattern:  /ajax/chargerSecteur/
+    defaults: { _controller: ComDaufinBundle:Ajax:chargerSecteur }
+    requirements:
+           _method: POST
+    options:
+       expose: true
+           
+com_daufin_ajax_test_codeDeclaration:
+    pattern:  /ajax/codeDeclaration/
+    defaults: { _controller: ComDaufinBundle:Ajax:testCodeDeclaration }
+    requirements:     
+          _method: POST
+    options:
+       expose: true
+        
+com_daufin_ajax_prop_chargement:
+    pattern:  /ajax/propChargement/
+    defaults: { _controller: ComDaufinBundle:Ajax:propChargement }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_generer_declaration:
+    pattern:  /ajax/genererDeclTransp/
+    defaults: { _controller: ComDaufinBundle:Ajax:parcourExpedition }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_generer_char2PDF:
+    pattern:  /ajax/generCahrg2PDF/
+    defaults: { _controller: ComDaufinBundle:Ajax:generCahrg2PDF }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_get_detail_by_vehicule:
+    pattern:  /ajax/detailVehicule/
+    defaults: { _controller: ComDaufinBundle:Ajax:detailByVehicule }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_get_expediton:
+    pattern:  /ajax/getExpedition/
+    defaults: { _controller: ComDaufinBundle:Ajax:getExpedition }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_valid_chargement:
+    pattern:  /ajax/validChargement/
+    defaults: { _controller: ComDaufinBundle:Ajax:validChargement }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_charger_vehicule_voyage:
+    pattern:  /ajax/chargerVehiculeVoyage/
+    defaults: { _controller: ComDaufinBundle:Ajax:chargerVehiculeVoyage }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_voyage_charg:
+    pattern:  /ajax/voyageCharg/
+    defaults: { _controller: ComDaufinBundle:Ajax:voyageCharg }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+
+com_daufin_ajax_exp_tansp_charg:
+    pattern:  /ajax/expTanspCharg/
+    defaults: { _controller: ComDaufinBundle:Ajax:expTanspCharg }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+           
+com_daufin_ajax_charger_secteur:
+    pattern:  /ajax/chargerSecteur/
+    defaults: { _controller: ComDaufinBundle:Ajax:chargerSecteur }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_ajax_charger_vehicule:
+    pattern:  /ajax/chargerVehicule/
+    defaults: { _controller: ComDaufinBundle:Ajax:chargerVehicule }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_ajax_valider_feuille_chargement:
+    pattern:  /ajax/validFeuilleChargement/
+    defaults: { _controller: ComDaufinBundle:Ajax:validFeuilleChargement }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_ajax_arrivage_get_voyage_by_vehicule:
+    pattern:  /ajax/arrivage/getVoyagesByVehicule/
+    defaults: { _controller: ComDaufinBundle:Arrivage:getVoyagesByVehicule }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_ajax_arrivage_get_detail_by_vehicule:
+    pattern:  /ajax/arrivage/getDetailsFromVoyageVehicule/
+    defaults: { _controller: ComDaufinBundle:Arrivage:getDetailsFromVoyVehi }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_ajax_arrivage_get_expediton:
+    pattern:  /ajax/Arrivage/getExpedition/
+    defaults: { _controller: ComDaufinBundle:Arrivage:getExpedition }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_arrivage_valid_declaration:
+    pattern:  /ajax/Arrivage/validDeclaration/
+    defaults: { _controller: ComDaufinBundle:Arrivage:validArrivage }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_arrivage_get_plan_liv:
+    pattern:  /ajax/Arrivage/get/Plan/livr
+    defaults: { _controller: ComDaufinBundle:Arrivage:getPlanLivraison }
+    requirements:     
+          _method: POST
+    options:
+        expose: true    
+com_daufin_ajax_arrivage_valid_plan_liv:
+    pattern:  /ajax/Arrivage/valid/Plan/livr
+    defaults: { _controller: ComDaufinBundle:Arrivage:validPlanifLivr }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_livraison_get_expedition:
+    pattern:  /ajax/Livraison/getExpeditionLivraison/
+    defaults: { _controller: ComDaufinBundle:Arrivage:getExpeditionLivraison }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_livraison_valid_livraison:
+    pattern:  /ajax/Livraison/validExpeditionLivraison/
+    defaults: { _controller: ComDaufinBundle:Arrivage:validLivraison }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_get_expedition:
+    pattern:  /ajax/Caisse/getExpeditionCaisse/
+    defaults: { _controller: ComDaufinBundle:Caisse:getExpeditionCaisse }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_valid_cheque:
+    pattern:  /ajax/Caisse/valideCheque/
+    defaults: { _controller: ComDaufinBundle:Caisse:valideCheque }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_valid_traite:
+    pattern:  /ajax/Caisse/valideTraite/
+    defaults: { _controller: ComDaufinBundle:Caisse:valideTraite }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_valid_crbt:
+    pattern:  /ajax/Caisse/valideCrbt/
+    defaults: { _controller: ComDaufinBundle:Caisse:valideCrbt }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_valid_bl:
+    pattern:  /ajax/Caisse/valideBL/
+    defaults: { _controller: ComDaufinBundle:Caisse:valideBL }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+com_daufin_ajax_caisse_valid_port:
+    pattern:  /ajax/Caisse/validePort/
+    defaults: { _controller: ComDaufinBundle:Caisse:validePort }
+    requirements:     
+          _method: POST
+    options:
+        expose: true
+#com_daufin_homepage:
+    #path:     /
+    #defaults: { _controller: ComDaufinBundle:Default:index }
+
+#com_daufin_login:
+    #path:     /login
+    #defaults: { _controller: ComDaufinBundle:Default:login }
+    
+#com_daufin_ckecklogin:
+    #path:     /checklogin
+    #defaults: { _controller: ComDaufinBundle:Default:checklogin }
+com_daufin_com_Exptransp_Voyage:
+    resource: "@ComDaufinBundle/Resources/config/routing/exptranspvoyage.yml"
+    prefix:   /com_Exptransp_Voyage
+com_daufin_com_vehi_traj_voyg:
+    resource: "@ComDaufinBundle/Resources/config/routing/vehitrajvoyg.yml"
+    prefix:   /com_vehi_traj_voyg
+com_daufin_com_arrivage_declarer:
+    pattern:  /Arrivage/Declaration/
+    defaults: { _controller: ComDaufinBundle:Arrivage:declarerArrivage }
+    requirements:
+           _method: GET
+com_daufin_com_arrivage_livraison:
+    pattern:  /Arrivage/Livraison/
+    defaults: { _controller: ComDaufinBundle:Arrivage:livraisonArrivage }
+    requirements:
+           _method: GET
+com_daufin_com_arrivage_planif_livr:
+    pattern:  /Arrivage/PlanifLivraison/
+    defaults: { _controller: ComDaufinBundle:Arrivage:planifierLivraison }
+    requirements:
+           _method: GET
+com_daufin_com_livraison_declar_livr:
+    pattern:  /Livraison/declarLivraison/
+    defaults: { _controller: ComDaufinBundle:Arrivage:declarLivraison }
+    requirements:
+           _method: GET
+com_daufin_com_caisse_declar:
+    pattern:  /Caisse/declarCaisse/
+    defaults: { _controller: ComDaufinBundle:Caisse:declarCaisse }
+    requirements:
+           _method: GET
+com_daufin_com_caisse_declar_port_paye:
+    pattern:  /Caisse/declarPaye/
+    defaults: { _controller: ComDaufinBundle:Caisse:formValidPortPaye }
+    requirements:
+           _method: GET
+#
+com_daufin_com_Client_create_client:
+    pattern:  /com_Client/createClient/
+    defaults: { _controller: ComDaufinBundle:Client:createClient }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+
+com_daufin_com_Client_create_contrat:
+    pattern:  /com_Client/createContrat/
+    defaults: { _controller: ComDaufinBundle:Client:createContrat }
+    requirements:
+           _method: POST
+    options:
+        expose: true  
+     
+com_daufin_com_Client_create_site:
+    pattern:  /com_Client/createSite/
+    defaults: { _controller: ComDaufinBundle:Client:createSite }
+    requirements:
+           _method: POST
+    options:
+        expose: true      
+
+com_daufin_com_Client_create_cont_tab_prix:
+    pattern:  /com_Client/createContTabPrix/
+    defaults: { _controller: ComDaufinBundle:Client:createContTabPrix }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_com_Client_select_client:
+    pattern:  /com_Client/SelectClient/
+    defaults: { _controller: ComDaufinBundle:Client:SelectClient }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+
+com_daufin_com_Client_select_contrat:
+    pattern:  /com_Client/SelectContrat/
+    defaults: { _controller: ComDaufinBundle:Client:SelectContrat }
+    requirements:
+           _method: POST
+    options:
+        expose: true
+
+com_daufin_com_Client_charge_contrat:
+    pattern:  /com_Client/chargeContrat/
+    defaults: { _controller: ComDaufinBundle:Client:chargeContrat}
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_com_Client_charge_site:
+    pattern:  /com_Client/chargeSite/
+    defaults: { _controller: ComDaufinBundle:Client:chargeSite}
+    requirements:
+           _method: POST
+    options:
+        expose: true
+com_daufin_com_Client_charge_cont_tab_prix:
+    pattern:  /com_Client/chargeContTabPrix/
+    defaults: { _controller: ComDaufinBundle:Client:chargeContTabPrix}
+    requirements:
+           _method: POST
+    options:
+        expose: true
+       
+com_daufin_form_ajouter_voyage:
+    pattern:  /ajax/formAjouterVoyage/
+    defaults: { _controller: ComDaufinBundle:Ajax:formAddVoyage}
+    requirements:
+            _method: GET
+com_daufin_ajouter_voyage:
+    pattern:  /ajax/ajouterVoyage/
+    defaults: { _controller: ComDaufinBundle:Ajax:ajouterVoyage}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+com_daufin_com_get_agences_ville:
+    pattern:  /com_taxation/getAllAgencesVille/
+    defaults: { _controller: ComDaufinBundle:Ajax:getAllAgencesVille}
+    requirements:
+          _method: POST
+    options:
+        expose: true 
+com_daufin_com_update_taxation:
+    pattern:  /com_taxation/updateTaxation/
+    defaults: { _controller: ComDaufinBundle:Taxation:updateTaxation}
+    requirements:
+          _method: POST
+    options:
+        expose: true
+com_daufin_com_form_update_taxation:
+    pattern:  /com_taxation/TaxationUpdate/
+    defaults: { _controller: ComDaufinBundle:Taxation:formUpdateTaxation}
+    requirements:
+          _method: GET
+com_daufin_com_getexped_update_taxation:
+    pattern:  /com_taxation/getUpdateTaxation/
+    defaults: { _controller: ComDaufinBundle:Taxation:getUpdateTaxation}
+    requirements:
+          _method: POST
+    options:
+        expose: true  
+        
+#Reporting 
+com_daufin_com_reporting_suivi_expedition:
+    path: /Report/Expedition
+    defaults: {_controller: ComDaufinBundle:FindExpedition:index}
+
+com_daufin_com_reporting_suivi_expedition_search:
+    pattern:  /Report/Expedition/Result
+    defaults: { _controller: ComDaufinBundle:FindExpedition:FindExpedition}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reporting_suivi_services:
+    path: /Report/Services
+    defaults: {_controller: ComDaufinBundle:FindServices:index}
+
+com_daufin_com_reporting_suivi_services_search:
+    pattern:  /Report/Services/Result
+    defaults: { _controller: ComDaufinBundle:FindServices:FindServices}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reporting_suivi_voyages:
+    path: /Report/Voyages
+    defaults: {_controller: ComDaufinBundle:FindVoyages:index}
+
+com_daufin_com_reporting_suivi_voyages_search:
+    pattern:  /Report/Voyages/Result
+    defaults: { _controller: ComDaufinBundle:FindVoyages:FindVoyages}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reporting_synthese_expedition:
+    path: /Report/SyntheseExpedition
+    defaults: {_controller: ComDaufinBundle:FindExpedition:indexSynthese}
+
+com_daufin_com_reporting_synthese_expedition_search:
+    pattern:  /Report/SyntheseExpedition/Result
+    defaults: { _controller: ComDaufinBundle:FindExpedition:FindSyntheseExpedition}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reporting_synthese_services:
+    path: /Report/SyntheseServices
+    defaults: {_controller: ComDaufinBundle:FindServices:indexSynthese}
+
+com_daufin_com_reporting_synthese_services_search:
+    pattern:  /Report/SyntheseServices/Result
+    defaults: { _controller: ComDaufinBundle:FindServices:FindSyntheseServices}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+com_daufin_com_find_facture:
+    path: /FindFactures
+    defaults: {_controller: ComDaufinBundle:Facture:index}
+
+com_daufin_com_find_facture:
+    path: /FindFactures
+    defaults: {_controller: ComDaufinBundle:Facture:index}
+
+com_daufin_com_find_facture_search:
+    pattern:  /FindFactures/Result
+    defaults: { _controller: ComDaufinBundle:Facture:FindFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+com_daufin_com_facture_generer:
+    pattern:  /Factures/generer
+    defaults: { _controller: ComDaufinBundle:Facture:genererFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+com_daufin_com_facture_valider:
+    pattern:  /Factures/valider
+    defaults: { _controller: ComDaufinBundle:Facture:validerFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+# End Reporting
+#Facture zakaria
+com_daufin_com_facture_All:
+    path: /Factures
+    defaults: {_controller: ComDaufinBundle:Facture:indexFactures}
+
+com_daufin_com_facture_show:
+    path: /Factures/{numFacture}/show
+    defaults: {_controller: ComDaufinBundle:Facture:showFacture}
+
+com_daufin_com_factures_edit:
+    path: /Factures/edit
+    defaults: {_controller: ComDaufinBundle:Facture:EditerFacture}
+
+com_daufin_com_factures_print:
+    path: /Factures/print
+    defaults: {_controller: ComDaufinBundle:Facture:indexprintFacture}
+
+com_daufin_com_facture_find_print:
+    pattern:  /FindFacture/print
+    defaults: { _controller: ComDaufinBundle:Facture:FindEditFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_printing:
+    pattern:  /Facture/printing
+    defaults: { _controller: ComDaufinBundle:Facture:PrintFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_edit:
+    pattern:  /Facture/edit
+    defaults: { _controller: ComDaufinBundle:Facture:indexEditFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_find_edit:
+    pattern:  /FindFacture/edit
+    defaults: { _controller: ComDaufinBundle:Facture:FindEditFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_save_edit:
+    pattern:  /Facture/save
+    defaults: { _controller: ComDaufinBundle:Facture:SaveEditFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_save_delete_edit:
+    pattern:  /Facture/savedelete
+    defaults: { _controller: ComDaufinBundle:Facture:SaveEditDeleteFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_facture_save_etat_edit:
+    pattern:  /Facture/saveetat
+    defaults: { _controller: ComDaufinBundle:Facture:SaveEditEtatFacture}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+#End facture
+# for taxation 
+com_daufin_com_Taxation_find_Adresse:
+    pattern:  /FindAdresseClient
+    defaults: { _controller: ComDaufinBundle:Taxation:FindAdresseClient}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+# End Fixed Taxation
+# begin Export expedition
+com_daufin_com_facture_export:
+    pattern:  /Factures/Export
+    defaults: { _controller: ComDaufinBundle:Facture:export}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+# End Export expedition

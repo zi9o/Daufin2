@@ -1,0 +1,356 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+
+{% block container-%}
+    <h1>Taxation </h1>
+     <style>
+<!--
+.grandTitre td{
+font-size: 19px;
+color: #0C2C6C;
+ font-weight: bold;
+}
+.hide-row { display:none; }
+.show-row { display:table-row; }
+#formTypeManu{
+}
+
+.error{background-color: #ea1126;}
+.valid{background-color: #85ea11;}
+.black_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+}
+.toHide{
+display: none;
+}
+.toShow{
+display: inline;
+}
+
+.white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+-->
+</style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	
+
+  <script type="text/javascript">
+ 
+   function exportToPDF(sl){
+   				 
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_save_pdf_taxation'),
+		          type: "POST",
+		          data: { "idExped" : {{ entityExped.id }}
+			        	   },
+		          success: function(data) {
+			          	 
+    		 		    var obj = jQuery.parseJSON(data);
+    	 				var url=obj.urlPDF;
+    	 			 	document.getElementById("linkFacture").href=url;
+    	 			 	document.getElementById("linkFacture").style.visibility = "visible";
+    							 
+    					 var wnd = window.open(url);
+		          } 
+		       });
+		       
+		
+  
+   }
+		       
+ 
+</script>
+  <script type="text/javascript">
+  function imprimerTicket(){
+	  $.ajax({
+          url: Routing.generate('com_daufin_ajax_imprimer_ticket'),
+          type: "POST",
+          data: { "idExped" : {{ entityExped.id }}
+	        	   },
+          success: function(data) {
+                    
+             
+         	  var obj = jQuery.parseJSON(data);
+
+ 				var url=obj.urlPDF;
+				 
+ 			  document.getElementById("linkTicket").href=url;
+ 			 document.getElementById("linkTicket").style.visibility = "visible";
+						 
+			 var wnd = window.open(url);
+			 //wnd.print();
+
+			 
+              } 
+       });
+       
+
+	  }
+</script>
+<script type="text/javascript">
+function modifierExpedition(){
+
+	 var idServiceTransport=document.getElementById("idServiceTransport").value;
+	 var idServiceCrbt=document.getElementById("idServiceCrbt").value;
+     var idServiceVAlorem=document.getElementById("idServiceVAlorem").value;
+     var idServiceManut=document.getElementById("idServiceManut").value;
+     var idServiceLivrGMS=document.getElementById("idServiceLivrGMS").value;
+   
+
+      var idServiceEnrig=document.getElementById("idServiceEnrig").value;
+ 	 var idServiceCheque=document.getElementById("idServiceCheque").value;
+     var idServiceTraite=document.getElementById("idServiceTraite").value;
+      var idServiceBL=document.getElementById("idServiceBL").value;
+      var idServiceLivraison=document.getElementById("idServiceLivraison").value;
+     var idServiceTaxeAvis=document.getElementById("idServiceTaxeAvis").value;
+     var idServiceRamassage=document.getElementById("idServiceRamassage").value;
+   
+     var prixTransport=document.getElementById("prixTransport").value;
+     var prixValAD=document.getElementById("prixValAD").value;
+     var prixRetourBL=document.getElementById("prixRetourBL").value;
+     var prixTaxeAvis=document.getElementById("prixTaxeAvis").value;
+     var prixRamassage=document.getElementById("prixRamassage").value;
+     var prixEnrig=document.getElementById("prixEnrig").value;
+
+     var prixCrbt=document.getElementById("prixCrbt").value;
+     var prixLivrGMS=document.getElementById("prixLivrGMS").value;
+     var prixManut=document.getElementById("prixManut").value;
+     var prixLivraison=document.getElementById("prixLivraison").value;
+     var prixCheque=document.getElementById("prixCheque").value;
+     var prixTraite=document.getElementById("prixTraite").value;
+ 	  $.ajax({
+        url: Routing.generate('com_daufin_com_update_taxation'),
+        type: "POST",
+        data:{
+        	    "idExped" : {{ entityExped.id }},
+        	    
+                "idServiceCrbt" : idServiceCrbt,
+	    		"idServiceVAlorem" : idServiceVAlorem, 
+	    		"idServiceManut" : idServiceManut,
+	    		"idServiceLivrGMS" : idServiceLivrGMS,
+	    		"idServiceTransport" : idServiceTransport,
+
+	    		"idServiceEnrig" : idServiceEnrig,
+	        	"idServiceCheque":idServiceCheque,
+	        	"idServiceTraite":idServiceTraite,
+	        	"idServiceBL":idServiceBL,
+	        	"idServiceLivraison":idServiceLivraison,
+	        	"idServiceTaxeAvis":idServiceTaxeAvis,
+	        	"idServiceRamassage":idServiceRamassage,
+	    		
+	    		"prixRetourBL" : prixRetourBL,
+        		"prixVAlorem" : prixValAD,
+        		"prixEnrig" : prixEnrig,
+        		"prixTaxeAvis" : prixTaxeAvis,
+        		"prixRamassage" : prixRamassage,
+        		"prixTransport" : prixTransport,
+        		
+        		"prixCrbt":prixCrbt,
+            	"prixLivrGMS" : prixLivrGMS,
+            	"prixManut" : prixManut,
+            	"prixLivraison" :prixLivraison,
+            	"prixCheque" :prixCheque,
+            	"prixTraite" :prixTraite,
+            	 
+	          },
+        success: function(data) {
+       	  var obj = jQuery.parseJSON(data);
+       	  if(obj.codeError==90){ 
+           	   alert(obj.succes);
+       	  }else{
+       		 alert(obj.error);
+           	  }
+       	
+       	     	 
+            } 
+     });
+
+	  
+     
+
+	  }
+</script>
+    <table class="record_properties">
+        <body>
+            <tr>
+                <td>Code Déclaration</td>
+                <td>{{ entityExped.codeDeclaration }}</td>
+                <td> </td>
+                 <td>Date déclaration</td>
+                <td>{{ entityExped.dateDecl|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <td>Date Envoie</td>
+                <td>{% if entityExped.envDate is not empty %} 
+                    {{ entityExped.envDate|date('Y-m-d H:i:s') }}
+                    {% endif %}</td>
+                <td> </td>
+                <td>Date Réception</td>
+                <td>{% if entityExped.recDate is not empty %} 
+                    {{ entityExped.recDate|date('Y-m-d H:i:s') }}
+                    {% endif %}</td>
+            </tr>
+            <tr style="background-color: #EDE6E6;">
+                <td>Expéditeur</td>
+                <td><a href="{{ path('com_Client_show', { 'id': entityExped.envClient.id }) }}">{{ entityExped.envClient }}</a></td>
+                <td> </td>
+                <td>Destinataire</td>
+                <td><a href="{{ path('com_Client_show', { 'id': entityExped.recClient.id }) }}">{{ entityExped.RecClient }}</a></td>
+            </tr>
+              <tr style="background-color: #EDE6E6;">
+                <td>Agence Départ</td>
+                <td>{{ entityExped.envAgence }}</td>
+                <td> </td>
+                <td>Agence Arrivée</td>
+                <td>{{ entityExped.RecAgence }}</td>
+            </tr>
+              <tr style="background-color: #EDE6E6;">
+                <td>Agence Transit</td>
+                <td>{% if entityExped.agenceTransit is not empty %}
+                       {{ entityExped.agenceTransit }}
+                     {% endif %}
+                </td>
+                <td> </td>
+                <td>Trajet</td>
+                <td>{{ entityExped.EnvVille }} -> {{ entityExped.RecVille }}</td>
+            </tr >
+                <tr style="background-color: #EDE6E6;">
+                <td>Statut</td>
+                <td> 
+                       {{ entityExped.etatExp }}
+                     
+                </td>
+                <td> </td>
+                <td>Type Transit</td>
+                <td>{{ entityExped.typeTransit }}</td>
+            </tr>
+             <tr style="background-color: #E9E9C0;">
+                <td>Poids Total(Kg)</td>
+                <td>{{ entityExped.poidsExp }}</td>
+                <td> </td>
+                <td>Volume  Total</td>
+                <td>{{ entityExped.volumeExp }}</td>
+            </tr>             
+            <tr style="background-color: #E9E9C0;">
+                <td>Nombre de Colis</td>
+                <td>{{ entityExped.nbrColis }}</td>
+                <td></td>
+                <td>Nombre de Palettes</td>
+                <td>{{ entityExped.nbrPalets }}</td>
+            </tr>
+           
+ 			<tr>
+                <td>Contre Remboursement</td>
+                <td>{% if entityCrbt is null %}
+   					------------
+   					 {% else %}
+   					   <a href="{{ path('com_Crbt_show', { 'id': entityCrbt.id }) }}">{{ entityCrbt.montantCrbt}}</a>
+					{% endif %}
+					
+					</td>
+                <td></td>
+                <td>Traite</td>
+                <td>{% if entityTraite is null %}
+   					------------
+   					 {% else %}
+   					    <a href="{{ path('com_traite_show', { 'id': entityTraite.id }) }}">{{ entityTraite.montantTrt }}</a>
+   					 {% endif %}
+   					 </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>Cheque </td>
+                <td>{% if entityCheque is null %}
+   					------------
+   					 {% else %}
+                       <a href="{{ path('com_Cheque_show', { 'id': entityCheque.id }) }}">{{ entityCheque.montantChq}}</a>
+                     {% endif %}</td>
+                <td></td>
+                <td>Retour BL</td>
+                <td>{% if entityBonLivr is null %}
+   					-------------
+   					 {% else %}
+   					   <a href="{{ path('com_BLivraison_show', { 'id': entityBonLivr.id }) }}">{{ entityBonLivr.numBl }}</a>
+   					 {% endif %}</td>
+            </tr>
+            
+            <tr>
+                <td>Total montant</td>
+                <td>{{ entityExped.totalMontant }}</td>
+                 <td></td>
+                <td> <input type="button" value="Imprimer  Ticket({{ nbreTickets }})" OnClick="imprimerTicket()"  class="btn-rad"/>
+                    <a id="linkTicket" href="#" target="_blank" style="visibility: hidden;">Voir</a>
+                 </td>
+                <td><input type="button" value="Imprimer  Facture" OnClick="exportToPDF(this)"  class="btn-rad"/>
+                    <a id="linkFacture" href="#" target="_blank" style="visibility: hidden;">Voir</a>
+                </td>
+            </tr>          
+        </body>
+    </table>
+    <h1> Les Taxes Relatives à Cette Expédition</h1>
+       		<table>
+                <tr><td> <h4>Rubrique</h4></td>
+                    <td>  <h4> Prix </h4></td>
+                </tr>
+                 <tr><td> Transport  </td>
+                    <td> {{ prixTransport|number_format(2, '.', ',') }} </td>
+                </tr>
+                 <tr> <td>   Taxe AD VALOREM </td>
+                      <td> {{ prixVAlorem|number_format(2, '.', ',') }}</td>
+                </tr>
+                 <tr>
+                    <td>  Retour de Fond  </td>
+                    <td>{{ retourFond|number_format(2, '.', ',') }} </td>
+                </tr>
+                <tr>  <td>   Enregistrement  </td>
+                    <td> {{ prixEnrig|number_format(2, '.', ',') }}  </td>
+                </tr>
+                <tr> <td>   Retour de BL   </td>
+                    <td>  {{ prixBL|number_format(2, '.', ',') }}  </td>
+                </tr>
+                <tr>  
+                      <td>   Taxe d'avis  </td>
+                      <td>  {{ prixTaxeAvis|number_format(2, '.', ',') }}  </td>
+                </tr>
+                 <tr>
+                    <td>   Ramassage   </td>
+                    <td> {{ prixRamassage|number_format(2, '.', ',') }}  </td>
+                </tr>
+                <tr>
+                    <td>    Autres Frais (Livraison GMS+ Manutention)  </td>
+                    <td>{{ autreFrais|number_format(2, '.', ',') }}  </td>
+                </tr>
+                <tr style="font-weight:bold;">  <td style="font-weight:bold;">  TOTAL H.T  </td>
+                      <td style="font-weight:bold;">  {{ montatHT|number_format(2, '.', ',') }}  </td>
+                </tr>
+                 <tr>  <td style="font-weight:bold;">     T.V.A   </td>
+                    <td style="font-weight:bold;">  {{ tva|number_format(2, '.', ',') }}  </td>
+                </tr>
+                <tr> 
+                    <td style="font-weight:bold;">  TOTAL T.T.C  </td>
+                     <td style="font-weight:bold;"> {{ montantTTC|number_format(2, '.', ',') }} </td>
+                </tr>
+            </table>
+   
+      
+{% endblock %}

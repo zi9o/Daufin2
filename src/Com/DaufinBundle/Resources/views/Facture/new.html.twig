@@ -1,0 +1,52 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Consulter Factures</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Factures</a></li>
+            <li class="active">Consulter Factures</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block container %}
+
+    <div class="block-flat">        
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatable">
+                <thead>
+                    <tr>
+                        <th>N° Facture</th>
+                        <th>Client</th>
+                        <th>Date Création</th>
+                        <th>Date Reglement</th>
+                        <th>Montant HT</th> 
+                        <th>Montant TVA</th>
+                        <th>Montant TTC</th>
+                        <th>Statut</th>
+                        <th>Etat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td><a href="{{ path('com_daufin_com_facture_show', { 'numFacture': entity.id }) }}">{{ entity.numFacture }}</a></td>
+                            <td> <a href="{{ path('com_Client_show', { 'id': entity.Client.id }) }}">
+                                    {{  entity.getClient }} 
+                                </a>
+                            </td>
+                            <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>  
+                            <td>{% if entity.dateFacturation %}{{ entity.dateFacturation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{{ entity.totalMontantHT }}</td>
+                            <td>{{ entity.totalMontantTVA }}</td>
+                            <td>{{ entity.totalMontantTTC }}</td>
+                            <td>{{ entity.statutFacture }}</td>
+                            <td>{{ entity.etatFacture }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

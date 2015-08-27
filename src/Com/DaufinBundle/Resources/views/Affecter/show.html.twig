@@ -1,0 +1,46 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Agence/Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li><a href="{{ path('com_affecter') }}"> Agence/Personnel </a></li>
+                  <li class="active">{{ entity.id }}</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container%}
+    <h1>Affecter</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+             <tr>
+                <th>Personnel</th>
+                <td>{{ entity.personnel.nomPers }} {{ entity.personnel.prenomPers }}</td>
+            </tr>
+              <tr>
+                <th>Agence</th>
+                <td>{{ entity.agence }} </td>
+            </tr>
+            <tr>
+                <th>Date Affectation</th>
+                <td>{{ entity.dateAffectation|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_affecter_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+     
+</ul>
+{% endblock %}

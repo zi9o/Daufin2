@@ -1,0 +1,195 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Plan de Livraison</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Livraison</a></li>
+                  <li class="active">Plan Livraison</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+ <style>
+ .white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+#addColis:focus{
+background-color: #a5a7f0;
+}
+.trHeader th{
+font-weight: bold;
+font-size: 13px;
+background-color: #6d6262;
+color: #E4E3E3;
+}
+.trERROR td{
+background-color: #F9B0AD;
+}
+.trSUCCES td{
+background-color: #C0E7AC;
+}
+ </style>
+     <script>
+
+ $(document).ready(function() {
+	  var $datepicker = $( "#datepicker" );
+	 // alert('ddd');
+
+	  $datepicker.datepicker('setDate', new Date());
+   // $( "#datepicker" ).datepicker();
+  });
+  </script>
+  <script type="text/javascript">
+  function getPlanPlanif()
+  {
+	  var e1 = document.getElementById("secteur");
+		var idSecteur = e1.options[e1.selectedIndex].value;
+ 
+		
+     $.ajax({
+          url: Routing.generate('com_daufin_ajax_arrivage_get_plan_liv'),
+          type: "POST",
+          data: { "secteur" : idSecteur,
+                },
+          success: function(data) {
+             //(success) do something...
+             //variable "data" contains data returned by the controller. 
+            
+            
+        	  var obj = jQuery.parseJSON(data);
+              if (obj.hasOwnProperty('codeError')) 
+							 alert("ERROR : "+obj.error);
+              else {
+
+            	  
+            	  var content = '';
+            		 for (var i = 0; i < obj.length; i++) {
+
+            			content += '<tr><td>' + obj[i].Declaration + '</td>';
+            			content += '<td>' +  obj[i].poids + '</td>';
+            			content += '<td>' +  obj[i].typeManu + '</td>';
+            			content += '<td>' +  obj[i].nbreColis + '</td>';
+            			content += '<td>' +  obj[i].client + '</td>';
+            			content += '<td>' +  obj[i].adresse + '</td>';
+            			content += '<td>' +  obj[i].tel + '</td>';
+            			content += '<td></td></tr>';
+
+	               		 }
+            		 $('#table tbody').html(content);
+                
+                  }
+        }	
+       });
+  }
+</script>
+ <script type="text/javascript">
+function valider(){
+
+	
+	var table = $('#table').tableToJSON(); // Convert the table into a javascript object
+	   //  console.log(table);
+	  // alert(JSON.stringify(table));
+	   var secteur = document.getElementById("secteur").value;
+	     
+		  
+	       $.ajax({
+		          url:Routing.generate('com_daufin_ajax_arrivage_valid_plan_liv'),
+		          type: "POST",
+		          data: { "table" : table,
+			               "secteur": secteur
+			          
+			        	   },
+		          success: function(data) {
+    	               var obj = jQuery.parseJSON(data);
+		               
+    	               if (obj.hasOwnProperty('code')) 
+    						 alert("ERROR : "+obj.message);
+    				      else {			
+    				    	  var url=obj.urlPDF;								 
+    						  var wnd = window.open(url);
+    				          }
+
+		          }     
+	             	
+		       });
+	
+}
+
+</script>
+   
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+     <tr>
+     <td style="width: 80px">Agence</td>
+     <td style="width: 180px"> {{ agence.CODE_AGENCE }} -- {{ agence.LIBELLE_AG }} </td>
+     <td style="width: 80px">Date</td>
+     <td style="width: 230px"> {{ date }}</td>
+    
+     </tr>
+     
+      <tr>
+	     <td colspan="2"><strong>Nombre d'expédition à Livrer</strong></td>
+	     <td colspan="2"> <input style="text-align: right;" type="text" value="{{ nbreExp }}" readonly="readonly"/></td>
+     </tr>
+     
+	<tr>
+		
+		   <td style="width: 80px">Secteur</td>
+		<td colspan="2">
+		    <select id="secteur" onclick="getPlanPlanif();">
+		        <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     {% for secteur in secteurs %}
+		           <option value="{{ secteur.ID }}"> {{ secteur.LIBELLE_SECTEUR  }}</option>
+		     {% endfor %}		           
+		    </select>
+		</td>
+		<td> <input type="button" value="Valider le Plan"  id="validation" onclick="valider()"></td>
+		 
+ 
+	 
+		
+	</tr>
+
+</table>
+<div style="margin-top: 20px;">
+	    <table class="table" id="table">
+             <thead>
+
+		            <tr >
+		            	<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Declaration</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Poids</td>
+		                  <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Type</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Nbre Colis</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Client Destainataire</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Adresse Destinataire</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Tel Destinataire</td>
+		                <td></td>
+		            </tr>
+		            </thead>
+		            <tbody></tbody>
+		        
+		    </table>
+</div>
+</div>
+
+ 
+
+  
+    {% endblock %}
+    
+    

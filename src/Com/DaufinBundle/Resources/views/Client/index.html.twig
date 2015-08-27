@@ -1,0 +1,123 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Clients</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Clients</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_Client_new') }}">
+        <button class="btn btn-info">
+            <i class="fa  fa-plus-square fa-lg">&nbsp;Client en Compte </i>     
+        </button>
+    </a>
+    <a href="{{ path('com_Client_compteedit') }}">
+        <button class="btn btn-warning">
+            <i class="fa  fa-plus-square fa-lg">&nbsp;Editer Client en Compte </i>     
+        </button>
+    </a>
+<div class="block-flat">
+
+<div class="tab-container">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#Particulier">Particulier</a></li>
+      <li class=""><a data-toggle="tab" href="#Societe">Societe</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="Particulier" class="tab-pane cont active">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Code Client</th>
+                        <th>Nom Particulier</th>
+                        <th>Prenom Particulier</th>
+                        <th>C.I.N Particulier</th>
+                        <th>Téléphone</th>
+                        <th>Fax</th>
+                        <th>Contact</th>
+                        <th>Adresse</th>
+                        <th>Type Client</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    {% if entity.typeClient=='Particulier' %}
+                    <tr>
+                        <td>{{ entity.codeClient }}</td>
+                        <td>{{ entity.nomPart }}</td>
+                        <td>{{ entity.prenomPart }}</td>
+                        <td>{{ entity.cinPer }}</td>
+                        <td>{{ entity.telClt }}</td>
+                        <td>{{ entity.faxClt }}</td>
+                        <td>{{ entity.contact }}</td>
+                        <td>{{ entity.adresseClt }}</td>
+                        <td>{{ entity.typeClient }}</td>
+                        <td align="center">
+                            <a href="{{ path('com_Client_show', { 'id': entity.id }) }}" class="label label-success">
+                                    <i class="fa   fa-folder-open"></i></a>
+                            <a href="{{ path('com_Client_edit', { 'id': entity.id }) }}" class="label label-info">
+                                <i class="fa fa-pencil-square-o"></i></a>
+                        </td>
+                    </tr>
+                    {% endif%}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+      <div id="Societe" class="tab-pane cont">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Code Client</th>
+                            <th>Raison Sociale</th>
+                            <th>Registre Commerce</th>
+                            <th>Identifiant Fiscale</th>
+                            <th>Téléphone</th>
+                            <th>Fax</th>
+                            <th>Contact</th>
+                            <th>Adresse</th>
+                            <th>Type Client</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        {% if entity.typeClient=='Compte' %}
+                        <tr>
+                            <td>{{ entity.codeClient }}</td>
+                            <td>{{ entity.rSociale }}</td>
+                            <td>{{ entity.rCommerce }}</td>
+                            <td>{{ entity.idFiscale }}</td>
+                            <td>{{ entity.telClt }}</td>
+                            <td>{{ entity.faxClt }}</td>
+                            <td>{{ entity.contact }}</td>
+                            <td>{{ entity.adresseClt }}</td>
+                            <td>{{ entity.typeClient }}</td>
+                            <td align="center">
+                                <a href="{{ path('com_Client_show', { 'id': entity.id }) }}" class="label label-success">
+                                        <i class="fa   fa-folder-open"></i></a>
+                                <a href="{{ path('com_Client_edit', { 'id': entity.id }) }}" class="label label-info">
+                                    <i class="fa fa-pencil-square-o"></i></a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+      </div>
+      </div>
+    </div>
+</div>
+
+    {% endblock %}

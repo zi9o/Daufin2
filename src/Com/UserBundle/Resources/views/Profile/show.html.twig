@@ -1,0 +1,7 @@
+{% extends 'ComUserBundle::layout.html.twig' %}
+
+{% block body %}
+    Nom d'utilisateur : {{ app.user.username }}<br />
+    Adresse e-mail : {{ app.user.email }}<br />
+    <a href="{{ path('fos_user_profile_edit') }}">Editer</a>
+{% endblock %}

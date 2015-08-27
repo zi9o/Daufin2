@@ -1,0 +1,310 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>MàJ Taxation</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Taxation / MàJ</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+     <style>
+<!--
+ .hide-row { display:none; }
+.show-row { display:table-row; }
+#formTypeManu{
+}
+ .black_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+}
+.toHide{
+display: none;
+}
+.toShow{
+display: inline;
+}
+
+ 
+</style>
+ <script type="text/javascript">
+function modifierExpedition(){
+
+
+	 var idExped=document.getElementById("idExped").value;
+	
+	 var idServiceTransport=document.getElementById("idServiceTransport").value;
+	 var idServiceCrbt=document.getElementById("idServiceCrbt").value;
+     var idServiceVAlorem=document.getElementById("idServiceVAlorem").value;
+     var idServiceManut=document.getElementById("idServiceManut").value;
+     var idServiceLivrGMS=document.getElementById("idServiceLivrGMS").value;
+   
+
+      var idServiceEnrig=document.getElementById("idServiceEnrig").value;
+ 	 var idServiceCheque=document.getElementById("idServiceCheque").value;
+     var idServiceTraite=document.getElementById("idServiceTraite").value;
+      var idServiceBL=document.getElementById("idServiceBL").value;
+      var idServiceLivraison=document.getElementById("idServiceLivraison").value;
+     var idServiceTaxeAvis=document.getElementById("idServiceTaxeAvis").value;
+     var idServiceRamassage=document.getElementById("idServiceRamassage").value;
+   
+     var prixTransport=document.getElementById("prixTransport").value;
+     var prixValAD=document.getElementById("prixValAD").value;
+     var prixRetourBL=document.getElementById("prixRetourBL").value;
+     var prixTaxeAvis=document.getElementById("prixTaxeAvis").value;
+     var prixRamassage=document.getElementById("prixRamassage").value;
+     var prixEnrig=document.getElementById("prixEnrig").value;
+
+     var prixCrbt=document.getElementById("prixCrbt").value;
+     var prixLivrGMS=document.getElementById("prixLivrGMS").value;
+     var prixManut=document.getElementById("prixManut").value;
+     var prixLivraison=document.getElementById("prixLivraison").value;
+     var prixCheque=document.getElementById("prixCheque").value;
+     var prixTraite=document.getElementById("prixTraite").value;
+ 	  $.ajax({
+        url: Routing.generate('com_daufin_com_update_taxation'),
+        type: "POST",
+        data:{
+        	
+        	    "idExped" : idExped,
+        	    
+                "idServiceCrbt" : idServiceCrbt,
+	    		"idServiceVAlorem" : idServiceVAlorem, 
+	    		"idServiceManut" : idServiceManut,
+	    		"idServiceLivrGMS" : idServiceLivrGMS,
+	    		"idServiceTransport" : idServiceTransport,
+
+	    		"idServiceEnrig" : idServiceEnrig,
+	        	"idServiceCheque":idServiceCheque,
+	        	"idServiceTraite":idServiceTraite,
+	        	"idServiceBL":idServiceBL,
+	        	"idServiceLivraison":idServiceLivraison,
+	        	"idServiceTaxeAvis":idServiceTaxeAvis,
+	        	"idServiceRamassage":idServiceRamassage,
+	    		
+	    		"prixRetourBL" : prixRetourBL,
+        		"prixVAlorem" : prixValAD,
+        		"prixEnrig" : prixEnrig,
+        		"prixTaxeAvis" : prixTaxeAvis,
+        		"prixRamassage" : prixRamassage,
+        		"prixTransport" : prixTransport,
+        		
+        		"prixCrbt":prixCrbt,
+            	"prixLivrGMS" : prixLivrGMS,
+            	"prixManut" : prixManut,
+            	"prixLivraison" :prixLivraison,
+            	"prixCheque" :prixCheque,
+            	"prixTraite" :prixTraite,
+            	 
+	          },
+        success: function(data) {
+
+            
+           
+      	  var obj = jQuery.parseJSON(data);
+       	   
+       	  if(obj.codeError==90){ 
+           	   alert(obj.succes);
+       	  }else{
+       		 alert(obj.error);
+           	  }
+       	
+       	     	 
+            } 
+     });  }
+</script>
+   <script type="text/javascript">
+  function chercherExpedition(){
+	  
+	  var codeDeclaration=document.getElementById("codeDeclaration").value;
+	  $.ajax({
+          url: Routing.generate('com_daufin_com_getexped_update_taxation'),
+          type: "POST",
+          data: { "codeDeclaration" : codeDeclaration
+	        	   },
+          success: function(data) {
+                    
+             
+         	  var obj = jQuery.parseJSON(data);
+
+         	 if (obj.hasOwnProperty('codeError')) {  
+             	 alert("ERROR : "+obj.error);
+             	  }
+         	 else {
+         		  document.getElementById("idExped").value=obj.idExped;
+         		  document.getElementById("idServiceTransport").value=obj.idServiceTransport;
+         		  document.getElementById("idServiceCrbt").value=obj.idServiceCrbt;
+         	      document.getElementById("idServiceVAlorem").value=obj.idServiceVAlorem;
+         	      document.getElementById("idServiceManut").value=obj.idServiceManut;
+         	      document.getElementById("idServiceLivrGMS").value=obj.idServiceLivrGMS;
+         	   
+
+         	      document.getElementById("idServiceEnrig").value=obj.idServiceEnrig;
+         	 	  document.getElementById("idServiceCheque").value=obj.idServiceCheque;
+         	      document.getElementById("idServiceTraite").value=obj.idServiceTraite;
+         	      document.getElementById("idServiceBL").value=obj.idServiceBL;
+         	      document.getElementById("idServiceLivraison").value=obj.idServiceLivraison;
+         	      document.getElementById("idServiceTaxeAvis").value=obj.idServiceTaxeAvis;
+         	      document.getElementById("idServiceRamassage").value=obj.idServiceRamassage;
+         	   
+         	      document.getElementById("prixTransport").value=obj.prixTransport;
+         	      document.getElementById("prixValAD").value=obj.prixVAlorem;
+         	      document.getElementById("prixRetourBL").value=obj.prixRetourBL;
+         	      document.getElementById("prixTaxeAvis").value=obj.prixTaxeAvis;
+         	      document.getElementById("prixRamassage").value=obj.prixRamassage;
+         	      document.getElementById("prixEnrig").value=obj.prixEnrig;
+
+         	      document.getElementById("prixCrbt").value=obj.prixCrbt;
+         	      document.getElementById("prixLivrGMS").value=obj.prixLivrGMS;
+         	      document.getElementById("prixManut").value=obj.prixManut;
+         	      document.getElementById("prixLivraison").value=obj.prixLivraison;
+         	      document.getElementById("prixCheque").value=obj.prixCheque;
+         	      document.getElementById("prixTraite").value=obj.prixTraite;
+         	      
+         	      document.getElementById("totalHT").value=obj.montantHT;
+         	      document.getElementById("totalTVA").value=obj.tva;
+         	      document.getElementById("totalTTC").value=obj.montantTTC;
+        	      
+             	 }
+
+			 
+              } 
+       });
+       
+
+	  }
+</script>
+ <div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+     <tr>
+	     <td style="width: 180px">Agence</td>
+	        <td style="width: 180px">{{ agence.CODE_AGENCE }} -- {{ agence.LIBELLE_AG }} </td>
+	     <td style="width: 180px">Date</td>
+	     <td style="width: 130px"> {{ date }}</td>
+     </tr>
+     <tr >
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 14px;">
+                   Code Déclaration 
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="text" name="codeDeclaration" size="20" id="codeDeclaration"  >  
+                	       
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="button" value="Rechercher"   onclick="chercherExpedition()">
+                </td>
+                <td></td>
+                 
+       </tr>
+     
+
+</table>
+ 
+</div>
+<div id="light" class="white_content">
+		 	<table>
+                <tr>
+                    <td> <h4> Taxes</h4> </td>
+                    <td>  <h4>  Prix   </h4>  </td>
+                </tr>
+                 <tr>  <td>  Transport   </td>
+                       <td>  <input type="text"  id="prixTransport" /> </td>
+                </tr>
+                 <tr>  <td>  Livraison   </td>
+                       <td>  <input type="text"  id="prixLivraison" /> </td>
+                </tr>
+                 <tr>  <td>  Livraison GMS   </td>
+                       <td>  <input type="text"  id="prixLivrGMS"/> </td>
+                </tr>
+                  <tr>  <td>  Manutention </td>
+                       <td>  <input type="text"  id="prixManut" /> </td>
+                </tr>
+                 <tr>
+                    <td>  Taxe AD VALOREM </td>
+                    <td> <input type="text"  name="prixValAD" id="prixValAD"/>  </td>
+                </tr>
+                <tr><td>    Chéque   </td>
+                    <td>  <input type="text" id="prixCheque"/> </td>
+                </tr>
+                <tr><td>    Traite   </td>
+                    <td>  <input type="text" id="prixTraite"/> </td>
+                </tr>
+                <tr><td>    CRbt   </td>
+                    <td>  <input type="text" id="prixCrbt"/> </td>
+                </tr>
+                 <tr>
+                    <td>  Enregistrement   </td>
+                    <td> <input  type="text"  name="prixEnrig" id="prixEnrig"/> </td>
+                </tr>
+                <tr>
+                    <td>  Retour de BL   </td>
+                    <td> <input  type="text"   name="prixRetourBL" id="prixRetourBL" /> </td>
+                </tr>
+                <tr>
+                    <td>  Taxe d'avis   </td>
+                    <td> <input  type="text"  name="prixTaxeAvis" id="prixTaxeAvis" />  </td>
+                 </tr>
+                 <tr>
+                    <td> Ramassage    </td>
+                    <td> <input  type="text"   name="prixRamassage" id="prixRamassage" />
+                        	 
+                         	<input type="text" hidden="hidden" readOnly="readonly" id="idServiceTransport" />
+                            <input type="text" hidden="hidden"  readOnly="readonly" id="idServiceCrbt" />
+                            <input type="text" hidden="hidden"  readOnly="readonly"id="idServiceVAlorem" />
+                            <input type="text" hidden="hidden" readOnly="readonly" id="idServiceManut" />
+                            <input type="text" hidden="hidden" readOnly="readonly" id="idServiceLivrGMS" />
+                            <input type="text" hidden="hidden" readOnly="readonly" id="idServiceBL" />
+                            <input type="text" hidden="hidden" readOnly="readonly" id="idServiceEnrig" />
+                            <input type="text" hidden="hidden"  readOnly="readonly" id="idServiceCheque" />
+                            <input type="text" hidden="hidden"  readOnly="readonly" id="idServiceTraite" />
+                            <input type="text" hidden="hidden" readOnly="readonly"  id="idServiceLivraison" />
+                            <input type="text" hidden="hidden" readOnly="readonly"  id="idServiceTaxeAvis" />
+                            <input type="text" hidden="hidden" readOnly="readonly"  id="idServiceRamassage"/>
+                             <input type="text" hidden="hidden" readOnly="readonly"  id="idExped"/>
+                           
+                </tr>
+                <tr>
+	                <td> Total HT    </td>
+	                    <td> <input  type="text" readonly="readonly"  id="totalHT" />
+	                </td>
+                </tr>
+                <tr>
+	                <td> Total TVA    </td>
+	                    <td> <input  type="text" readonly="readonly" id="totalTVA" />
+	                </td>
+                </tr>
+                <tr>
+	                <td> Total TTC    </td>
+	                    <td> <input  type="text" readonly="readonly" id="totalTTC" />
+	                </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="button"  value="Modifier" onclick="modifierExpedition()"/>
+                        <input type="button"  value="Annuler" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"/></td>
+                </tr>
+                </table>
+            
+</div>
+
+
+ 
+
+  
+    {% endblock %}
+    
+    

@@ -1,0 +1,57 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Vehicules</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Vehicules</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <a href="{{ path('com_vehicule_new') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Matricule</th>
+                <th>Marque</th>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Poids à vide</th>
+                <th>Poids en plein</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_vehicule_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.matriculeVeh }}</td>
+                <td>{{ entity.marqueVeh }}</td>
+                <td>{{ entity.modelVeh }}</td>
+                <td>{{ entity.typeVehicule }}</td>
+                <td>{{ entity.poidsVide }}</td>
+                <td>{{ entity.poidsPlein }}</td>
+                <td align="center">
+                    <a href="{{ path('com_vehicule_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_vehicule_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="TrajetSTrajet" table="trajet_s_trajet">
+    <indexes>
+      <index name="FK_RETENIR" columns="SOUS_TRAJET"/>
+      <index name="FK_RETENIR2" columns="TRAJET"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="rangeRet" type="integer" column="RANGE_RET" nullable="true"/>
+    <many-to-one field="trajet" target-entity="Trajet">
+      <join-columns>
+        <join-column name="TRAJET" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="sousTrajet" target-entity="SousTrajet">
+      <join-columns>
+        <join-column name="SOUS_TRAJET" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

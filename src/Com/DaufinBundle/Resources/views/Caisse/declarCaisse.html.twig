@@ -1,0 +1,526 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Encaissement Livraison</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse / Validation</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+ <style>
+
+#codeColis:focus{
+background-color: #a5a7f0;
+}
+.trHeader th{
+font-weight: bold;
+font-size: 13px;
+background-color: #6d6262;
+color: #E4E3E3;
+}
+.trERROR td{
+background-color: #F9B0AD;
+}
+.trSUCCES td{
+background-color: #C0E7AC;
+}
+.hide{
+display: none;}
+.show{
+display: inline;
+}
+ </style>
+ <script type="text/javascript">
+
+
+   function getCaisseExpediton(){
+	   
+
+	   var num = document.getElementById("codeColis").value;
+	if(num.length===10){
+	
+	   var codeDeclaration=num.substring(0,10);
+	   var numColis=num.substring(10,num.length);
+	   document.getElementById("codeColis").value='';
+	   document.getElementById("codeColis").focus();
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_get_expedition'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+
+	               document.getElementById("codeDeclaration").value=codeDeclaration;
+
+	               document.getElementById("rbl").className ="hide"; 
+	               document.getElementById("cheque").className="hide"; 
+	               document.getElementById("traite").className="hide"; 	 
+	               document.getElementById("crbt").className="hide"; 	
+	               document.getElementById("portDU").className="hide"; 	
+	                    
+	               
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   		 else{
+
+         	   		 if(obj.cheque==null && obj.traite==null && obj.crbt==null && obj.bl==null)
+         	   		        alert("Informations  : Aucune Operation de Caisse, est autorisé a cette expedition");
+     	   				 
+     	   				 if(obj.cheque!=null){
+     	   				     document.getElementById("idCheque").value=obj.cheque.id;
+     	   				 document.getElementById("numCheque").value=obj.cheque.numCheque;
+     	   			 		 document.getElementById("montantCheque").value=obj.cheque.montant;
+     	   					 document.getElementById("titreCheque").value=obj.cheque.titre;
+     	   	 				 document.getElementById("dateEcheanceCheque").value=obj.cheque.date;
+     	    				 document.getElementById("natureCheque").value=obj.cheque.nature;
+     	   					 document.getElementById("etatCheque").value=obj.cheque.etat;  
+
+     	   					document.getElementById("cheque").className = "show"; 	     
+         	   				 }
+     	   				 if(obj.traite!=null){
+
+     	   					document.getElementById("idTraite").value=obj.traite.id;
+	     	   				document.getElementById("montantTraite").value=obj.traite.montant;
+		     	   			document.getElementById("titreTraite").value=obj.traite.titre;
+			     	   		document.getElementById("dateTraite").value=obj.traite.date;
+			     	   	document.getElementById("traite").className = "show"; 	     
+			     		  
+         	   				 }
+     	   				 if(obj.crbt!=null){
+
+     	     	   			document.getElementById("idCRBT").value=obj.crbt.id;
+	     	   				document.getElementById("montantCRBT").value=obj.crbt.montant;
+	     	   			    document.getElementById("titreCRBT").value=obj.crbt.titre;
+	     	   		        document.getElementById("dateCRBT").value=obj.crbt.date;   
+	     	   		    document.getElementById("crbt").className = "show"; 	     	   					 
+         	   				 }
+     	   				 if(obj.bl!=null){
+     	   					document.getElementById("idBL").value=obj.bl.id;
+     	   				    document.getElementById("numBL").value=obj.bl.numBL;
+     	   			        document.getElementById("titreBL").value=obj.bl.titre;
+     	   		            document.getElementById("dateBL").value=obj.bl.date;
+     	   		            document.getElementById("rbl").className="show"; 	     
+         	   				 }
+
+     	   				 if(obj.modePort=='Port Du'){
+		     	   			 document.getElementById("modePort").value=obj.modePort;
+			   				 document.getElementById("montantHT").value=obj.montantHT;
+			   			     document.getElementById("montantTVA").value=obj.montantTVA;
+			   		         document.getElementById("montantTTC").value=obj.montantTTC;
+			   		         document.getElementById("portDU").className="show"; 	
+
+			   		      if(obj.etatRegExpedition=='Reglee') 
+					   		     alert('Le Mode Port Dù de cette Expédition  est déja Encaissée');
+     	   				 }    	   			 
+   	   				 }      
+	          }           	
+	       });	     
+	}   
+
+      	}
+   </script>
+    <script type="text/javascript">
+
+
+   function validerCheque(){
+	   
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	   var idCheque=document.getElementById("idCheque").value;
+	     var numCheque=document.getElementById("numCheque").value;
+	     var montantCheque=document.getElementById("montantCheque").value;
+	     var titreCheque=document.getElementById("titreCheque").value;
+	     var dateEcheanceCheque=document.getElementById("dateEcheanceCheque").value;
+	     var natureCheque=document.getElementById("natureCheque").value;
+	     var etatCheque=document.getElementById("etatCheque").value;
+
+	     if(codeDeclaration==''){
+	          alert('Erreur de code de Déclaration');
+	          return false;
+	           }
+
+		   if(titreCheque==''){
+	          alert('Veuillez entrer le titre Cheque');
+	          return false;
+	           }
+		   if(numCheque==''){
+		          alert('Veuillez entrer le Numéro Chéque');
+		          return false;
+		           }
+		   if(natureCheque==''){
+		          alert('Veuillez entrer la nature Chéque');
+		          return false;
+		           }
+
+           
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_cheque'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	      "idCheque" : idCheque,
+	        	      "numCheque" : numCheque,
+	        	      "montantCheque" : montantCheque,
+	        	      "titreCheque" : titreCheque,
+	        	      "dateEcheanceCheque" : dateEcheanceCheque,
+	        	      "natureCheque" : natureCheque,
+	        	      "etatCheque" : etatCheque	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+       <script type="text/javascript">
+
+
+   function validerTraite(){
+	   
+	  var codeDeclaration= document.getElementById("codeDeclaration").value;
+	  var idTraite=document.getElementById("idTraite").value;	   
+	  var titreTraite=document.getElementById("titreTraite").value;
+	  var dateTraite=document.getElementById("dateTraite").value;
+
+
+      if(codeDeclaration==''){
+          alert('Erreur de code de Déclaration');
+          return false;
+           }
+
+	   if(titreTraite==''){
+          alert('Veuillez entrer le titre Traite');
+          return false;
+           }
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_traite'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	  "idTraite" : idTraite,
+	        	  "titreTraite" : titreTraite,
+	        	  "dateTraite" : dateTraite	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+       <script type="text/javascript">
+
+
+   function validerCrbt(){
+	   
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	       var idCrbt=document.getElementById("idCRBT").value;
+	       var montantCrbt=document.getElementById("montantCRBT").value;
+	       var titreCrbt=document.getElementById("titreCRBT").value;
+	       var dateCrbt=document.getElementById("dateCRBT").value;   
+
+	       if(codeDeclaration==''){
+	           alert('Erreur de code de Déclaration');
+	           return false;
+	            }
+
+		   if(titreCrbt==''){
+	           alert('Veuillez entrer le titre CRBT');
+	           return false;
+	            }
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_crbt'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	  "idCrbt" : idCrbt,
+	        	  "montantCrbt" : montantCrbt,
+	        	  "titreCrbt" : titreCrbt,
+	        	  "dateCrbt" : dateCrbt	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+       <script type="text/javascript">
+
+
+   function validerBL(){
+	   
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	   var idBL=document.getElementById("idBL").value;
+	   var numBL=document.getElementById("numBL").value;
+	   var titreBL=document.getElementById("titreBL").value;
+	   var dateBL=document.getElementById("dateBL").value;
+
+	   if(codeDeclaration==''){
+           alert('Erreur de code de Déclaration');
+           return false;
+            }
+
+	   if(titreBL==''){
+           alert('Veuillez entrer le titre BL');
+           return false;
+            }
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_bl'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	  "idBL" : idBL,
+	        	  "numBL" : numBL,
+	        	  "titreBL" : titreBL,
+	        	  "dateBL" : dateBL	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+   <script type="text/javascript">
+    function validerPortDu(){
+
+      
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	   var valeurTTC=document.getElementById("valeurTTC").value;
+	   var refPaiement=document.getElementById("refPaiement").value;
+	 
+	   var e=document.getElementById("modePaiement");
+	   var modePaiement = e.options[e.selectedIndex].value;
+
+	   if(codeDeclaration==''){
+           alert('Erreur de code de Déclaration');
+           return false;
+            }
+
+	   if(valeurTTC==''){
+           alert('Veuillez entrer une Valeur TTC');
+           return false;
+            }
+	   if(refPaiement=='' && modePaiement !='espece' ){
+          alert('Veuillez entrer un Référence de paiement');
+          return false;
+           }
+      
+		   
+	   
+	   
+	    $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_port'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	  	  "valeurTTC" : valeurTTC,
+	        	      "refPaiement" : refPaiement,
+	        	      "modePaiement" : modePaiement,	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+     <tr>
+	     <td style="width: 180px">Agence</td>
+	        <td style="width: 180px">{{ agence.CODE_AGENCE }} -- {{ agence.LIBELLE_AG }} </td>
+	     <td style="width: 180px">Date</td>
+	     <td style="width: 130px"> {{ date }}</td>
+     </tr>
+     <tr >
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 14px;">
+                   Code Déclaration 
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="text" name="colis" size="20" id="codeColis" onKeyUp="getCaisseExpediton()">  
+                	<input type="hidden" id="codeDeclaration" readonly="readonly">           
+                </td>
+                <td colspan="2" style="font-weight: bold;color:#6d1410 ;font-size: 13px;" >
+                	 
+                </td>
+                <td></td>
+                 
+       </tr>
+     
+
+</table>
+<div style="margin-top: 20px;" id="cheque" class="hide">
+
+    <table class="table"   >
+
+		   <tr>
+		   
+		   <td rowspan="2" style="font-weight: bold;color:#6d1410 ;font-size: 13px; width: 20px;background-color: antiquewhite;">Chéque</td>
+		   <td>Numero Chéque</td>
+		   <td> <input type="text" name="numCheque" size="20" id="numCheque"> <input type="text" name="idCheque" size="20" hidden="hidden" id="idCheque"></td>
+		   <td>Montant Chéque</td>
+		   <td> <input type="text" name="montantCheque"  size="20" id="montantCheque" readonly="readonly"></td>  
+		   <td>Titre Chéque</td>
+		   <td> <input type="text" name="titreCheque"  size="20" id="titreCheque"></td>   
+		   
+		   <td rowspan="2"> <input type="button" value="Valider" id="validation" onclick="validerCheque()"></td>     
+          </tr>
+          <tr>
+		   <td>Date Echéance</td>
+		   <td> <input type="text"  class="form-control datetime" name="dateEcheanceCheque" size="20" id="dateEcheanceCheque"></td>
+		   <td>Nature Chéque</td>
+		   <td> <input type="text" name="natureCheque"  size="20" id="natureCheque" ></td>    
+		   <td>Etat Chéque</td>
+		   <td> <input type="text" name="etatCheque" size="20" id="etatCheque"></td>  
+          </tr>
+   </table>
+</div>
+<div style="margin-top: 20px;" id="traite" class="hide">
+
+    <table class="table" id="traite">
+
+		   <tr>
+		   <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;width: 20px;background-color: antiquewhite;">Traite</td>
+		   <td>Traite</td>
+		   <td> <input type="text" name="idTraite" size="10" id="idTraite" readonly="readonly"></td>
+		   <td>Montant Traite</td>
+		   <td> <input type="text" name="montantTraite"  size="20" id="montantTraite" readonly="readonly"></td>  
+		   <td>Titre Traite</td>
+		   <td> <input type="text" name="titreTraite"  size="20" id="titreTraite"></td>        
+		   <td>Date Traite</td>
+		   <td> <input type="text" class="form-control datetime" name="dateTraite" size="20" id="dateTraite"></td> 		   
+		   <td> <input type="button" value="Valider" id="validation" onclick="validerTraite()"></td>
+          </tr>
+   </table>
+</div>
+
+<div style="margin-top: 20px;" id="crbt" class="hide">
+
+    <table class="table"  >
+ 			<tr>
+ 			<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;width: 20px;background-color: antiquewhite;">CRBT</td>
+		   <td>CRBT</td>
+		   <td> <input type="text" name="idCRBT" size="10" id="idCRBT" readonly="readonly"></td>
+		   <td>Montant CRBT</td>
+		   <td> <input type="text" name="montantCRBT"  size="20" id="montantCRBT" readonly="readonly"></td>  
+		   <td>Titre CRBT</td>
+		   <td> <input type="text" name="titreCRBT"  size="20" id="titreCRBT"></td>        
+		   <td>Date CRBT</td>
+		   <td> <input type="text" name="dateCRBT" readonly="readonly" size="20" id="dateCRBT"></td> 
+		   
+		   <td> <input type="button" value="Valider" id="validation" onclick="validerCrbt()"></td>
+          </tr>
+   </table>
+</div>
+<div style="margin-top: 20px;" id="rbl" class="hide">
+
+    <table class="table">
+ 			<tr>
+ 			<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;width: 20px;background-color: antiquewhite;">Retour BL</td>
+		   <td>Bon Livraison</td>
+		   <td> <input type="text" name="idBL" size="10" id="idBL" readonly="readonly"></td>
+		   <td>numero BL</td>
+		   <td> <input type="text" name="numBL"  size="20" id="numBL" readonly="readonly"></td>  
+		   <td>Titre BL</td>
+		   <td> <input type="text" name="titreBL"  size="20" id="titreBL"></td>        
+		   <td>Date BL</td>
+		   <td> <input type="text" name="dateCRBT" size="20" id="dateBL" readonly="readonly"></td> 
+		   <td> <input type="button" value="Valider" id="validation" onclick="validerBL()"></td>
+          </tr>
+   </table>
+</div>
+
+<div style="margin-top: 20px;" id="portDU" class="hide">
+
+    <table class="table">
+ 			<tr>
+ 			<td rowspan="2" style="font-weight: bold;color:#6d1410 ;font-size: 13px;width: 20px;background-color: antiquewhite;">Mode Port</td>
+		   <td><input type="text" name="modePort" size="10" id="modePort" readonly="readonly"></td>		    
+		   <td>Montant HT</td>
+		   <td> <input type="text" name="montantHT"  size="12" id="montantHT" style="text-align: right;" readonly="readonly"></td>  
+		   <td>Montant TVA</td>
+		   <td> <input type="text" name="montantTVA"  size="12" id="montantTVA" style="text-align: right;" readonly="readonly"></td>        
+		   <td>Montant TTC</td>
+		   <td> <input type="text" name="montantTTC"  style="text-weight:bold;text-size:14; text-align: right;" size="12" readonly="readonly" id="montantTTC" /></td> 		   
+          </tr>
+          <tr>
+				<td >Mode Paiement</td>
+			   <td><select name="modePaiement" id="modePaiement">
+			          <option value="espece"> Espéce</option>
+			          <option value="cheque"> Chéque</option>
+			          <option value="traite"> Traite</option>
+			       </select> 
+			   </td>		    
+			   <td>Valeur TTC</td>
+			   <td> <input type="text" name="valeurTTC"  size="12" id="valeurTTC" style="text-align: right;"></td>  
+			   <td>Réf Paiement</td>
+			   <td> <input type="text" name="refPaiement"  size="12" id="refPaiement" style="text-align: right;"></td>        
+			   <td><input type="button" value="Valider" id="validation" onclick="validerPortDu()"></td>
+	 </tr>
+   </table>
+</div>
+</div>
+
+ 
+
+  
+    {% endblock %}
+    
+    

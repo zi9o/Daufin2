@@ -1,0 +1,43 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Mouvement Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Mouvements</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Mouvement Caisse :</h1>
+    <h4> <a href="{{ path('com_caisse_show', { 'id': entity.caisse.id }) }}"> {{ entity.caisse.libelleCaisse }}- {{ entity.caisse.categorieCaisse }} </a></h4>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                 <td style="font-weight: bold;">Id</td>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Type de Mouvement</td>
+                <td>{{ entity.typeMouvement }}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Libelle de Mouvement</td>
+                <td>{{ entity.libelleMouvement }}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Date de Mouvement</td>
+                <td>{% if entity.dateMouvement %}{{ entity.dateMouvement|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Valeur</td>
+                <td>{{ entity.valeur }}</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+{% endblock %}

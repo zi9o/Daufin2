@@ -1,0 +1,128 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+                   
+
+<script type="text/javascript">
+
+function ajouterVoyage(){
+	 
+	   var e2 = document.getElementById("vehicule");
+	   var idVehicule = e2.options[e2.selectedIndex].value;
+
+	   var e3 = document.getElementById("trajet");
+	   var idTrajet = e3.options[e3.selectedIndex].value;
+	   
+	   var e4 = document.getElementById("chauffeur");
+	   var idChauffeur = e4.options[e4.selectedIndex].value;
+	   
+	  var date = document.getElementById("datepicker").value;
+	   
+    $.ajax({
+	          url: Routing.generate('com_daufin_ajouter_voyage'),
+	          type: "POST",
+	          data: { "idVehicule" : idVehicule,
+	        	      "idTrajet" : idTrajet,
+	        	      "idChauffeur": idChauffeur,
+	        	      "date": date
+		          
+		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 
+	             var obj = jQuery.parseJSON(data);	
+	        	  alert(obj.message);
+	               }	
+	       });
+	   
+
+
+	   }
+
+</script>  
+    <a href="{{ path('com_voyage') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+        
+         
+    <div class="Formdiv">
+  
+    <table class="no-border" style="width:600px;">
+        
+            <tr>
+                <td style="width:50%;">
+                   Date de Planification  
+               </td>
+               <td>
+                <input type="text" class="form-control datetime" size="20" style="width: 50%;" id="datepicker"/> 
+                 <script type="text/javascript">
+                    var date = new Date();
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+
+                    if (month < 10) month = "0" + month;
+                    if (day < 10) day = "0" + day;
+
+                    var today = year + "-" + month + "-" + day+" 22:00";
+                    document.getElementById('datepicker').value = today;
+                    </script>
+                </td>
+            <tr>
+                <td style="width:50%;">
+                    <label class="required">Trajet</label>
+                 </td>
+                 <td>
+                    <select id="trajet" required="required" name="trajet">
+                      <option selected="true"  disabled="disabled"> --SELECTIONNER--</option>
+		     			{% for trajet in trajets %}
+		           			<option value="{{ trajet.id }}"> {{ trajet.libelleTrajet }}</option>
+		     			{% endfor %} 
+		   			 </select>                 
+                </td>
+            </tr>
+            <tr>                
+                <td>
+                   <label class="required">Vehicule</label>
+                </td>
+                <td>
+                    <select  id="vehicule"  required="required" name="vehicule">
+                        <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     			{% for vehicule in vehicules %}
+		          		 <option value="{{ vehicule.id }}"> {{ vehicule.matriculeVeh }}</option>
+		     			{% endfor %} 
+		    		</select>
+                </td>                 
+            </tr>
+            <tr>                
+                <td>
+                   <label class="required">Chauffeur</label>
+                </td>
+                <td>
+                    <select  id="chauffeur" required="required" name="chauffeur">
+                    <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     			{% for chauffeur in chauffeurs %}
+		          		 <option value="{{ chauffeur.idChauffeur }}"> {{ chauffeur.nom }} {{ chauffeur.prenom }}-{{ chauffeur.matricule }}</option>
+		     			{% endfor %} 
+		    		</select>
+                </td>                 
+            </tr>
+            <tr> <td><input type="button" value="Ajouter" onclick="ajouterVoyage();" /></td> <td></td></tr>
+       
+    </table>
+</div>
+              
+{% endblock %}

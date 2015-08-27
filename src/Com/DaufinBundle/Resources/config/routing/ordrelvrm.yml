@@ -1,0 +1,30 @@
+com_Ordre_Lv_Rm:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:index" }
+
+com_Ordre_Lv_Rm_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:show" }
+
+com_Ordre_Lv_Rm_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:new" }
+
+com_Ordre_Lv_Rm_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:create" }
+    methods:  POST
+
+com_Ordre_Lv_Rm_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:edit" }
+
+com_Ordre_Lv_Rm_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:update" }
+    methods:  [POST, PUT]
+
+com_Ordre_Lv_Rm_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:OrdreLvRm:delete" }
+    methods:  [POST, DELETE]

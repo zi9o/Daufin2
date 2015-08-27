@@ -1,0 +1,77 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Afficher Personnel</li>
+                </ol>
+        </div>
+{% endblock %}
+
+
+{% block container %}
+    
+    <a href="{{ path('com_Personnel') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+   <div style="float:right;">
+       <a href="{{ path('com_Personnel_edit', { 'id': entity.id }) }}">
+        <button class="btn btn-info" style="width:100px;">Editer</button>
+       </a>
+   </div>
+    <br>
+<div align="center"> 
+    <table class="record_properties" style="width:400px;" >
+        <tbody>
+            <tr>
+                <th style="width:35%;">Id</th>
+
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Matricule</th>
+                <td>{{ entity.matriculePers }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entity.nomPers }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ entity.prenomPers }}</td>
+            </tr>
+            <tr>
+                <th>Fonction</th>
+                <td>{{ entity.fonction }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ entity.telPers }}</td>
+            </tr>
+            <tr>
+                <th>GSM</th>
+                <td>{{ entity.gsmPers }}</td>
+            </tr>
+            <tr>
+                <th>C.I.N</th>
+                <td>{{ entity.cinPers }}</td>
+            </tr>
+            <tr>
+                <th>Date de travail</th>
+                <td>{{ entity.dateDebut|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Etat d'activité</th>
+                <td>{{ entity.etatActivitee }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    {{ form(delete_form) }}
+{% endblock %}

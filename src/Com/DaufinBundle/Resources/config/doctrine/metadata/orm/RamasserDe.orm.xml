@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RamasserDe" table="ramasser_de">
+    <indexes>
+      <index name="FK_RAMASSER_DE_" columns="ORDRE"/>
+      <index name="FK_RAMASSER_DE_2" columns="Client"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateRamassage" type="datetime" column="DATE_RAMASSAGE" nullable="true"/>
+    <many-to-one field="client" target-entity="Client">
+      <join-columns>
+        <join-column name="Client" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ordre" target-entity="OrdreLvRm">
+      <join-columns>
+        <join-column name="ORDRE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

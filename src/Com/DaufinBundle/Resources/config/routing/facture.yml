@@ -1,0 +1,30 @@
+com_facture:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Facture:index" }
+
+com_facture_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Facture:show" }
+
+com_facture_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Facture:new" }
+
+com_facture_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Facture:create" }
+    methods:  POST
+
+com_facture_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Facture:edit" }
+
+com_facture_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Facture:update" }
+    methods:  [POST, PUT]
+
+com_facture_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Facture:delete" }
+    methods:  [POST, DELETE]

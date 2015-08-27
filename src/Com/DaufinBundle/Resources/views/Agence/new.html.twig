@@ -1,0 +1,71 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Agence</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Agence</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    
+        <p>    
+       {{ form_start(form) }}
+       {{ form_errors(form) }}
+    
+    
+      <table class="form" border="0">
+       <tr >
+       		<td  > Ville</td>
+       		<td> {{ form_widget(form.ville) }}</td>
+       		<td style="font-size: 12px;"> Code Agence</td>
+       		<td > {{ form_widget(form.codeAgence) }}</td>
+       	</tr>
+       	<tr>	
+       		<td>Libellé Agence</td>
+			<td >{{ form_widget(form.libelleAg) }}</td>   
+			<td>Type Agence</td>   
+			<td>{{ form_widget(form.typeAgence) }} </td>
+		</tr>  
+		<tr>
+				<td>Téléphone</td>	  
+				<td>   {{ form_widget(form.telAg) }} </td>
+			    <td>Fax</td>
+			    <td>{{ form_widget(form.faxAg) }}</td>	  		    
+	   	</tr>
+	    <tr>
+				<td>Adresse</td>	  
+				<td>   {{ form_widget(form.adresseAg) }} </td>
+			    <td> </td>
+			    <td></td>	  		    
+	   	</tr>
+	   <tr>
+				<td>Libellé Caisse</td>	  
+				<td>   <input type="text" id="libelleCaisse" name="libelleCaisse" maxlength="30" class="form-control parsley-validated" /> </td>
+			    <td>Type Caisse </td>
+			    <td><select id="typeCaisse" name="typeCaisse" class="form-control parsley-validated">
+			                  <option value="espece">Espéce</option>
+			                  <option value="banque">Banque</option>
+			        </select> 
+			     </td>	  		    
+	   	</tr>
+	    <tr>
+				<td> Solde Caisse</td>	  
+				<td>   <input type="text" id="soldeCaisse" name="soldeCaisse" class="form-control parsley-validated" /> </td>
+			    <td> </td>
+			    <td></td>	  		    
+	   	</tr>
+	   	<tr>
+				<td> </td>	  
+				<td>   {{ form_widget(form.submit) }} </td>
+			    <td> </td>
+			    <td></td>	  		    
+	   	</tr>
+    
+  
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="UniteManu" table="unite_manu">
+    <indexes>
+      <index name="FK_CONTENIR" columns="EXEPT"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="typeUnite" type="string" column="TYPE_UNITE" length="48" nullable="true"/>
+    <field name="poidsUnite" type="float" column="POIDS_UNITE" precision="10" scale="0" nullable="true"/>
+    <field name="volumeUnite" type="float" column="VOLUME_UNITE" precision="10" scale="0" nullable="true"/>
+    <field name="nbrColisPlt" type="integer" column="NBR_COLIS_PLT" nullable="true"/>
+    <many-to-one field="exept" target-entity="Expedition">
+      <join-columns>
+        <join-column name="EXEPT" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

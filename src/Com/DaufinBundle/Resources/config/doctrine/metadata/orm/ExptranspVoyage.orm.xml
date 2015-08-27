@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ExptranspVoyage" table="exptransp_voyage">
+    <indexes>
+      <index name="FK_EXPTRANSP_VOYAGE" columns="VOYAGE"/>
+      <index name="FK_EXPTRANSP_VOYAGE2" columns="EXP_TRANSP"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateAff" type="datetime" column="DATE_AFF" nullable="true"/>
+    <many-to-one field="expTransp" target-entity="ExpTransp">
+      <join-columns>
+        <join-column name="EXP_TRANSP" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="voyage" target-entity="Voyage">
+      <join-columns>
+        <join-column name="VOYAGE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="BLivraisonM" table="b_livraison_m">
+    <indexes>
+      <index name="FK_CONTRE_BL3" columns="EXEPT"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="numBl" type="string" column="NUM_BL" length="56" nullable="true"/>
+    <field name="titreBlM" type="string" column="TITRE_BL_M" length="30" nullable="true"/>
+    <field name="dateBlM" type="datetime" column="DATE_BL_M" nullable="true"/>
+    <field name="datevalid" type="datetime" column="dateValid" nullable="true"/>
+    <field name="etatvalid" type="string" column="etatValid" length="20" nullable="true"/>
+    <many-to-one field="exept" target-entity="Expedition">
+      <join-columns>
+        <join-column name="EXEPT" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

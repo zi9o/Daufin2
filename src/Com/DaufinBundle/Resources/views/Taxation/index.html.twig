@@ -1,0 +1,61 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+
+
+{% block container -%}
+    <h1>Liste Taxations</h1>
+
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Code Déclaration</th>                
+                <th>Expéditeur</th>
+                <th>Déstinataire</th>
+                <th>Trajet</th>
+                <th>Agence Départ</th>
+                <th>Agence Arrivée</th>
+                <th>Date D'envoi</th>
+                <th>Date de Reception</th>
+                <th>Status</th>
+                <th>Poids Total</th>
+                <th>Mode Port</th>
+                <th>Montant Total</th>          
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_taxation_show', { 'idExped': entity.id }) }}">{{ entity.codeDeclaration }}</a></td>
+                <td> <a href="{{ path('com_Client_show', { 'id': entity.envClient.id }) }}">
+                    {% if entity.envClient.typeClient=="Particulier" %} 
+                       {{ entity.envClient.nomPart }}  {{ entity.envClient.prenomPart }}
+                       {% else %} {{  entity.envClient.RSociale  }} 
+                     {% endif %}
+                     </a>
+                 </td>
+                <td><a href="{{ path('com_Client_show', { 'id': entity.recClient.id }) }}">
+                    {% if entity.recClient.typeClient=="Particulier" %} 
+                       {{ entity.recClient.nomPart }}  {{ entity.recClient.prenomPart }}
+                       {% else %} {{  entity.recClient.RSociale  }} 
+                     {% endif %}
+                     </a>
+                   </td>
+                 <td>{{ entity.envVille }} - {{ entity.recVille }}</td>
+                 <td>{{ entity.envAgence }}</td>
+                 <td>{{ entity.recAgence }}</td>
+                <td>{% if entity.envDate %}{{ entity.envDate|date('Y-m-d H:i:s') }}{% endif %}</td>                
+                <td>{% if entity.recDate %}{{ entity.recDate|date('Y-m-d H:i:s') }}{% endif %}</td>     
+                <td>{{ entity.etatExp }}</td>           
+                <td>{{ entity.poidsExp }}</td>
+                <td>{{ entity.mdPort }}</td>
+                <td>{{ entity.totalMontant }}</td>
+               
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ </div>
+ </div>
+    {% endblock %}

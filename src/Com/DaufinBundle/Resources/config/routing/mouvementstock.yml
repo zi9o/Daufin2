@@ -1,0 +1,30 @@
+com_mouvement_stock:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:index" }
+
+com_mouvement_stock_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:show" }
+
+com_mouvement_stock_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:new" }
+
+com_mouvement_stock_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:create" }
+    methods:  POST
+
+com_mouvement_stock_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:edit" }
+
+com_mouvement_stock_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:update" }
+    methods:  [POST, PUT]
+
+com_mouvement_stock_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:MouvementStock:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,30 @@
+com_stock:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Stock:index" }
+
+com_stock_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Stock:show" }
+
+com_stock_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Stock:new" }
+
+com_stock_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Stock:create" }
+    methods:  POST
+
+com_stock_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Stock:edit" }
+
+com_stock_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Stock:update" }
+    methods:  [POST, PUT]
+
+com_stock_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Stock:delete" }
+    methods:  [POST, DELETE]

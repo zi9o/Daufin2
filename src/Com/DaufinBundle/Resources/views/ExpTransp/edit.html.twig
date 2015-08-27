@@ -1,0 +1,82 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Editer Expedition Transport</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Editer Expedition Transport</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+    <a href="{{ path('com_ExpeTrans') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+       <div style="float:right;">
+        {{ form(delete_form) }}
+   </div>
+    <br>
+  <div class="Formdiv"  style="width:300px;"> 
+    {{ form_start(edit_form) }}
+  </div>
+        {% if entities %}
+    <div class="block-flat" style="width:800px;">
+        <table class="no-border">
+        <thead class="no-border">
+            <tr>
+                <th>Id01</th>
+                <th>Envoye de</th>
+                <th>Déstiné a</th>
+                <th>Poids</th>
+                <th>Date déclaration</th>
+            </tr>
+        </thead>
+        <tbody class="no-border-x no-border-y">
+        {% for entity in entities %}
+            <tr>
+                <td><input type='hidden' name='OpType' id="OpType" value='Edition'/>{{ entity.id }}</td>
+                <td>{{ entity.envVille }}</td>
+                <td>{{ entity.recVille }}</td>
+                <td>{{ entity.poidsExp }}</td>
+                <td>{% if entity.dateDecl %}{{ entity.dateDecl|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+      <div class="block-flat" style="width:800px;">
+        <table class="no-border">
+        <thead class="no-border">
+            <tr>
+                <th>Id</th>
+                <th>Envoye de</th>
+                <th>Déstiné a</th>
+                <th>Poids</th>
+                <th>Date déclaration</th>
+            </tr>
+        </thead>
+        <tbody class="no-border-x no-border-y">
+        {% for expedition in expeditions %}
+            <tr>
+                <td><input type='hidden' name='OpType' id="OpType" value='Modif'/>
+                    <input type='checkbox' name='Exp[]' id="Exp[]" value='{{ expedition.id }}'/>{{ expedition.id }}</td>
+                <td>{{ expedition.envVille }}</td>
+                <td>{{ expedition.recVille }}</td>
+                <td>{{ expedition.poidsExp }}</td>
+                <td>{% if expedition.dateDecl %}{{ expedition.dateDecl|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>  
+    {% endif %}
+    {{ form_end(edit_form) }}
+    
+{% endblock %}

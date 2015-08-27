@@ -1,0 +1,32 @@
+com_taxation:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Taxation:index" }
+
+com_taxation_show:
+    path:     /{idExped}/show
+    defaults: { _controller: "ComDaufinBundle:Taxation:show" }
+
+com_taxation_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Taxation:new" }
+com_taxation_forfait_new:
+    path:     /forfait/new
+    defaults: { _controller: "ComDaufinBundle:Taxation:newForfait" }
+com_taxation_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Taxation:create" }
+    methods:  POST
+
+com_taxation_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Taxation:edit" }
+
+com_taxation_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Taxation:update" }
+    methods:  [POST, PUT]
+
+com_taxation_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Taxation:delete" }
+    methods:  [POST, DELETE]

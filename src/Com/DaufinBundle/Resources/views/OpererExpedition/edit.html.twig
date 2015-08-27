@@ -1,0 +1,28 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Operation Expédition</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">EXPEDITIONS</a></li>
+                  <li class="active">Opération /Modifier</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Modifier Opération</h1>
+<div  style="width:25%;">
+    {{ form(edit_form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Oprer_Expedition') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+</div>
+{% endblock %}

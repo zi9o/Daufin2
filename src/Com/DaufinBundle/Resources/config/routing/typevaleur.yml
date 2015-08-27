@@ -1,0 +1,30 @@
+com_type_valeur:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:index" }
+
+com_type_valeur_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:show" }
+
+com_type_valeur_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:new" }
+
+com_type_valeur_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:create" }
+    methods:  POST
+
+com_type_valeur_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:edit" }
+
+com_type_valeur_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:update" }
+    methods:  [POST, PUT]
+
+com_type_valeur_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:TypeValeur:delete" }
+    methods:  [POST, DELETE]

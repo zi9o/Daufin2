@@ -1,0 +1,58 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Mouvement Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Mouvements</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>MouvementCaisse list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Typemouvement</th>
+                <th>Libellemouvement</th>
+                <th>Datemouvement</th>
+                <th>Valeur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_mouvnt_caisse_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.typeMouvement }}</td>
+                <td>{{ entity.libelleMouvement }}</td>
+                <td>{% if entity.dateMouvement %}{{ entity.dateMouvement|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.valeur }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_mouvnt_caisse_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_mouvnt_caisse_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_mouvnt_caisse_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

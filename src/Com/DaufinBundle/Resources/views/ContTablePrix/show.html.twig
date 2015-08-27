@@ -1,0 +1,45 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Exp.Transport / Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Exp.Transport / Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container -%}
+    <h1>ContTablePrix</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Valeur</th>
+                <td>{{ entity.valeur }}</td>
+            </tr>
+            <tr>
+                <th>Tva</th>
+                <td>{{ entity.tva }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_ContTablePrix') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_ContTablePrix_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Exp.Transport / Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Exp.Transport / Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+<script type="text/javascript">
+
+   function ChargVoyage(){
+
+	   var e1 = document.getElementById("trajet");
+	   var idTrajet = e1.options[e1.selectedIndex].value;
+	   
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_voyage_charg'),
+	          type: "POST",
+	          data: { "idTrajet" : idTrajet
+		        },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 
+	               var obj = jQuery.parseJSON(data);
+	              $('#select_voyg').html('');
+                      
+	              if (obj.hasOwnProperty('code')) {
+			             //Show Error
+			             alert("ERROR : "+obj.message);
+			             return;
+	              }	                
+	        	  
+	        	
+	              for (i in obj){
+	                  $('#select_voyg').append(
+                              "<option value='" + obj[i].ID + "'>" + 'Num' + obj[i].ID + '_' + obj[i].DATE_PLANIF + "</option>"
+	                     );
+	                  }
+             }	
+	       });
+	   
+	   }
+</script>
+<script type="text/javascript">
+function Select_All(source) {
+  checkboxes = document.getElementsByName('ExpTrsp[]');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+<script type="text/javascript">    
+           function ChargExpTansp()
+           {
+                    
+                    var e2 = document.getElementById("select_voyg");
+                    var idVoyage = e2.options[e2.selectedIndex].value;
+                    var frm='ExpTrspVg';
+                   
+                    
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_exp_tansp_charg'),
+	          type: "POST",
+	          data: { "idVoyage" : idVoyage,
+                          "frm":frm
+		        },
+	          success: function(data) {
+                     
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 
+	               var obj = jQuery.parseJSON(data);
+	              $('#body_ExpTrsp').html('');
+                      
+	              if (obj.hasOwnProperty('code')) {
+			             //Show Error
+			             alert("ERROR : "+obj.message);
+			             return;
+	              }	                
+	        	  
+	        	
+	              for (i in obj){
+	                  $('#body_ExpTrsp').append(
+                              "<tr>" +   
+	                      "<td><input type='checkbox' name='ExpTrsp[]' value='" + obj[i].ID + "'/>" + obj[i].ID + "</td>" +
+	                      "<td>" + obj[i].S_TRAJET + '_' + obj[i].VILLE_Depart + '_' +obj[i].VILLE_Arrivee + '_' + obj[i].CODE_SOUS_TRAJET + "</td>" +
+	                      "<td>" + obj[i].DATE_CREATION + "</td>" +
+	                      "<td>" + obj[i].NBRE_EXPEDITION + "</td>" +
+                              "</tr>");
+	                  }
+             }	
+	       });
+           }
+   </script>
+    
+{{form_start(form)}}
+   <table>
+       <th style="width:250px;">Date Affectation</th>
+       <th style="width:250px;">Trajet</th>
+       <th style="width:250px;">Voyage</th>
+       <tr>
+                <td><input type="date" id="dateAffect" name="dateAffect"/>
+                    <script type="text/javascript">
+                    var date = new Date();
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+
+                    if (month < 10) month = "0" + month;
+                    if (day < 10) day = "0" + day;
+
+                    var today = year + "-" + month + "-" + day;
+                    document.getElementById('dateAffect').value = today;
+                    </script>
+                </td>
+                <td><select id="trajet" onChange="ChargVoyage();">
+		     {% for trajet in trajets %}
+		           <option value="{{ trajet.id }}"> {{ trajet.libelleTrajet }}</option>
+		     {% endfor %} 
+		    </select>
+		</td>
+                <td>
+               	<select id="select_voyg" name="voyage"></select>
+                <bouton class="btn btn-default" type="button" onClick="ChargExpTansp();">Chercher</bouton>
+                </td>
+       </tr>
+   </table>
+                    <table>
+                        <thead>
+                        <th>ID</th>
+                        <th>SOUS TARJET</th>
+                        <th>DATE DE CREATION</th>
+                        <th>NOMBRE D'EXPEDITION</th>
+                        </thead>
+                        <tbody  id="body_ExpTrsp"></tbody>
+                        <tfoot>
+                        <tf><input type='checkbox' value='All' name="chk_bx_exptrsp" onChange="Select_All(this);"/>Selectionner Tous</tf>
+                        <tfoot>
+                    </table>                
+{{form_end(form)}}
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

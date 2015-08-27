@@ -1,0 +1,56 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Incident</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Afficher Incident</li>
+                </ol>
+        </div>
+{% endblock %}
+
+
+{% block container %}
+    
+    <a href="{{ path('com_incident') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+   <div style="float:right;">
+       <a href="{{ path('com_incident_edit', { 'id': entity.id }) }}">
+        <button class="btn btn-info" style="width:100px;">Editer</button>
+       </a>
+   </div>
+    <br>
+<div align="center"> 
+    <table class="record_properties" style="width:400px;" >
+        <tbody>
+            <tr>
+                <th style="width:35%;">Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Type Incident</th>
+                <td>{{ entity.typeIncident }}</td>
+            </tr>
+            <tr>
+                <th>Date Incident</th>
+                <td>{{ entity.dateIncident|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+             <tr>
+                <th>Unite Manutention</th>
+                <td>{{ entity.uniteManu }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    {{ form(delete_form) }}
+{% endblock %}

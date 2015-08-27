@@ -1,0 +1,185 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Imprimer Facture</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Factures</a></li>
+            <li class="active">Imprimer Facture</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block container %}
+
+    <script type="text/javascript">
+        function validerRechercheFacture()
+        {
+
+            IDFacture = document.getElementById("IDNumFacture");
+            IDNumFacture = IDFacture.options[IDFacture.selectedIndex].value;
+
+            if (IDNumFacture != -1)
+            {
+                $.ajax({
+                    url: Routing.generate('com_daufin_com_facture_find_print'),
+                    type: "POST",
+                    data: {
+                        "IDNumFacture": IDNumFacture,
+                    },
+                    success: function (data) {
+                        var obj = jQuery.parseJSON(data);
+                        // document.getElementById('Info_DateCreation').innerText = obj['dateCreation'];
+                        $('#Info_DateCreation').text(obj['dateCreation']);
+                        $('#CodeClient').text(obj['codeClient']);
+                        $('#Client').text(obj['client']);
+                        $('#telClient').text(obj['telClient']);
+                        var content = '';
+                        for (var i = 0; i < obj['expeditions'].length; i++)
+                        {
+                            content += '<tr>';
+                            content += '<td>' + obj['expeditions'][i].code_dec + '</td>';
+                            content += '<td>' + obj['expeditions'][i].AgenceD + '</td>';
+                            content += '<td>' + obj['expeditions'][i].AgenceR + '</td>';
+                            content += '<td>' + obj['expeditions'][i].mode + '</td>';
+                            content += '<td>' + Number(obj['expeditions'][i].ht).toFixed(2) + '</td>';
+                            content += '<td>' + Number(obj['expeditions'][i].tva).toFixed(2) + '</td>';
+                            content += '<td>' + Number(obj['expeditions'][i].ttc).toFixed(2) + '</td>';
+
+                            content += '</tr>';
+
+                        }
+                        $('#datatableFind tbody').html(content);
+                        $('#Info_MontantHT').text(obj['ht']);
+                        $('#Info_MontantTVA').text(obj['tva']);
+                        $('#Info_MontantTTC').text(obj['ttc']);
+
+                        enablePrint();
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function PrintFacture() {
+            IDFacture = document.getElementById("IDNumFacture");
+            IDNumFacture = IDFacture.options[IDFacture.selectedIndex].value;
+            disablePrint();
+            $.ajax({
+                url: Routing.generate('com_daufin_com_facture_printing'),
+                type: "POST",
+                data: {
+                    "IDNumFacture": IDNumFacture,
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    var url = obj.urlPDF;
+                    var wnd = window.open(url);
+
+                }
+            });
+        }
+
+    </script>
+
+    <table>
+        <td  style=" font-size: 20px; ">N° de facture : </td>
+        <td style=' font-size: 16px; '>
+            <select class="select2" id='IDNumFacture' onchange="disablePrint();">
+                <option value="-1">---SELECTIONNER---</option> 
+                {% for entity in AllFactures %}
+                    <option value="{{ entity.id }}"> {{ entity.numFacture }} </option>
+                {% endfor %}
+            </select>
+        </td>
+        <td colspan="2" ><input class="btn btn-info" type="button" value="Rechercher" id="validationRecherche" onclick="validerRechercheFacture();"></td>
+        <td colspan="2" ><input class="btn btn-warning" type="button" value="Imprimer" id="Imprimer" onclick="PrintFacture();"></td>
+    </table>
+    <table style="width: 100%;">
+        <tr>
+            <td id="DateCreation" style="text-align: center;">Date de création : </td>
+            <td id="Info_DateCreation"></td>
+        </tr>
+    </table>
+    </br>
+    </br>
+    <table  >
+        <tr><td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;"> Client</td> </tr>
+        <tr><td>Code Client :</td> <td id="CodeClient">{# {{ codeClient }} #}</td></tr>
+        <tr><td>Client :</td><td id="Client">{# {{ client }} #}</td></tr>
+            {# <tr><td>Adresse Client :</td><td>{{ adresse }}</td> </tr> #}
+        <tr><td>Tél Client :</td><td id="telClient">{# {{ telClient }} #}</td> </tr>
+    </table>
+
+    </br>
+    </br>
+    <table id="datatableFind">
+        <thead>
+            <tr><td  colspan="7" style="font-weight: bold;font-size: 14px;text-align: center;"> Expeditions</td></tr>
+            <tr>
+                <th>Code Déclaration</th>
+                <th>Agence Départ</th>
+                <th>Agence Arrivée</th>
+                <th>Mode Port</th>
+                <th>Montant HT</th>
+                <th>Montant TVA</th>
+                <th>Montant TTC</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# {% for entity in expeditions %}
+            <tr>
+                <td>{{ entity.id_exp}}</td>
+                <td>{{ entity.code_dec }}</td>
+                <td>{{ entity.AgenceD }}</td>
+                <td>{{ entity.AgenceR }}</td>
+                <td>{{ entity.mode }}</td>
+                <td>{{ entity.ht|number_format(2, '.', ',')}}</td>
+                <td>{{ entity.tva|number_format(2, '.', ',')}}</td>
+                <td>{{ entity.ttc|number_format(2, '.', ',')}}</td>
+                <td align="center">
+                    <a  class="label label-danger">
+                        <i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a>
+                </td>
+            </tr>
+            {% endfor %} #}
+        </tbody>
+    </table>
+
+    </br>
+    </br>
+    <table>
+        <tr>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">Montant HT (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px" id="Info_MontantHT">{# {{ entities.totalMontantHT|number_format(2, '.', ' ')}} #}</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">Montant TVA (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px" id="Info_MontantTVA">{# {{ entities.totalMontantTVA|number_format(2, '.', ' ')}} #}</td>
+        </tr>
+
+        <tr> 
+            <td colspan="2"  style="font-weight:bold;font-size: 14px">Montant TTC (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px" id="Info_MontantTTC">{# {{ entities.totalMontantTTC|number_format(2, '.', ' ')}} #}</td>
+        </tr>
+
+    </table>
+
+
+    <script type="text/javascript">
+        function disablePrint() {
+            document.getElementById("Imprimer").disabled = true;
+
+        }
+        function enablePrint() {
+            document.getElementById("Imprimer").disabled = false;
+
+        }
+        document.getElementById("Imprimer").disabled = true;
+    </script>
+
+{% endblock %}

@@ -1,0 +1,663 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Suivi des Services</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reporting</a></li>
+            <li class="active">Suivi des Services</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block container %}
+    <script type="text/javascript">
+        function handleClick(cb) {
+            if (cb.name != 'activ_tous')
+            {
+                document.getElementById("activ_tous").checked = false;
+            }
+
+            if (cb.name == 'activ_simple') {
+                document.getElementById("activ_crbt").checked = (cb.checked != true);
+                document.getElementById("activ_cheque").checked = (cb.checked != true);
+                document.getElementById("activ_traite").checked = (cb.checked != true);
+                document.getElementById("activ_bon_livr").checked = (cb.checked != true);
+                document.getElementById("activ_tous").checked = (cb.checked != true);
+            }
+            else if (cb.name == 'activ_crbt') {
+
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_cheque").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_cheque') {
+
+                if (!document.getElementById("activ_crbt").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_traite') {
+
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_crbt").checked &&
+                        !document.getElementById("activ_bon_livr").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_cheque").checked &&
+                        document.getElementById("activ_bon_livr").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+            }
+            else if (cb.name == 'activ_bon_livr') {
+                if (!document.getElementById("activ_cheque").checked &&
+                        !document.getElementById("activ_traite").checked &&
+                        !document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_simple").checked = (cb.checked != true);
+                }
+                else if (document.getElementById("activ_cheque").checked &&
+                        document.getElementById("activ_traite").checked &&
+                        document.getElementById("activ_crbt").checked)
+                {
+                    document.getElementById("activ_tous").checked = (cb.checked == true);
+                }
+
+            }
+            else if (cb.name == 'activ_tous') {
+
+                if (document.getElementById("activ_tous").checked)
+                {
+                    document.getElementById("activ_simple").checked = false;
+                    document.getElementById("activ_cheque").checked = true;
+                    document.getElementById("activ_traite").checked = true;
+                    document.getElementById("activ_crbt").checked = true;
+                    document.getElementById("activ_bon_livr").checked = true;
+                }
+                else
+                {
+                    document.getElementById("activ_simple").checked = true;
+                    document.getElementById("activ_cheque").checked = false;
+                    document.getElementById("activ_traite").checked = false;
+                    document.getElementById("activ_crbt").checked = false;
+                    document.getElementById("activ_bon_livr").checked = false;
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function validerRecherche()
+        {
+            var codeDec = document.getElementById("CodeDec").value;
+
+            var AD = document.getElementById("AgenceDepart");
+            var idAgenceDu = AD.options[AD.selectedIndex].value;
+
+            var AA = document.getElementById("AgenceArrivee");
+            var idAgenceAu = AA.options[AA.selectedIndex].value;
+
+            var SD = document.getElementById("SecteurDepart");
+            var idSecteurDu = SD.options[SD.selectedIndex].value;
+
+            var SA = document.getElementById("SecteurArrivee");
+            var idSecteurAu = SA.options[SA.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+            var isSimple = 1;
+            if (document.getElementById("activ_simple").checked)
+            {
+                isSimple = 1;
+            }
+            else
+            {
+                isSimple = 0;
+            }
+            var isCheque = 1;
+            if (document.getElementById("activ_cheque").checked)
+            {
+                isCheque = 1;
+            }
+            else
+            {
+                isCheque = 0;
+            }
+            var isTraite = 1;
+            if (document.getElementById("activ_traite").checked)
+            {
+                isTraite = 1;
+            }
+            else
+            {
+                isTraite = 0;
+            }
+            var isCrbt = 1;
+            if (document.getElementById("activ_crbt").checked)
+            {
+                isCrbt = 1;
+            }
+            else
+            {
+                isCrbt = 0;
+            }
+            var isBon_livr = 1;
+            if (document.getElementById("activ_bon_livr").checked)
+            {
+                isBon_livr = 1;
+            }
+            else
+            {
+                isBon_livr = 0;
+            }
+            var isDisable = 1;
+            if (document.getElementById("datepickerCreationDu").disabled)
+            {
+                isDisable = 1;
+            }
+            else
+            {
+                isDisable = 0;
+            }
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reporting_suivi_services_search'),
+                type: "POST",
+                data: {
+                    "codeDec": codeDec,
+                    "dateCreationDu": dateCreationDu,
+                    "dateCreationAu": dateCreationAu,
+                    "idAgenceDu": idAgenceDu,
+                    "idAgenceAu": idAgenceAu,
+                    "idSecteurDu": idSecteurDu,
+                    "idSecteurAu": idSecteurAu,
+                    "isSimple": isSimple,
+                    "isCheque": isCheque,
+                    "isTraite": isTraite,
+                    "isCrbt": isCrbt,
+                    "isBon_livr": isBon_livr
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError'))
+                    {
+                        alert("ERROR : " + obj.error);
+                    }
+                    else
+                    {
+
+                        var content = "";
+                        content += " <thead> ";
+                        content += " <tr> ";
+                        content += " <th>Date Création</th> ";
+                        content += " <th>Code Déclaration</th> ";
+                        content += " <th colspan='3' scope='colgroup'>Port</th> ";
+                        content += " <th>Statut</th> ";
+                        if (isCrbt == 1 || isDisable == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/REMBST</th> ";
+                        }
+                        if (isCheque == 1 || isDisable == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/Chéque</th> ";
+                        }
+                        if (isTraite == 1 || isDisable == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>C/Traite</th> ";
+                        }
+                        if (isBon_livr == 1 || isDisable == 1)
+                        {
+                            content += " <th colspan='2' scope='colgroup'>Retour BL</th> ";
+                        }
+                        content += " </tr> ";
+                        content += " <tr style=' width: 90%'> ";
+                        content += " <th></th> ";
+                        content += " <th></th> ";
+                        content += "<th scope='col'>Mode</th> ";
+                        content += " <th scope='col'>Montant Total</th> ";
+                        content += " <th scope='col'>Etat Reglement</th> ";
+                        content += " <th></th> ";
+                        if (isCrbt == 1 || isDisable == 1)
+                        {
+                            content += " <th  scope='col'>Date</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isCheque == 1 || isDisable == 1)
+                        {
+                            content += " <th  scope='col'>Numéro</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isTraite == 1 || isDisable == 1)
+                        {
+                            content += " <th  scope='col'>Date</th> ";
+                            content += " <th  scope='col'>Montant</th> ";
+                        }
+                        if (isBon_livr == 1 || isDisable == 1)
+                        {
+                            content += " <th  scope='col'>Date</th> ";
+                            content += " <th  scope='col'>Numéro</th> ";
+                        }
+                        content += " </tr> ";
+                        content += " </thead> ";
+                        content += " <tbody> ";
+                        
+                        var nbrColis=Number("0");
+                        var nbrDeclaration=Number("0");
+                        var MontantTotal=Number("0");
+                        var CrbtMT=Number("0");
+                        var ChequeMT=Number("0");
+                        var TraiteMT=Number("0");
+
+                        for (var i = 0; i < obj.length; i++)
+                        {
+                            MontantTotal=MontantTotal+Number(obj[i].Montant);
+                            nbrDeclaration++;
+                            nbrColis=nbrColis+Number(obj[i].nbrColis);
+                            
+                            content += " <tr style=' width: 90%'> ";
+                            content += " <td>" + obj[i].date_declaration + "</td> ";
+                            content += " <td>" + obj[i].code_dec + "</td> ";
+                            if(obj[i].Port=="portPaye")
+                            {
+                                content += " <td>Payé</td> ";
+                            }
+                            else
+                            {
+                                content += " <td>Dû</td> ";
+                            }
+                            content += " <td>" + Number(obj[i].Montant).toFixed(2) + "</td> ";
+                            if (obj[i].EtatReglement == "nonReglee")
+                            {
+                                content += "<td bgcolor='#FF0000'>Non Réglée</td>";
+                            }
+                            else if(obj[i].EtatReglement=="Reglee")
+                            {
+                                content += "<td bgcolor='#00FF00'>Réglée</td>";
+                            }
+                            else
+                            {
+                                content += "<td bgcolor='#FF0000'>Non Réglée</td>";
+                            }
+                            content += " <td>" + obj[i].Statut + "</td> ";
+                            if (isCrbt == 1 || isDisable == 1)
+                            {
+                                if (obj[i].crbt_Date == null && Number(obj[i].crbt_mt).toFixed(2)!=0)
+                                {
+                                    obj[i].crbt_Date = "";
+                                    content += " <td bgcolor='#FF0000' align='center'>" + obj[i].crbt_Date + "</td> ";
+                                    content += " <td align='center'>" + Number(obj[i].crbt_mt).toFixed(2) + "</td> ";
+                                    CrbtMT=CrbtMT+Number(obj[i].crbt_mt);
+                                }
+                                else if(obj[i].crbt_Date != null && Number(obj[i].crbt_mt).toFixed(2)!=0)
+                                {
+                                    content += " <td  align='center' bgcolor='#00FF00'>" + obj[i].crbt_Date + "</td> ";
+                                    content += " <td align='center'>" + Number(obj[i].crbt_mt).toFixed(2) + "</td> ";
+                                    CrbtMT=CrbtMT+Number(obj[i].crbt_mt);
+                                }
+                                
+                                else
+                                {
+                                    content += "<td align='center' colspan='2' bgcolor='#AAAAAA'> Pas de Remboursement</td>";
+                                }
+                            }
+                            if (isCheque == 1 || isDisable == 1)
+                            {
+                                if (obj[i].cheque_num == null && Number(obj[i].cheque_mt).toFixed(2) !=0)
+                                {
+                                    obj[i].cheque_num = "";
+                                    content += " <td bgcolor='#FF0000' align='center'>" + obj[i].cheque_num + "</td> ";
+                                    content += " <td align='center'>" + Number(obj[i].cheque_mt).toFixed(2) + "</td> ";
+                                    ChequeMT=ChequeMT+Number(obj[i].cheque_mt);
+                                }
+                                else if(obj[i].cheque_num != null && Number(obj[i].cheque_mt).toFixed(2) !=0)
+                                {
+                                    content += "<td bgcolor='#00FF00' align='center'>" + obj[i].cheque_num + "</td>";
+                                    content += " <td align='center'>" + Number(obj[i].cheque_mt).toFixed(2) + "</td> ";
+                                    ChequeMT=ChequeMT+Number(obj[i].cheque_mt);
+                                }
+                                else
+                                {
+                                    content += "<td colspan='2' bgcolor='#AAAAAA' align='center'> Pas de Chéque</td>";
+                                }
+                                
+                            }
+                            if (isTraite == 1 || isDisable == 1)
+                            {
+                                if (obj[i].traite_Date == null && Number(obj[i].traite_mt).toFixed(2)!=0.00) 
+                                {
+                                    obj[i].traite_Date = "";
+                                    content += " <td bgcolor='#FF0000' align='center'>" + obj[i].traite_Date + "</td> ";
+                                    content += " <td  align='center'>" + Number(obj[i].traite_mt).toFixed(2) + "</td> ";
+                                    TraiteMT=TraiteMT+Number(obj[i].traite_mt);
+                                }
+                                else if (obj[i].traite_Date != null && Number(obj[i].traite_mt).toFixed(2)!=0.00) 
+                                {
+                                    content += " <td bgcolor='#00FF00' align='center'>" + obj[i].traite_Date + "</td> ";
+                                    content += " <td align='center'>" + Number(obj[i].traite_mt).toFixed(2) + "</td> ";
+                                    TraiteMT=TraiteMT+Number(obj[i].traite_mt);
+                                }
+                                else
+                                {
+                                    content += "<td colspan='2' bgcolor='#AAAAAA' align='center'> Pas de Traite</td>";
+                                }
+                            }
+                            if (isBon_livr == 1 || isDisable == 1)
+                            {
+                                if (obj[i].bl_Date == null && obj[i].bl_num!=null)
+                                {
+                                    obj[i].bl_Date = "";
+                                    content += " <td bgcolor='#FF0000' align='center'>" + obj[i].bl_Date + "</td> ";
+                                    content += " <td align='center'>" + obj[i].bl_num + "</td> ";
+                                }
+                                else if (obj[i].bl_Date != null && obj[i].bl_num!=null)
+                                {
+                                    content += " <td bgcolor='#00FF00' align='center'>" + obj[i].bl_Date + "</td> ";
+                                    content += " <td align='center'>" + obj[i].bl_num + "</td> ";
+                                }
+                                else
+                                {
+                                    content += "<td colspan='2' bgcolor='#AAAAAA' align='center'> Pas de BL </td>";
+                                }
+                                
+                            }
+                            content += " </tr> ";
+
+                        }
+                        content+="<tr>";
+                        if(isCrbt == 1 || isCheque == 1 ||isTraite == 1  || isBon_livr == 1)
+                        {
+                            content +="<th colspan='6' align='center' > Les Totaux </th>";
+                        }
+                        if (isCrbt == 1 || isDisable == 1)
+                            {
+                                content+="<td colspan='2' align='center' >"+Number(CrbtMT).toFixed(2)+"</td>";
+                            }
+                        if (isCheque == 1 || isDisable == 1)
+                            {
+                                content+="<td colspan='2' align='center' >"+Number(ChequeMT).toFixed(2)+"</td>";
+                            }
+                        if (isTraite == 1 || isDisable == 1)
+                            {
+                                content+="<td colspan='2' align='center' >"+Number(TraiteMT).toFixed(2)+"</td>";
+                            }
+                        if (isBon_livr == 1 || isDisable == 1)
+                            {
+                                content+="<td colspan='2' align='center' ></td>";
+                            }
+                            
+                        content+="</tr>";
+                        content += " </tbody> ";
+                        $('#datatable').html(content);
+                        content = "<table><tr style'width: 100%'><th style='width: 130px;'>Total Déclaration : </th><th style='width: 130px;'>Total Montant : </th><th style='width: 130px;'>Total Colis : </th></tr>";
+                        content += "<tr><td>"+nbrDeclaration+"</td><td>"+Number(MontantTotal).toFixed(2)+"</td><td>"+nbrColis+"</td></tr></table>"; 
+                        $('#divdatatable').html(content);
+                        }
+                    }
+                });
+            }
+    </script>
+
+    <script type="text/javascript">
+        function disableFormulaire()
+        {
+
+            document.getElementById("AgenceDepart").disabled = true;
+
+            document.getElementById("AgenceArrivee").disabled = true;
+
+            document.getElementById("SecteurDepart").disabled = true;
+
+            document.getElementById("SecteurArrivee").disabled = true;
+
+            document.getElementById("datepickerCreationDu").disabled = true;
+            document.getElementById("datepickerCreationAu").disabled = true;
+
+            document.getElementById("activ_simple").checked = true;
+            document.getElementById("activ_crbt").checked = false;
+            document.getElementById("activ_cheque").checked = false;
+            document.getElementById("activ_traite").checked = false;
+            document.getElementById("activ_bon_livr").checked = false;
+            document.getElementById("activ_tous").checked = false;
+
+            document.getElementById("activ_simple").disabled = true;
+            document.getElementById("activ_crbt").disabled = true;
+            document.getElementById("activ_cheque").disabled = true;
+            document.getElementById("activ_traite").disabled = true;
+            document.getElementById("activ_bon_livr").disabled = true;
+            document.getElementById("activ_tous").disabled = true;
+        }
+    </script>
+    <script type="text/javascript">
+        function enableFormulaire()
+        {
+
+            document.getElementById("AgenceDepart").disabled = false;
+
+            document.getElementById("AgenceArrivee").disabled = false;
+
+            document.getElementById("SecteurDepart").disabled = false;
+
+            document.getElementById("SecteurArrivee").disabled = false;
+
+            document.getElementById("datepickerCreationDu").disabled = false;
+            document.getElementById("datepickerCreationAu").disabled = false;
+
+            document.getElementById("activ_simple").disabled = false;
+            document.getElementById("activ_crbt").disabled = false;
+            document.getElementById("activ_cheque").disabled = false;
+            document.getElementById("activ_traite").disabled = false;
+            document.getElementById("activ_bon_livr").disabled = false;
+            document.getElementById("activ_tous").disabled = false;
+        }
+    </script>
+    <script type="text/javascript">
+        function DecideFormulaire()
+        {
+            var valeur = document.getElementById("CodeDec").value;
+            if (valeur != "")
+            {
+                disableFormulaire();
+            }
+            else
+            {
+                enableFormulaire();
+            }
+        }
+    </script>
+    <div class="table" onload=" document.getElementById('date').value = Date();">   
+
+        <table>
+            <tr>
+                <td colspan="3" style=" font-size: 16px; ">Code de déclaration : </td>
+                <td colspan="2"><input style="width: 50%" type="text" size="16" id="CodeDec" onclick="DecideFormulaire();" onchange="DecideFormulaire();" class="form-control text"/></td>
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; " colspan="3">Date de création : </td>
+                <td> du :<input type="text" class="form-control datetime" size="16"  id="datepickerCreationDu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() - 2;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 09:00";
+                        document.getElementById('datepickerCreationDu').value = today;
+                    </script>
+                </td>
+                <td> au :
+                    <input type="text" class="form-control datetime" size="20"  id="datepickerCreationAu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 09:00";
+                        document.getElementById('datepickerCreationAu').value = today;
+                    </script>
+                </td>
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Agence de départ</td>
+                <td >
+                    <select id="AgenceDepart" >
+                        <option value="none"> </option>
+                        {% for agenceD in entityAgence %}
+                            <option value="{{ agenceD.ID }}"> {{ agenceD.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Agence d'arrivée</td>
+                <td >
+                    <select id="AgenceArrivee">
+                        <option value="none"> </option>
+                        {% for agenceA in entityAgence %}
+                            <option value="{{ agenceA.ID }}"> {{ agenceA.libelleAg }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; ">Secteur de départ</td>
+                <td >
+                    <select id="SecteurDepart" >
+                        <option value="none"> </option>
+                        {% for secteurD in entitySecteur %}
+                            <option value="{{ secteurD.ID }}"> {{ secteurD.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+                <td style=" font-size: 16px; ">Secteur d'arrivée</td>
+                <td >
+                    <select id="SecteurArrivee">
+                        <option value="none"> </option>
+                        {% for secteurA in entitySecteur %}
+                            <option value="{{ secteurA.ID }}"> {{ secteurA.libelleSecteur }}</option>
+                        {% endfor %}		           
+                    </select>
+                </td>
+
+            </tr>
+
+            <tr class="grandTitre">
+                <td colspan="5"  >Services</td>
+            </tr>
+            <tr>
+                <td width="16%">  
+                    <input type="checkbox" value="Simple"  id="activ_simple" name="activ_simple" onclick="handleClick(this);" checked="checked"/>
+                    <label for="simple" class="">Simple</label>
+
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_crbt" id="activ_crbt" onclick="handleClick(this);" value="0" >
+                    C/Remoboursement
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_cheque" id="activ_cheque"  onclick="handleClick(this);" value="0" >
+                    C/Chéque
+                </td>
+                <td width="16%">
+                    <input type="checkbox" name="activ_traite" id="activ_traite" onclick="handleClick(this);" value="0" >
+                    C/Traite
+                </td >
+                <td width="16%">
+                    <input type="checkbox" name="activ_bon_livr" id="activ_bon_livr"  onclick="handleClick(this);" value="0" >
+                    Retour Bon Livraison
+                </td>
+
+            </tr>  
+            <tr>
+                <td>
+                    <input type="checkbox" name="activ_tous" id="activ_tous"  onclick="handleClick(this);" value="0" >
+                    <label for="tous" class="">Tous</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" ><input class="btn pull-right" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+
+            </tr>
+        </table>
+    </div>
+
+    <div class="block-flat">
+        <table class="table editable" id="datatable">
+            <thead>
+                <tr style=" width: 90%">
+                    <th>Date Création</th>
+                    <th>Code Déclaration</th>
+                    <th colspan="3" scope='colgroup'>Port</th>
+                    <th>Statut</th>
+                    <th colspan="2" scope='colgroup'>C/REMBST</th>
+                    <th colspan="2" scope='colgroup'>C/Chéque</th>
+                    <th colspan="2" scope='colgroup'>C/Traite</th>
+                    <th colspan="2" scope='colgroup'>Retour BL</th>
+                </tr>
+                <tr style=" width: 90%">
+                    <th></th>
+                    <th></th>
+                    <th scope='col'>Mode</th>
+                    <th scope='col'>Montant</th>
+                    <th scope="col">Etat Reglement</th>
+                    <th></th>
+                    <th  scope='col'>Date</th>
+                    <th  scope='col'>Montant</th>
+                    <th  scope='col'>Numéro</th>
+                    <th  scope='col'>Montant</th>
+                    <th  scope='col'>Date</th>
+                    <th  scope='col'>Montant</th>
+                    <th  scope='col'>Date</th>
+                    <th  scope='col'>Numéro</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <table id="divdatatable">
+            <tr><th >Total Déclaration : </th>
+                    <th >Total Montant : </th>
+                    <th >Total Colis : </th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
+    </div>
+
+{% endblock %}

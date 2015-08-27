@@ -1,0 +1,30 @@
+com_site:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Site:index" }
+
+com_site_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Site:show" }
+
+com_site_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Site:new" }
+
+com_site_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Site:create" }
+    methods:  POST
+
+com_site_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Site:edit" }
+
+com_site_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Site:update" }
+    methods:  [POST, PUT]
+
+com_site_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Site:delete" }
+    methods:  [POST, DELETE]

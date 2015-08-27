@@ -1,0 +1,29 @@
+com_reglement:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Reglement:index" }
+
+com_reglement_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Reglement:show" }    
+com_reglement_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Reglement:new" }
+
+com_reglement_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Reglement:create" }
+    methods:  POST
+
+com_reglement_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Reglement:edit" }
+
+com_reglement_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Reglement:update" }
+    methods:  [POST, PUT]
+
+com_reglement_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Reglement:delete" }
+    methods:  [POST, DELETE]

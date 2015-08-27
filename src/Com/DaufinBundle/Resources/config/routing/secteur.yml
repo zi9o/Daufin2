@@ -1,0 +1,30 @@
+com_secteur:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Secteur:index" }
+
+com_secteur_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Secteur:show" }
+
+com_secteur_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Secteur:new" }
+
+com_secteur_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Secteur:create" }
+    methods:  POST
+
+com_secteur_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Secteur:edit" }
+
+com_secteur_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Secteur:update" }
+    methods:  [POST, PUT]
+
+com_secteur_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Secteur:delete" }
+    methods:  [POST, DELETE]

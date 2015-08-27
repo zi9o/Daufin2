@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>UniteManu list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Typeunite</th>
+                <th>Poidsunite</th>
+                <th>Volumeunite</th>
+                <th>Nbrcolisplt</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_unite_manu_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.typeUnite }}</td>
+                <td>{{ entity.poidsUnite }}</td>
+                <td>{{ entity.volumeUnite }}</td>
+                <td>{{ entity.nbrColisPlt }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_unite_manu_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_unite_manu_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_unite_manu_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

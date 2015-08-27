@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="OpererExpedition" table="operer_expedition">
+    <indexes>
+      <index name="FK_OPERER_EXPEDITION" columns="EXEPT"/>
+      <index name="FK_OPERER_EXPEDITION2" columns="PERSONNEL"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateOperation" type="datetime" column="DATE_OPERATION" nullable="true"/>
+    <field name="typeOperation" type="string" column="TYPE_OPERATION" length="30" nullable="true"/>
+    <many-to-one field="personnel" target-entity="Personnel">
+      <join-columns>
+        <join-column name="PERSONNEL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="exept" target-entity="Expedition">
+      <join-columns>
+        <join-column name="EXEPT" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

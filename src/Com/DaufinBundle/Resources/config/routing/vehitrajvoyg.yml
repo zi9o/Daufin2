@@ -1,0 +1,30 @@
+com_vehi_traj_voyg:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:index" }
+
+com_vehi_traj_voyg_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:show" }
+
+com_vehi_traj_voyg_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:new" }
+
+com_vehi_traj_voyg_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:create" }
+    methods:  POST
+
+com_vehi_traj_voyg_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:edit" }
+
+com_vehi_traj_voyg_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:update" }
+    methods:  [POST, PUT]
+
+com_vehi_traj_voyg_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:VehiTrajVoyg:delete" }
+    methods:  [POST, DELETE]

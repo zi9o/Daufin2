@@ -1,0 +1,28 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Agence/Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li><a href="{{ path('com_affecter') }}"> Agence/Personnel </a></li>
+                  <li class="active">Création</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <h1>Affecter creation</h1>
+<div  style="width:25%;">
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_affecter') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}

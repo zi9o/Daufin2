@@ -1,0 +1,47 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Caisses</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Afficher</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Liste des Caisses</h1>
+
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                
+                <th>Caisse</th>
+                <th>Agence</th>
+                <th>Type Caisse</th>                
+                <th>Date Début</th>
+                <th>Solde Caisse</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_caisse_show', { 'id': entity.id }) }}">{{ entity.libelleCaisse }} - {{ entity.categorieCaisse }}</a></td>
+                <td><a href="{{ path('com_agence_show', { 'id': entity.agence.id }) }}">{{ entity.agence.libelleAg }}</a></td>
+                
+                <td>{{ entity.typeCaisse }}</td>
+                <td>{% if entity.dateDebut %}{{ entity.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.soldeCaisse }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+
+    {% endblock %}

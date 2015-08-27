@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Agence" table="agence">
+    <indexes>
+      <index name="FK_RESIDER" columns="VILLE"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="codeAgence" type="string" column="CODE_AGENCE" length="10" nullable="true"/>
+    <field name="libelleAg" type="string" column="LIBELLE_AG" length="30" nullable="true"/>
+    <field name="typeAgence" type="string" column="TYPE_AGENCE" length="30" nullable="true"/>
+    <field name="telAg" type="string" column="TEL_AG" length="30" nullable="true"/>
+    <field name="faxAg" type="string" column="FAX_AG" length="30" nullable="true"/>
+    <field name="adresseAg" type="string" column="ADRESSE_AG" length="50" nullable="true"/>
+    <many-to-one field="ville" target-entity="Ville">
+      <join-columns>
+        <join-column name="VILLE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

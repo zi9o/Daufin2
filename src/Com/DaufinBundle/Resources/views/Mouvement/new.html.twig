@@ -1,0 +1,24 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Mouvement</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Mouvement</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_mouvement') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+        <p>    
+    <div  class="Formdiv"   style="width:300px;">
+    {{ form(form) }}
+    </div>
+{% endblock %}

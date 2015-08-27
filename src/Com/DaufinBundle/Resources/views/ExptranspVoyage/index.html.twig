@@ -1,0 +1,49 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Exp.Transport / Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Exp.Transport / Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_Exptransp_Voyage_new') }}">
+        <button class="btn btn-info">
+         Nouveau Elément        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Voyage</th>
+                <th>Expedition Transport</th>
+                <th>Date d'Affectation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.voyage }}</td>
+                <td>{{ entity.expTransp }}</td>
+                <td>{% if entity.dateAff %}{{ entity.dateAff|date('Y-m-d H:i:s') }}{% endif %}</td>              
+                <td align="center">
+                    <a href="{{ path('com_Exptransp_Voyage_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_Exptransp_Voyage_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}

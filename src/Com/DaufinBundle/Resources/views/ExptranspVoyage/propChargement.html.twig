@@ -1,0 +1,269 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Proposer Chargement</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Voyage</a></li>
+                  <li class="active">Proposer Chargement</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+     <script>
+
+ $(document).ready(function() {
+	  var $datepicker = $( "#datepicker" );
+	 // alert('ddd');
+
+	  $datepicker.datepicker('setDate', new Date());
+   // $( "#datepicker" ).datepicker();
+  });
+  </script>
+   <script type="text/javascript">
+
+
+   function chargerPropos(){
+
+	   var e1 = document.getElementById("voyage");
+	   var idVoyage = e1.options[e1.selectedIndex].value;
+
+	   var e2 = document.getElementById("vehicule");
+	   var idVehicule = e2.options[e2.selectedIndex].value;
+
+	   var e3 = document.getElementById("trajet");
+	   var idTrajet = e3.options[e3.selectedIndex].value;
+	  var date = document.getElementById("datepicker").value;
+	   
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_prop_chargement'),
+	          type: "POST",
+	          data: { "idVoyage" : idVoyage,
+	        	      "idVehicule" : idVehicule,
+	        	      "idTrajet" : idTrajet,
+	        	      "date":date
+		          
+		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+	              $('#table-body').html('');
+	              
+	              if (obj.hasOwnProperty('code')) {
+			             //Show Error
+			             alert("ERROR : "+obj.message);
+			             return;
+	              }	                
+	        	  
+	        	
+	              for (i in obj){
+	                  $('#table-body').append(
+	                      "<tr>" +
+	                      "<td>" + obj[i].ID + "</td>" +
+	                      "<td>" + obj[i].codeSTrajet + "</td>" +
+	                      "<td>" + obj[i].codeExp + "</td>" +
+	                      "<td>" + obj[i].NBR_COLIS + "</td>" +
+	                      "<td>" + obj[i].NBR_PALETS + "</td>" +
+	                      "<td>" + obj[i].POIDS_EXP + "</td>" +
+	                     
+	                      "</tr>");
+	                  }
+             }	
+	       });
+	   
+   
+
+	   }
+   </script>
+  <script type="text/javascript">
+  function printData()
+  {
+	  var e1 = document.getElementById("voyage");
+		var idVoyage = e1.options[e1.selectedIndex].value;
+
+		var e2 = document.getElementById("vehicule");
+		var idVehicule = e2.options[e2.selectedIndex].value;
+
+		var e12 = document.getElementById("trajet");
+		var idTrajet = e12.options[e12.selectedIndex].value;
+		
+	
+
+		
+	  $.ajax({
+          url: Routing.generate('com_daufin_ajax_generer_char2PDF'),
+          type: "POST",
+          data: { "voyage" : idVoyage,
+        	  	  "vehicule" : idVehicule,
+        	  	  "trajet" : idTrajet
+        	  	
+	        	   },
+          success: function(data) {
+             //(success) do something...
+             //variable "data" contains data returned by the controller. 
+        	  var obj = jQuery.parseJSON(data);
+              if (obj.hasOwnProperty('codeError')) 
+							 alert("ERROR : "+obj.error);
+              else {
+
+            	  var url=obj.urlPDF;
+	 			 	//document.getElementById("linkFacture").href=url;
+	 			 	//document.getElementById("linkFacture").style.visibility = "visible";
+							 
+					 var wnd = window.open(url);
+                  }
+                          
+             
+                          
+
+         }	
+       });
+  }
+</script>
+  <script type="text/javascript">
+
+  function generer(){
+
+	
+	  $.ajax({
+          url: Routing.generate('com_daufin_ajax_generer_declaration'),
+          type: "POST",
+          data: { 
+	        	   },
+          success: function(data) {
+             //(success) do something...
+             //variable "data" contains data returned by the controller. 
+              
+             
+         }	
+       });
+   
+
+	  }
+  </script>
+     <script type="text/javascript">
+ 
+   function chargerVehiculeVoyage(sl){
+  
+	        var e1 = document.getElementById(sl.id);
+			var trajet = e1.options[e1.selectedIndex].value;
+				   		      				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_charger_vehicule_voyage'),
+		          type: "POST",
+		          data: { "trajet" : trajet
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 		                
+		        	  var obj = jQuery.parseJSON(data);
+		        	  if (obj.hasOwnProperty('code')) 
+							 alert("ERROR : "+obj.message);
+         			  else {
+								 $("#vehicule").html('');
+								 $("#voyage").html(''); 		 		        	 
+				               for(var i=0;i<obj.length; i++)
+				               { 
+				                   $("#voyage").append('<option value="'+ obj[i].idVoyage +'"> '+ obj[i].idVoyage +'---['+ obj[i].datePlanif+'] </option>');
+				                   $("#vehicule").append('<option value="'+ obj[i].idVehicule +'"> '+ obj[i].matricule +' </option>');
+				                       
+				               }
+				               }	
+
+		          }
+
+			       });
+		       
+		
+  }
+ 
+</script>
+   
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+	<tr>
+		
+		    <td>Trajet</td>
+		<td>
+		    <select id="trajet" onchange="chargerVehiculeVoyage(this)">
+		    <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     {% for trajet in trajets %}
+		           <option value="{{ trajet.id }}"> {{ trajet.libelleTrajet }}</option>
+		     {% endfor %}		           
+		    </select>
+		</td>
+		 </td>
+		<td>Vehicule</td>
+		<td>
+			<select id="vehicule">	           
+		    </select>
+		</td>
+		
+	</tr>
+		<tr>
+		<td>Voyage</td>
+		<td>
+			<select id="voyage"></select>
+		<td>Date Depart</td>
+		<td> 
+		<input type="text" class="form-control datetime" size="20" style="width: 50%;" id="datepicker"/>  
+		 <script type="text/javascript">
+                    var date = new Date();
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+
+                    if (month < 10) month = "0" + month;
+                    if (day < 10) day = "0" + day;
+
+                    var today = year + "-" + month + "-" + day+" 22:00";
+                    document.getElementById('datepicker').value = today;
+                    </script>
+        </td>
+        <tr>
+        <td>
+        </td>
+	
+        <td>
+		<button value="Valider" class="btn btn-success btn-rad" onclick="chargerPropos();">Rechercher</button> 
+		</td>
+		<td>
+		<input type="button" value="Génerer les liens"  class="btn btn-warning"  onclick="generer();" />
+		</td>
+		<td>
+		<input type="button" value="imprimer" onclick="printData();" /></td>
+		</td>
+	</tr>
+</table>
+
+<div>
+
+
+
+
+		    <table class="table" id="printTable">
+		        <thead>
+		            <tr >
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Expedition Transport</th>
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Sous Trajet</th>
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Code Declaration</th>
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Nbre Colis</th>
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Nbre Palets</th>
+		                <th style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Poids Total</th>
+		            </tr>
+		        </thead>
+		        <tbody id="table-body">
+		   
+		        </tbody>
+		    </table>
+</div>
+</div>
+
+  
+    {% endblock %}
+    
+    

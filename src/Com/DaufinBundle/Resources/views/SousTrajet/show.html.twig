@@ -1,0 +1,52 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Sous Trajet</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Afficher Sous Trajet</li>
+                </ol>
+        </div>
+{% endblock %}
+
+
+{% block container %}
+    
+    <a href="{{ path('com_s_trajet') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+   <div style="float:right;">
+       <a href="{{ path('com_s_trajet_edit', { 'id': entity.id }) }}">
+        <button class="btn btn-info" style="width:100px;">Editer</button>
+       </a>
+   </div>
+    <br>
+<div align="center"> 
+    <table class="record_properties" style="width:400px;" >
+        <tbody>
+            <tr>
+                <th style="width:35%;">Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Codesoustrajet</th>
+                <td>{{ entity.codeSousTrajet }}</td>
+            </tr>
+            <tr>
+                <th>Ville de Départ</th>
+                <td>{{ entity.villeDepart }}</td>
+            </tr>
+            <tr>
+                <th>Ville d'Arrivé</th>
+                <td>{{ entity.villeArrivee }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>>
+     <br>
+    {{ form(delete_form) }}
+{% endblock %}

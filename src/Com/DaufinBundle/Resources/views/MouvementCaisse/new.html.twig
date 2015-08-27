@@ -1,0 +1,50 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Mouvement Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Ajouter</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Mouvement Caisse</h1>
+
+   
+  {{ form_start(form) }}
+       {{ form_errors(form) }}
+    
+    
+      <table class="form" border="0">
+       <tr >
+       		<td  > Caisse</td>
+       		<td> {{ form_widget(form.caisse) }}</td>
+       		<td style="font-size: 12px;">  Type Mouvement</td>
+       		<td > {{ form_widget(form.typeMouvement) }}</td>
+       	</tr>
+       	<tr>	
+       		<td>Libellé Mouvement</td>
+			<td >{{ form_widget(form.libelleMouvement) }}</td>   
+			<td>Valeur Mouvement</td>   
+			<td>{{ form_widget(form.valeur) }} </td>
+		</tr>
+	    <tr>	
+       		<td>Expédition</td>
+			<td >{{ form_widget(form.expedition) }}</td>   
+			<td> </td>   
+			<td> </td>
+		</tr>  
+	   	<tr>
+				<td> </td>	  
+				<td>   {{ form_widget(form.submit) }} </td>
+			    <td> </td>
+			    <td></td>	  		    
+	   	</tr>
+    
+  
+    {{ form_end(form) }}
+{% endblock %}

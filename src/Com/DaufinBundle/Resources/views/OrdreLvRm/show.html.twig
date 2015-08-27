@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>OrdreLvRm</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{{ entity.dateCreation|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Typeordre</th>
+                <td>{{ entity.typeOrdre }}</td>
+            </tr>
+            <tr>
+                <th>Datelivraison</th>
+                <td>{{ entity.dateLivraison|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Ordrelivraison</th>
+                <td>{{ entity.ordreLivraison }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Ordre_Lv_Rm') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Ordre_Lv_Rm_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,30 @@
+com_Operer_ordre:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:index" }
+
+com_Operer_ordre_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:show" }
+
+com_Operer_ordre_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:new" }
+
+com_Operer_ordre_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:create" }
+    methods:  POST
+
+com_Operer_ordre_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:edit" }
+
+com_Operer_ordre_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:update" }
+    methods:  [POST, PUT]
+
+com_Operer_ordre_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:OpererOrdre:delete" }
+    methods:  [POST, DELETE]

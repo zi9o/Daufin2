@@ -1,0 +1,30 @@
+com_mouvnt_caisse:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:index" }
+
+com_mouvnt_caisse_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:show" }
+
+com_mouvnt_caisse_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:new" }
+
+com_mouvnt_caisse_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:create" }
+    methods:  POST
+
+com_mouvnt_caisse_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:edit" }
+
+com_mouvnt_caisse_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:update" }
+    methods:  [POST, PUT]
+
+com_mouvnt_caisse_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:MouvementCaisse:delete" }
+    methods:  [POST, DELETE]

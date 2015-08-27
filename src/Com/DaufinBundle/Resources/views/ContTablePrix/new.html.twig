@@ -1,0 +1,26 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Exp.Transport / Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Exp.Transport / Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container -%}
+    <h1>ContTablePrix creation</h1>
+<div  style="width:25%;">
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_ContTablePrix') }}">
+            Back to the list
+        </a>
+    </li>
+        </ul>
+</div>
+{% endblock %}

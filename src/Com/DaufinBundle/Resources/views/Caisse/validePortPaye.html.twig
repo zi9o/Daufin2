@@ -1,0 +1,188 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Encaissement Port Payé</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Port Payé</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+ <style>
+
+#codeColis:focus{
+background-color: #a5a7f0;
+}
+.trHeader th{
+font-weight: bold;
+font-size: 13px;
+background-color: #6d6262;
+color: #E4E3E3;
+}
+.trERROR td{
+background-color: #F9B0AD;
+}
+.trSUCCES td{
+background-color: #C0E7AC;
+}
+.hide{
+display: none;}
+.show{
+display: inline;
+}
+ </style>
+ <script type="text/javascript">
+
+ function getCaisseExpediton(){
+
+	 var num = document.getElementById("codeColis").value;
+	if(num.length===10){
+	
+	   var codeDeclaration=num.substring(0,10);
+	   var numColis=num.substring(10,num.length);
+	   //document.getElementById("codeColis").value='';
+	   document.getElementById("codeColis").focus();
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_get_expedition'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+	               document.getElementById("codeDeclaration").value=codeDeclaration;	               
+	               document.getElementById("portDU").className="hide"; 	
+
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   		 else{
+
+     	   			 
+     	              if(obj.modePort=='Port Paye'){
+		     	   			 document.getElementById("modePort").value=obj.modePort;
+			   				 document.getElementById("montantHT").value=obj.montantHT;
+			   			     document.getElementById("montantTVA").value=obj.montantTVA;
+			   		         document.getElementById("montantTTC").value=obj.montantTTC;
+			   		         document.getElementById("portDU").className="show"; 
+			   		     if(obj.etatRegExpedition=='Reglee') 
+				   		     alert('Le Mode Port Paye de cette Expédition  est déja Encaissée');	
+     	   				 }    	   			 
+	     	   		 }      
+	          }           	
+	       });	     
+	}   
+
+      	}
+   </script>
+   <script type="text/javascript">
+    function validerPortDu(){
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	   var valeurTTC=document.getElementById("valeurTTC").value;
+	   var refPaiement=document.getElementById("refPaiement").value;
+	 
+	   var e=document.getElementById("modePaiement");
+	   var modePaiement = e.options[e.selectedIndex].value;
+
+	   if(codeDeclaration==''){
+            alert('Erreur de code de Déclaration');
+            return false;
+             }
+
+	   if(valeurTTC==''){
+            alert('Veuillze entrer une Valeur TTC');
+            return false;
+             }
+	   if(refPaiement=='' && modePaiement !='espece' ){
+           alert('Veuillze entrer un Référence de paiement');
+           return false;
+            }
+       
+		   
+	  
+	   
+	   
+	    $.ajax({
+	          url: Routing.generate('com_daufin_ajax_caisse_valid_port'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	  	  "valeurTTC" : valeurTTC,
+	        	      "refPaiement" : refPaiement,
+	        	      "modePaiement" : modePaiement,	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("Succès : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+
+     <tr >
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 14px;">
+                   Code Déclaration 
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="text" name="colis" size="20" id="codeColis" onKeyUp="getCaisseExpediton()">  
+                	<input type="hidden" id="codeDeclaration" readonly="readonly">           
+               </td>
+       </tr>
+     
+
+</table>
+<div style="margin-top: 20px;" id="portDU" class="hide">
+
+    <table class="table">
+ 			<tr>
+ 			<td rowspan="2" style="font-weight: bold;color:#6d1410 ;font-size: 13px;width: 20px;background-color: antiquewhite;">Mode Port</td>
+		   <td><input type="text" name="modePort" size="10" id="modePort" readonly="readonly"></td>		    
+		   <td>Montant HT</td>
+		   <td> <input type="text" name="montantHT"  size="12" id="montantHT" style="text-align: right;" readonly="readonly"></td>  
+		   <td>Montant TVA</td>
+		   <td> <input type="text" name="montantTVA"  size="12" id="montantTVA" style="text-align: right;" readonly="readonly"></td>        
+		   <td>Montant TTC</td>
+		   <td> <input type="text" name="montantTTC"  style="text-weight:bold;text-size:14; text-align: right;" size="12" readonly="readonly" id="montantTTC" /></td> 		   
+          </tr>
+          <tr>
+				<td >Mode Paiement</td>
+			   <td><select name="modePaiement" id="modePaiement">
+			          <option value="espece"> Espéce</option>
+			          <option value="cheque"> Chéque</option>
+			          <option value="traite"> Traite</option>
+			       </select> 
+			   </td>		    
+			   <td>Valeur TTC</td>
+			   <td> <input type="text" name="valeurTTC"  size="12" id="valeurTTC" style="text-align: right;"></td>  
+			   <td>Réf Paiement</td>
+			   <td> <input type="text" name="refPaiement"  size="12" id="refPaiement" style="text-align: right;"></td>        
+			   <td><input type="button" value="Valider" id="validation" onclick="validerPortDu()"></td>
+	 </tr>
+   </table>
+</div>
+</div>
+
+ 
+
+  
+    {% endblock %}
+    
+    

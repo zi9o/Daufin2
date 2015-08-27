@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>OrdreLvRm list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datecreation</th>
+                <th>Typeordre</th>
+                <th>Datelivraison</th>
+                <th>Ordrelivraison</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_Ordre_Lv_Rm_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.typeOrdre }}</td>
+                <td>{% if entity.dateLivraison %}{{ entity.dateLivraison|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.ordreLivraison }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_Ordre_Lv_Rm_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_Ordre_Lv_Rm_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_Ordre_Lv_Rm_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

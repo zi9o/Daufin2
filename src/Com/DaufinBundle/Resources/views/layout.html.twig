@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="{{asset('bundles/comdaufin/images/favicon.png')}}">
+
+
+        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+
+        <title>Daufin Messagerie</title>
+        <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
+        -->
+
+        <!-- Bootstrap core CSS -->
+        <link href="{{asset('bundles/comdaufin/js/bootstrap/dist/css/bootstrap.css')}}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/jquery.gritter/css/jquery.gritter.css')}}" />
+        <link rel="stylesheet" href="{{asset('bundles/comdaufin/fonts/font-awesome-4/css/font-awesome.min.css')}}">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/bootstrap.switch/bootstrap-switch.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/jquery.select2/select2.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/bootstrap.slider/css/slider.css')}}" />
+        <link href="{{asset('bundles/comdaufin/css/style.css')}}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset('bundles/comdaufin/css/pygments.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/jquery.nanoscroller/nanoscroller.css')}}" />
+        <link href="{{asset('bundles/comdaufin/js/fuelux/css/fuelux.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/comdaufin/js/fuelux/css/fuelux-responsive.min.css')}}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/jquery.easypiechart/jquery.easy-pie-chart.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('bundles/comdaufin/js/jquery.datatables/bootstrap-adapter/css/datatables.css')}}" />
+    </head>
+
+    <body>
+
+        <!-- Fixed navbar -->
+        <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="fa fa-gear"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><span>     .</span></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contact <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="dropdown-submenu"><a href="#">Sub menu</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                    </ul>
+                                </li>              
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Large menu <b class="caret"></b></a>
+                            <ul class="dropdown-menu col-menu-2">
+                                <li class="col-sm-6 no-padding">
+                                    <ul>
+                                        <li class="dropdown-header"><i class="fa fa-group"></i>Users</li>
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li class="dropdown-header"><i class="fa fa-gear"></i>Config</li>
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li> 
+                                    </ul>
+                                </li>
+                                <li  class="col-sm-6 no-padding">
+                                    <ul>
+                                        <li class="dropdown-header"><i class="fa fa-legal"></i>Sales</li>
+                                        <li><a href="#">New sale</a></li>
+                                        <li><a href="#">Register a product</a></li>
+                                        <li><a href="#">Register a client</a></li> 
+                                        <li><a href="#">Month sales</a></li>
+                                        <li><a href="#">Delivered orders</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right user-nav">
+                        <li class="dropdown profile_menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img alt="Avatar" src="{{asset('bundles/comdaufin/images/avatar2.jpg')}}" /> {% if is_granted('IS_AUTHENTICATED_FULLY') %} Bonjour, {{ app.user }} {% endif %}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                                    {% else %}
+                                    <li><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
+                                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                                    {% endif %}
+                            </ul>
+                        </li>
+                    </ul>			
+                    <ul class="nav navbar-nav navbar-right not-nav">
+                        <li class="button dropdown">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class=" fa fa-comments"></i></a>
+                            <ul class="dropdown-menu messages">
+                                <li>
+                                    <div class="nano nscroller">
+                                        <div class="content">
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="{{asset('bundles/comdaufin/images/avatar2.jpg')}}" alt="avatar" /><span class="date pull-right">13 Sept.</span> <span class="name">Daniel</span> I'm following you, and I want your money! 
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="{{asset('bundles/comdaufin/images/avatar_50.jpg')}}" alt="avatar" /><span class="date pull-right">20 Oct.</span><span class="name">Adam</span> is now following you 
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="{{asset('bundles/comdaufin/images/avatar4_50.jpg')}}" alt="avatar" /><span class="date pull-right">2 Nov.</span><span class="name">Michael</span> is now following you 
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <img src="{{asset('bundles/comdaufin/images/avatar3_50.jpg')}}" alt="avatar" /><span class="date pull-right">2 Nov.</span><span class="name">Lucy</span> is now following you 
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="foot"><li><a href="#">View all messages </a></li></ul>           
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="button dropdown">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i><span class="bubble">2</span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="nano nscroller">
+                                        <div class="content">
+                                            <ul>
+                                                <li><a href="#"><i class="fa fa-cloud-upload info"></i><b>Daniel</b> is now following you <span class="date">2 minutes ago.</span></a></li>
+                                                <li><a href="#"><i class="fa fa-male success"></i> <b>Michael</b> is now following you <span class="date">15 minutes ago.</span></a></li>
+                                                <li><a href="#"><i class="fa fa-bug warning"></i> <b>Mia</b> commented on post <span class="date">30 minutes ago.</span></a></li>
+                                                <li><a href="#"><i class="fa fa-credit-card danger"></i> <b>Andrew</b> killed someone <span class="date">1 hour ago.</span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="foot"><li><a href="#">View all activity </a></li></ul>           
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="button"><a href="javascript:;"><i class="fa fa-microphone"></i></a></li>				
+                    </ul>
+
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+
+        <div id="cl-wrapper">
+            <div class="cl-sidebar">
+                <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+                <div class="cl-navblock">
+                    <ul class="cl-vnavigation">
+                        {% if is_granted('ROLE_SHOW_ALL_AGENCE') or is_granted('ROLE_SHOW_ALL_PERSONNEL') or 
+				      is_granted('ROLE_SHOW_ALL_VEHICULE') or is_granted('ROLE_SHOW_ALL_RUBRIQAUE') or 
+				      is_granted('ROLE_SHOW_ALL_VILLE') or is_granted('ROLE_SHOW_ALL_SECTEUR') or
+				      is_granted('ROLE_SHOW_ALL_SOUS_TRAJET') or is_granted('ROLE_SHOW_ALL_SOUS_TRAJET') or
+				      is_granted('ROLE_SHOW_ALL_TRAJET') or is_granted('ROLE_SHOW_ALL_TYPE_VALEUR') or
+				      is_granted('ROLE_SHOW_ALL_TABLE_PRIX') or is_granted('ROLE_SHOW_ALL_SITE') or
+				      is_granted('ROLE_EDIT_TAXATION')   %}																		
+
+                        <li><a href="#"><i class="fa fa-cogs"></i>PARAMETRES</a>
+                            <ul class="sub-menu">
+
+                                {% if is_granted('ROLE_SHOW_ALL_AGENCE') %} 
+                                    <li><a href="{{ path('com_agence') }}"><i class="fa fa-building-o"></i>Agences</a></li>						
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_PERSONNEL') %} 
+
+                                    <li><a href="{{ path('com_Personnel') }}"><i class="fa fa-user"></i>Personnel</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_VEHICULE') %} 						
+                                    <li><a href="{{ path('com_vehicule') }}"><i class="fa fa-truck"></i>Vehicules</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_RUBRIQAUE') %} 
+                                    <li><a href="{{ path('com_rubrique') }}"><i class="fa fa-bookmark"></i>Rubriques</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_VILLE') %} 
+                                    <li><a href="{{ path('com_ville') }}"><i class="fa fa-map-marker"></i>Villes</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_SECTEUR') %} 
+                                    <li><a href="{{ path('com_secteur') }}"><i class="fa fa-thumb-tack"></i>Secteurs</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_SOUS_TRAJET') %} 
+                                    <li><a href="{{ path('com_s_trajet') }}"><i class="fa fa-random"></i>Sous Trajets</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_TRAJET') %} 
+                                    <li><a href="{{ path('com_trajet') }}"><i class="fa fa-road"></i>Trajets</a></li>
+                                    {% endif %}
+                                <li><a href="{{ path('com_trajet_s_trajet') }}"><i class="fa fa-check"></i>Affectation T/S.T</a></li>
+                                    {% if is_granted('ROLE_SHOW_ALL_TYPE_VALEUR') %} 
+                                    <li><a href="{{ path('com_type_valeur') }}"><i class="fa  fa-lightbulb-o"></i>Types de Valorisation</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_TABLE_PRIX') %} 
+                                    <li><a href="{{ path('com_table_prix') }}"><i class="fa fa-money"></i>Table des Prix</a></li>  
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SHOW_ALL_SITE') %}                                                
+                                    <li><a href="{{ path('com_site') }}"><i class="fa fa-flag"></i>Sites</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_EDIT_TAXATION') %} 
+                                    <li><a href="{{ path('com_daufin_com_form_update_taxation') }}"><i class="fa fa-flag"></i>MàJ Taxation</a></li>
+                                    {% endif %}     
+                            </ul>
+                        </li>
+                        {% endif %}    
+                              {% if is_granted('ROLE_SHOW_ALL_CAISSE') or is_granted('ROLE_SHOW_ALL_MOUVEMENT_CAISSE') or is_granted('ROLE_SHOW_CAISSE_AGENCE') or is_granted('ROLE_SHOW_MOUVEMENT_CAISSE_AGENCE')  %}
+                                <li><a href="#"><i class="fa fa-money"></i>CAISSES</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_SHOW_ALL_CAISSE') %} 
+                                            <li><a href="{{ path('com_caisse') }}"><i class="fa  fa-male"></i>Consulter Caisses</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SHOW_ALL_MOUVEMENT_CAISSE') %}                                                                        
+                                            <li><a href="{{ path('com_mouvnt_caisse_new') }}"><i class="fa fa-dashboard"></i>Mouvements Caisse</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SHOW_CAISSE_AGENCE') %}                                                                        
+                                            <li><a href="{{ path('com_caisse_show_caisse_agence', {'categorie':"Service"}) }}"><i class="fa  fa-male"></i>Caisse Agence Service</a></li>
+                                            <li><a href="{{ path('com_caisse_show_caisse_agence', {'categorie':"Depense"}) }}"><i class="fa  fa-male"></i>Caisse Agence Depense</a></li>
+                                           
+                                            {% endif %}
+                                            {% if is_granted('ROLE_ADD_MOUVEMENT_CAISSE_AGENCE') %}                                                                        
+                                            <li><a href="{{ path('com_caisse_new_caisse_agence') }}"><i class="fa fa-dashboard"></i>Mouvement Caisse Agence</a></li>
+                                            {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <li><a href="#"><i class="fa fa-suitcase"></i>Factures</a>
+                                <ul class="sub-menu">
+                                    <li><a href="{{ path('com_daufin_com_find_facture') }}">Générer Facture</a></li>
+                                    <li><a href="{{ path('com_daufin_com_facture_All') }}">Consulter Facture</a></li>
+                                    <li><a href="{{ path('com_daufin_com_factures_edit') }}">Editer Facture</a></li>
+                                    <li><a href="{{ path('com_daufin_com_factures_print') }}">Imprimer Facture</a></li>
+                                </ul>
+                            </li>
+                            {% if is_granted('ROLE_SHOW_ALL_CLIENT') or is_granted('ROLE_SHOW_ALL_CONTRAT') %}
+
+                                <li><a href="#"><i class="fa fa-smile-o"></i>CLIENTS</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_SHOW_ALL_CLIENT') %}   
+                                            <li><a href="{{ path('com_Client') }}"><i class="fa  fa-male"></i>Cient</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SHOW_ALL_CONTRAT') %}       
+                                            <li><a href="{{ path('com_Contrat') }}"><i class="fa fa-dashboard"></i>Contrats</a></li>
+                                            {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_SHOW_ALL_VOYAGE') or is_granted('ROLE_SHOW_ALL_EXPEDITION_TRANSPORT') or is_granted('ROLE_SHOW_ALL_EXPEDITION_TRANSPORT_VOYAGE') %}				
+                                <li><a href="#"><i class="fa  fa-magic"></i>PLANIFICATION</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_SHOW_ALL_VOYAGE') %}   
+                                            <li><a href="{{ path('com_voyage') }}">VOYAGES</a></li>
+                                            {% endif %}
+
+                                        <li><a href="{{ path('com_ExpeTrans') }}">EXPEDITIONS TRANSP</a></li>
+
+                                        {% if is_granted('ROLE_SHOW_ALL_EXPEDITION_TRANSPORT_VOYAGE') %}   
+                                            <li><a href="{{ path('com_Exptransp_Voyage') }}">EXPED_TRANSP/VOYAGE</a></li>
+                                            {% endif %} 
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADD_TAXATION') or is_granted('ROLE_VALID_PORT_PAYE') or is_granted('ROLE_SHOW_ALL_TAXATION') %}									
+                                <li><a href="#"><i class="fa fa-list-alt"></i>TAXATION</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_ADD_TAXATION') %}   						
+                                            <li><a href="{{ path('com_taxation_new') }}">DECLARATION -Standard-</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_ADD_TAXATION') %}  
+                                            <li><a href="{{ path('com_taxation_forfait_new') }}">DECLARATION -Forfait-</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_VALIDER_PORT_PAYE') %}  
+                                            <li><a href="{{ path('com_daufin_com_caisse_declar_port_paye') }}">VALIDER PORT PAYE</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SHOW_ALL_TAXATION') %}  
+                                            <li><a href="{{ path('com_taxation') }}">CONSULTER DECLARATIONS</a></li>
+                                            {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_PROPOSER_CHARGEMENT') or is_granted('ROLE_VALIDER_CHARGEMENT') or is_granted('ROLE_FEUILLE_CHARGEMENT') %}														
+                                <li><a href="#"><i class="fa fa-table"></i>CHARGEMENT</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_PROPOSER_CHARGEMENT') %} 
+                                            <li><a href="{{ path('com_Exptransp_Voyage_propChargement') }}">Proposer Chargement</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_VALIDER_CHARGEMENT') %}  
+                                            <li><a href="{{ path('com_Exptransp_Voyage_validChargement') }}">Valider Chargement</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_FEUILLE_CHARGEMENT') %}  
+                                            <li><a href="{{ path('com_Exptransp_Voyage_feuilleChargement') }}">feuille Chargement</a></li>
+                                            {% endif %} 
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_DECLARER_ARRIVAGE') %}																		
+                                <li><a href="#"><i class="fa fa-pencil-square-o"></i>ARRIVAGE</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_DECLARER_ARRIVAGE') %}  						
+                                            <li><a href="{{ path('com_daufin_com_arrivage_declarer') }}">Déclarer Arrivage</a></li>
+                                            {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_PLAN_LIVRAISON') or is_granted('ROLE_DECLARER_LIVRAISON') or is_granted('ROLE_DECLARER_RETOUR_FOND') %}																		
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i>LIVRAISON</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_PLAN_LIVRAISON') %}  
+                                            <li><a href="{{ path('com_daufin_com_arrivage_planif_livr') }}">Plan de Livraison</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_DECLARER_LIVRAISON') %}  
+                                            <li><a href="{{ path('com_daufin_com_livraison_declar_livr') }}">Déclarer Livraison</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_VALIDER_CHEQUE') or is_granted('ROLE_VALIDER_TRAITE') or is_granted('ROLE_VALIDER_CRBT') or is_granted('ROLE_VALIDER_RETOUR_BL') %}  
+                                            <li><a href="{{ path('com_daufin_com_caisse_declar') }}">Déclarer Retour de Fond</a></li>	
+                                            {% endif %}
+
+
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_SUIVI_EXPEDITIONS') or is_granted('ROLE_SUIVI_SERVICES') or is_granted('ROLE_SYNTEHSE_EXPEDITIONS') or is_granted('ROLE_SUIVI_VOYAGES') %}																		
+
+                                <li><a href="#"><i class="fa fa-dashboard"></i>Reporting</a>
+                                    <ul class="sub-menu">
+                                        {% if is_granted('ROLE_SUIVI_EXPEDITIONS') %}  
+                                            <li><a href="{{ path('com_daufin_com_reporting_suivi_expedition')}}">Suivi Expeditions</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SUIVI_SERVICES') %}  
+                                            <li><a href="{{ path('com_daufin_com_reporting_synthese_expedition')}}">Synthèse Expeditions</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SYNTEHSE_EXPEDITIONS') %}  
+                                            <li><a href="{{ path('com_daufin_com_reporting_suivi_services')}}">Suivi Services</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SYNTEHSE_SERVICES') %}  
+                                            <li><a href="{{ path('com_daufin_com_reporting_synthese_services')}}">Synthèse Services</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SUIVI_VOYAGES') %}  
+                                            <li><a href="{{ path('com_daufin_com_reporting_suivi_voyages')}}">Suivi Voyages</a></li>
+                                            {% endif %}
+
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="container-fluid" id="pcont">
+                {%block _container %}{% endblock %}
+                <div class="cl-mcont">
+                    <!--h3 class="text-center">Content goes here!</h3-->
+                {%block container %}{% endblock %}
+            </div>   
+        {%block conta_iner %}{% endblock %}
+
+    </div>
+
+</div>
+
+<script src="{{asset('bundles/comdaufin/js/jquery.js')}}"></script>
+<script src="{{asset('bundles/comdaufin/js/jquery.select2/select2.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('bundles/comdaufin/js/jquery.parsley/parsley.js')}}" type="text/javascript"></script>
+<script src="{{asset('bundles/comdaufin/js/bootstrap.slider/js/bootstrap-slider.js')}}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.nestable/jquery.nestable.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/behaviour/general.js')}}"></script>
+<script src="{{asset('bundles/comdaufin/js/jquery.ui/jquery-ui.js')}}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/bootstrap.switch/bootstrap-switch.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/fuelux/loader.min.js')}}"></script>	
+<script src="{{asset('bundles/comdaufin/js/modernizr.js')}}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.sparkline/jquery.sparkline.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.easypiechart/jquery.easy-pie-chart.js')}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.gritter/js/jquery.gritter.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.datatables/jquery.datatables.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.datatables/bootstrap-adapter/js/datatables.js')}}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initialize the javascript;
+        App.init();
+        App.dataTables();
+        App.wizard();
+    });
+</script> 
+
+<script type="text/javascript">
+    $("#credit_slider").slider().on("slide", function (e) {
+        $("#credits").html("$" + e.value);
+    });
+    $("#rate_slider").slider().on("slide", function (e) {
+        $("#rate").html(e.value + "%");
+    });
+</script>
+
+{% block script %}{% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.flot/jquery.flot.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.flot/jquery.flot.pie.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.flot/jquery.flot.resize.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.flot/jquery.flot.labels.js')}}"></script>
+<script type="text/javascript" src="{{asset('bundles/comdaufin/js/jquery.tabletojson.min.js')}}"></script>
+</body>
+</html>

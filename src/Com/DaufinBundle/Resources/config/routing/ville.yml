@@ -1,0 +1,30 @@
+com_ville:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Ville:index" }
+
+com_ville_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Ville:show" }
+
+com_ville_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Ville:new" }
+
+com_ville_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Ville:create" }
+    methods:  POST
+
+com_ville_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Ville:edit" }
+
+com_ville_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Ville:update" }
+    methods:  [POST, PUT]
+
+com_ville_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Ville:delete" }
+    methods:  [POST, DELETE]

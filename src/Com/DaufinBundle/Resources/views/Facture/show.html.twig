@@ -1,0 +1,95 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+    <div class="page-head">
+        <h2>Afficher Facture</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Factures</a></li>
+            <li class="active">Afficher Facture</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block container %}
+
+    
+    <a href="{{ path('com_daufin_com_facture_All') }}">
+        <button class="btn btn-default">
+            <i class="fa  fa-reply fa-1x"></i>Retour à la liste
+        </button>
+    </a>
+    <table style="width: 100%;">
+        <tr><td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;">Facture N°: </td>
+            <td style="padding-left: 20px;text-align: center; font-weight: bold;">{{ entities.numFacture }}</td>
+            <td style="text-align: center;padding-left: 20px">Créer Le {{ dateCreation }}</td>
+            <td style="text-align: center;font-weight: bold;font-size: 14px;"> Facture {{ entities.etatFacture }}</td>
+        </tr>
+    </table>
+    </br>
+    </br>
+    <table  >
+        <tr><td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;"> Client</td> </tr>
+        <tr><td>Code Client :</td> <td>{{ codeClient }}</td></tr>
+        <tr><td>Client :</td><td>{{ client }}</td></tr>
+        {# <tr><td>Adresse Client :</td><td>{{ adresse }}</td> </tr> #}
+        <tr><td>Tél Client :</td><td>{{ telClient }}</td> </tr>
+    </table>
+
+    </br>
+    </br>
+    {# <div id="Button_Edit_Save">
+        <button class="btn btn-default" onclick="PrepareEdit();">
+            <span class="glyphicon glyphicon-edit"></span> Editer la liste des expeditions
+        </button>
+    </div> #}
+    <table id="datatable">
+        <thead>
+            <tr><td  colspan="7" style="font-weight: bold;font-size: 14px;text-align: center;"> Expeditions</td></tr>
+            <tr>
+                <th>Code Déclaration</th>
+                <th>Agence Départ</th>
+                <th>Agence Arrivée</th>
+                <th>Mode Port</th>
+                <th>Montant HT</th>
+                <th>Montant TVA</th>
+                <th>Montant TTC</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in expeditions %}
+                <tr>
+                    <td>{{ entity.code_dec }}</td>
+                    <td>{{ entity.AgenceD }}</td>
+                    <td>{{ entity.AgenceR }}</td>
+                    <td>{{ entity.mode }}</td>
+                    <td>{{ entity.ht|number_format(2, '.', ',')}}</td>
+                    <td>{{ entity.tva|number_format(2, '.', ',')}}</td>
+                    <td>{{ entity.ttc|number_format(2, '.', ',')}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    </br>
+    </br>
+    <table>
+        <tr>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">Montant HT (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">{{ entities.totalMontantHT|number_format(2, '.', ' ')}}</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">Montant TVA (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">{{ entities.totalMontantTVA|number_format(2, '.', ' ')}}</td>
+        </tr>
+
+        <tr> 
+            <td colspan="2"  style="font-weight:bold;font-size: 14px">Montant TTC (DH):</td>
+            <td colspan="2" style="font-weight:bold;font-size: 14px">{{ entities.totalMontantTTC|number_format(2, '.', ' ')}}</td>
+        </tr>
+
+    </table>
+
+
+{% endblock %}

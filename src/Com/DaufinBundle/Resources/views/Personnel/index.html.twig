@@ -1,0 +1,65 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste du Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste du Personnel</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <a href="{{ path('com_Personnel_new') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Fonction</th>
+                <th>Téléphone</th>
+                <th>GSM</th>
+                <th>CIN</th>
+                <th>Date de travail</th>
+                <th>Etat d'activité</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_Personnel_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.matriculePers }}</td>
+                <td>{{ entity.nomPers }}</td>
+                <td>{{ entity.prenomPers }}</td>
+                <td>{{ entity.fonction }}</td>
+                <td>{{ entity.telPers }}</td>
+                <td>{{ entity.gsmPers }}</td>
+                <td>{{ entity.cinPers }}</td>
+                <td>{% if entity.dateDebut %}{{ entity.dateDebut|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.etatActivitee }}</td>
+                <td align="center">
+                    <a href="{{ path('com_Personnel_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_Personnel_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+      
+    {% endblock %}

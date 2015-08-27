@@ -1,0 +1,76 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{%block container%}
+    <h1>Expedition list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Envdate</th>
+                <th>Envremarque</th>
+                <th>Recdate</th>
+                <th>Recremarque</th>
+                <th>Poidsexp</th>
+                <th>Volumeexp</th>
+                <th>Nbrcolis</th>
+                <th>Nbrpalets</th>
+                <th>Datedecl</th>
+                <th>Mdport</th>
+                <th>Expval</th>
+                <th>Etatexp</th>
+                <th>Totalmontant</th>
+                <th>Taxtype</th>
+                <th>Moderegl</th>
+                <th>Etatregl</th>
+                <th>LvDate</th>
+                <th>LvRemarque</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_Expedition_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.envDate %}{{ entity.envDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.envRemarque }}</td>
+                <td>{% if entity.recDate %}{{ entity.recDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.recRemarque }}</td>
+                <td>{{ entity.poidsExp }}</td>
+                <td>{{ entity.volumeExp }}</td>
+                <td>{{ entity.nbrColis }}</td>
+                <td>{{ entity.nbrPalets }}</td>
+                <td>{% if entity.dateDecl %}{{ entity.dateDecl|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.mdPort }}</td>
+                <td>{{ entity.expVal }}</td>
+                <td>{{ entity.etatExp }}</td>
+                <td>{{ entity.totalMontant }}</td>
+                <td>{{ entity.taxType }}</td>
+                <td>{{ entity.modeRegl }}</td>
+                <td>{{ entity.etatRegl }}</td>
+                <td>{% if entity.dateReglement %}{{ entity.dateReglement|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.lvDate %}{{ entity.lvDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.lvRemarque }}</td>                
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_Expedition_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_Expedition_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_Expedition_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

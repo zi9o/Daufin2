@@ -1,0 +1,30 @@
+com_traite:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Traite:index" }
+
+com_traite_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Traite:show" }
+
+com_traite_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Traite:new" }
+
+com_traite_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Traite:create" }
+    methods:  POST
+
+com_traite_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Traite:edit" }
+
+com_traite_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Traite:update" }
+    methods:  [POST, PUT]
+
+com_traite_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Traite:delete" }
+    methods:  [POST, DELETE]

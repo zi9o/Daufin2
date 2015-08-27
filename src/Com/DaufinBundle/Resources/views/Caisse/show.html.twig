@@ -1,0 +1,85 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Afficher</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Caisse</h1>
+<div class="block-flat" >   
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <td style="font-weight: bold;">Id</td>
+                <td>{{ entity.id }}</td>
+                
+                 <td style="font-weight: bold;">Date Début</td>
+                <td>{{ entity.dateDebut|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Agence</td>
+                <td><a href="{{ path('com_agence_show', { 'id': entity.agence.id }) }}">{{ entity.agence.libelleAg }}</a></td>
+                  <td style="font-weight: bold;">Libelle de Caisse</td>
+                <td>{{ entity.libelleCaisse }}</td>
+            </tr>
+            <tr>
+                 <td style="font-weight: bold;">Catégorie de Caisse</td>
+                 <td>{{ entity.categorieCaisse }}</td>
+                 <td style="font-weight: bold;">Type Caisse</td>
+                 <td>{{ entity.typeCaisse }}</td>
+            </tr>
+            <tr>
+                 
+                 <td colspan="2" style="font-weight: bold;" >Solde Caisse</td>
+                <td colspan="2" >{{ entity.soldeCaisse }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 20px;">
+      <h6>Les Opérartions effectuer sur la Caisse</h6>
+	    <table class="table table-bordered" id="datatable">
+             <thead>
+
+		            <tr >
+		            	<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">numero</td>
+		            	<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Agence</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Personne</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Expédition</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Libelle Mouvement</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Date Mouvement</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Type</td>
+		           
+		                
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Valeur</td>
+		                
+		            </tr>
+		            </thead>
+		            <tbody>
+		            {% for mouvement in mouvements %} 
+		            <tr>
+		            <td> {{ mouvement.id }}</td>
+		            <td>{{ mouvement.agence.libelleAg }}</td>
+		            <td>{{ mouvement.personnel.nomPers }} {{ mouvement.personnel.prenomPers }}</td>
+		            <td>{% if mouvement.expedition %}{{ mouvement.expedition.codeDeclaration }}{% endif %}</td>
+		            <td>{{ mouvement.libelleMouvement }}</td>
+		            <td>{% if mouvement.dateMouvement %}{{ mouvement.dateMouvement|date('Y-m-d H:i:s') }}{% endif %}</td>
+	
+		             <td>{{ mouvement.typeMouvement }}</td>
+		            <td>{{ mouvement.valeur }}</td>
+		            </tr>
+		             {% endfor %}
+		            </tbody>
+		        
+		    </table>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{%block container%}
+    <h1>Expedition</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Code Déclaration</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Envdate</th>
+                <td>{{ entity.envDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Envremarque</th>
+                <td>{{ entity.envRemarque }}</td>
+            </tr>
+            <tr>
+                <th>Recdate</th>
+                <td>{{ entity.recDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Recremarque</th>
+                <td>{{ entity.recRemarque }}</td>
+            </tr>
+            <tr>
+                <th>Poidsexp</th>
+                <td>{{ entity.poidsExp }}</td>
+            </tr>
+            <tr>
+                <th>Volumeexp</th>
+                <td>{{ entity.volumeExp }}</td>
+            </tr>
+            <tr>
+                <th>Nbrcolis</th>
+                <td>{{ entity.nbrColis }}</td>
+            </tr>
+            <tr>
+                <th>Nbrpalets</th>
+                <td>{{ entity.nbrPalets }}</td>
+            </tr>
+            <tr>
+                <th>Datedecl</th>
+                <td>{{ entity.dateDecl|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Mdport</th>
+                <td>{{ entity.mdPort }}</td>
+            </tr>
+            <tr>
+                <th>Expval</th>
+                <td>{{ entity.expVal }}</td>
+            </tr>
+            <tr>
+                <th>Etatexp</th>
+                <td>{{ entity.etatExp }}</td>
+            </tr>
+            <tr>
+                <th>Totalmontant</th>
+                <td>{{ entity.totalMontant }}</td>
+            </tr>
+            <tr>
+                <th>Taxtype</th>
+                <td>{{ entity.taxType }}</td>
+            </tr>
+            <tr>
+                <th>Moderegl</th>
+                <td>{{ entity.modeRegl }}</td>
+            </tr>
+            <tr>
+                <th>Etatregl</th>
+                <td>{{ entity.etatRegl }}</td>
+            </tr>
+            <tr>
+                <th>Datereglement</th>
+                <td>{{ entity.dateReglement|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Lvdate</th>
+                <td>{{ entity.lvDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Lvremarque</th>
+                <td>{{ entity.lvRemarque }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Expedition') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Expedition_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

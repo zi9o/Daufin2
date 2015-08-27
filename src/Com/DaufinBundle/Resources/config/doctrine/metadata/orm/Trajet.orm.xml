@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Trajet" table="trajet">
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="codeTrajet" type="string" column="CODE_TRAJET" length="50" nullable="true"/>
+    <field name="libelleTrajet" type="string" column="LIBELLE_TRAJET" length="50" nullable="true"/>
+  </entity>
+</doctrine-mapping>

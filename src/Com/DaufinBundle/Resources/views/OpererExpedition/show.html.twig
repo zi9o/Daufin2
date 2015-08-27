@@ -1,0 +1,47 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Operation Expédition</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">EXPEDITIONS</a></li>
+                  <li class="active">Opération /Afficher</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Operation Expédition</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Date opération</th>
+                <td>{{ entity.dateOperation|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Type opération</th>
+                <td>{{ entity.typeOperation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Oprer_Expedition') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Oprer_Expedition_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

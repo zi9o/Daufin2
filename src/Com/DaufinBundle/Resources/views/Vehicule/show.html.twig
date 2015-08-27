@@ -1,0 +1,64 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Vehicule</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Afficher Vehicule</li>
+                </ol>
+        </div>
+{% endblock %}
+
+
+{% block container %}
+    
+    <a href="{{ path('com_vehicule') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+   <div style="float:right;">
+       <a href="{{ path('com_vehicule_edit', { 'id': entity.id }) }}">
+        <button class="btn btn-info" style="width:100px;">Editer</button>
+       </a>
+   </div>
+    <br>
+<div align="center"> 
+    <table class="record_properties" style="width:400px;" >
+        <tbody>
+            <tr>
+                <th style="width:35%;">Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Matriculeveh</th>
+                <td>{{ entity.matriculeVeh }}</td>
+            </tr>
+            <tr>
+                <th>Marqueveh</th>
+                <td>{{ entity.marqueVeh }}</td>
+            </tr>
+            <tr>
+                <th>Modelveh</th>
+                <td>{{ entity.modelVeh }}</td>
+            </tr>
+            <tr>
+                <th>Typevehicule</th>
+                <td>{{ entity.typeVehicule }}</td>
+            </tr>
+            <tr>
+                <th>Poidsvide</th>
+                <td>{{ entity.poidsVide }}</td>
+            </tr>
+            <tr>
+                <th>Poidsplein</th>
+                <td>{{ entity.poidsPlein }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    {{ form(delete_form) }}
+{% endblock %}

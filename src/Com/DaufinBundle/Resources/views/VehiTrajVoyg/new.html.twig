@@ -1,0 +1,24 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Créer Affectation Voyage / Vehicule</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Créer Affectation Voyage / Vehicule</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_vehi_traj_voyg') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+        <p>    
+    <div class="Formdiv" style="width:300px;">
+    {{ form(form) }}
+    </div>
+{% endblock %}

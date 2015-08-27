@@ -1,0 +1,51 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Contrat</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Contrats/ Afficher</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Contrat</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Date ouverture</th>
+                <td>{{ entity.dateOuvert|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Mode de Paiment</th>
+                <td>{{ entity.mPaiment }}</td>
+            </tr>
+            <tr>
+                <th>Etat de Contrat</th>
+                <td>{{ entity.etatContart }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Contrat') }}">
+            retour à la liste
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Contrat_edit', { 'id': entity.id }) }}">
+           modifier
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Crbt</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Titrecrbt</th>
+                <td>{{ entity.titreCrbt }}</td>
+            </tr>
+            <tr>
+                <th>Datecrbt</th>
+                <td>{{ entity.dateCrbt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Montantcrbt</th>
+                <td>{{ entity.montantCrbt }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Crbt') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Crbt_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

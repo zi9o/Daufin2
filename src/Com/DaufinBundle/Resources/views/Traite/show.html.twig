@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Traite</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Titretraite</th>
+                <td>{{ entity.titreTraite }}</td>
+            </tr>
+            <tr>
+                <th>Montanttrt</th>
+                <td>{{ entity.montantTrt }}</td>
+            </tr>
+            <tr>
+                <th>Datetraite</th>
+                <td>{{ entity.dateTraite|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_traite') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_traite_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

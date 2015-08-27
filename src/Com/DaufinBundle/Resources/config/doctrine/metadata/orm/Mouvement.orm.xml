@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Mouvement" table="mouvement">
+    <id name="idMouv" type="bigint" column="ID_MOUV">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="libelleMouv" type="string" column="LIBELLE_MOUV" length="64" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,30 @@
+com_Personnel:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Personnel:index" }
+
+com_Personnel_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Personnel:show" }
+
+com_Personnel_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Personnel:new" }
+
+com_Personnel_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Personnel:create" }
+    methods:  POST
+
+com_Personnel_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Personnel:edit" }
+
+com_Personnel_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Personnel:update" }
+    methods:  [POST, PUT]
+
+com_Personnel_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Personnel:delete" }
+    methods:  [POST, DELETE]

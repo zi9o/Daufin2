@@ -1,0 +1,30 @@
+com_rubrique:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Rubrique:index" }
+
+com_rubrique_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Rubrique:show" }
+
+com_rubrique_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Rubrique:new" }
+
+com_rubrique_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Rubrique:create" }
+    methods:  POST
+
+com_rubrique_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Rubrique:edit" }
+
+com_rubrique_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Rubrique:update" }
+    methods:  [POST, PUT]
+
+com_rubrique_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Rubrique:delete" }
+    methods:  [POST, DELETE]

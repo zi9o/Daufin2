@@ -1,0 +1,1143 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+
+
+{% block container -%}
+    <h1>Déclaration d'une Taxation</h1>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	
+  <style>
+<!--
+.grandTitre td{
+font-size: 19px;
+color: #0C2C6C;
+ font-weight: bold;
+}
+.hide-row { display:none; }
+.show-row { display:table-row; }
+#formTypeManu{
+}
+
+.error{background-color: #ea1126;}
+.valid{background-color: #85ea11;}
+.black_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+}
+.toHide{
+display: none;
+}
+.toShow{
+display: inline;
+}
+
+.white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+-->
+</style>
+  <script type="text/javascript">
+ function changeTypeClient(br){
+      
+          
+          if(br.name=='typeClientExped'){
+
+        	  if(br.value=='compte'){
+              
+        	  document.getElementById("divClientPart1").className ="toHide";
+        	  document.getElementById("divAdressePart1").className ="toHide";
+        	  document.getElementById("divTelPart1").className ="toHide";
+        	  document.getElementById("divLabAdresseSite1").innerHTML ="Site";
+        	  document.getElementById("divClientCompte1").className ="toShow";
+        	  document.getElementById("divSiteCompte1").className ="toShow";
+        	   document.getElementById("secteurExpLibelle").className ="toHide";
+        	   document.getElementById("secteurExpInput").className ="toHide";
+              }
+          else{
+        	  document.getElementById("divClientCompte1").className ="toHide";
+        	  document.getElementById("divSiteCompte1").className ="toHide";
+        	  
+        	  document.getElementById("divClientPart1").className ="toShow";
+        	  document.getElementById("divAdressePart1").className ="toShow";
+        	  document.getElementById("divTelPart1").className ="toShow";
+        	  document.getElementById("divLabAdresseSite1").innerHTML ="Adresse";
+        	
+
+        	  document.getElementById("secteurExpLibelle").className ="toShow";
+        	  document.getElementById("secteurExpInput").className ="toShow";
+        	//  document.getElementById("trSecteur").className= 'table-row';
+            }
+                
+         
+          }else {
+          //Show for Client Particulier
+
+          if(br.value=='compte'){
+        	  
+        	  document.getElementById("divClientPart2").className ="toHide";
+        	  document.getElementById("divAdressePart2").className ="toHide";
+        	  document.getElementById("divTelPart2").className ="toHide";
+        	  document.getElementById("divLabAdresseSite2").innerHTML ="Site";
+        	  document.getElementById("divClientCompte2").className ="toShow";
+        	  document.getElementById("divSiteCompte2").className ="toShow";
+
+       	      document.getElementById("secteurDestLibelle").className ="toHide";
+    	      document.getElementById("secteurDestInput").className ="toHide";
+          }
+          else{
+         	  document.getElementById("divSiteCompte2").className ="toHide";
+        	  document.getElementById("divClientCompte2").className ="toHide";
+        	  document.getElementById("divClientPart2").className ="toShow";
+        	  document.getElementById("divAdressePart2").className ="toShow";
+        	  document.getElementById("divTelPart2").className ="toShow";
+        	  document.getElementById("divLabAdresseSite2").innerHTML ="Adresse";
+       
+        	  
+      	      document.getElementById("secteurDestLibelle").className ="toShow";
+    	      document.getElementById("secteurDestInput").className ="toShow";
+                
+              }
+    
+          }
+	 }
+</script>
+  <script type="text/javascript">
+  
+ function handleClick(cb) {
+	  
+	  if(cb.name=='activ_simple'){
+		  
+		  
+		  document.getElementById("activ_crbt").checked = (cb.checked!=true);
+		  document.getElementById("activ_cheque").checked = (cb.checked!=true);
+		  document.getElementById("activ_traite").checked =  (cb.checked!=true);
+		  document.getElementById("activ_bon_livr").checked =  (cb.checked!=true);
+		  document.getElementById("activ_valeurDecl").checked =  (cb.checked!=true);
+		   		  
+		  document.getElementById("com_daufinbundle_taxation_crbt").disabled = cb.checked;
+		  document.getElementById("com_daufinbundle_taxation_cheque").disabled = cb.checked;
+		  document.getElementById("com_daufinbundle_taxation_traite").disabled = cb.checked;
+		  document.getElementById("com_daufinbundle_taxation_cBonLivr").disabled = cb.checked;
+		  document.getElementById("com_daufinbundle_taxation_valeurDecl").disabled = cb.checked;
+
+		  document.getElementById("com_daufinbundle_taxation_crbt").value='';
+		  document.getElementById("com_daufinbundle_taxation_cheque").value='';
+		  document.getElementById("com_daufinbundle_taxation_traite").value='';
+		  document.getElementById("com_daufinbundle_taxation_cBonLivr").value='';
+		  document.getElementById("com_daufinbundle_taxation_valeurDecl").value='';
+		  }
+	  else if(cb.name=='activ_crbt'){
+		  document.getElementById("com_daufinbundle_taxation_crbt").disabled = (cb.checked!=true);
+
+			  if(!document.getElementById("activ_cheque").checked && 
+				 !document.getElementById("activ_traite").checked &&
+				 	!document.getElementById("activ_bon_livr").checked &&
+				 		!document.getElementById("activ_valeurDecl").checked)
+
+								 document.getElementById("activ_simple").checked = (cb.checked!=true);
+		  }
+	  else if(cb.name=='activ_cheque'){
+		  document.getElementById("com_daufinbundle_taxation_cheque").disabled= (cb.checked!=true);
+
+		  if(!document.getElementById("activ_crbt").checked && 
+					 !document.getElementById("activ_traite").checked &&
+					 	!document.getElementById("activ_bon_livr").checked &&
+					 		!document.getElementById("activ_valeurDecl").checked)
+		     	document.getElementById("activ_simple").checked = (cb.checked!=true);
+		  }
+	  else if(cb.name=='activ_traite') {
+		  document.getElementById("com_daufinbundle_taxation_traite").disabled= (cb.checked!=true);
+
+		  if(!document.getElementById("activ_cheque").checked && 
+					 !document.getElementById("activ_crbt").checked &&
+					 	!document.getElementById("activ_bon_livr").checked &&
+					 		!document.getElementById("activ_valeurDecl").checked)
+		 		document.getElementById("activ_simple").checked = (cb.checked!=true);
+		  }
+	  else if(cb.name=='activ_bon_livr') {
+		  document.getElementById("com_daufinbundle_taxation_cBonLivr").disabled =(cb.checked!=true);
+		  if(!document.getElementById("activ_cheque").checked && 
+					 !document.getElementById("activ_traite").checked &&
+					 	!document.getElementById("activ_crbt").checked &&
+					 		!document.getElementById("activ_valeurDecl").checked)
+		  document.getElementById("activ_simple").checked = (cb.checked!=true);
+
+      }else if(cb.name=='activ_valeurDecl') {
+    	  document.getElementById("com_daufinbundle_taxation_valeurDecl").disabled = (cb.checked!=true);
+    	  if(!document.getElementById("activ_cheque").checked && 
+ 				 !document.getElementById("activ_traite").checked &&
+ 				 	!document.getElementById("activ_bon_livr").checked &&
+ 				 		!document.getElementById("activ_crbt").checked)
+    	  document.getElementById("activ_simple").checked = (cb.checked!=true);
+
+    	  }
+	
+ }
+ 
+
+	
+</script>
+  <script type="text/javascript">
+ 
+   function calculMontant(){
+
+			  
+	            var typeContrat;
+
+	            var test = document.getElementsByName("typeClientExped");
+	            var sizes = test.length;
+	           
+	            for (i=0; i < sizes; i++) {
+	                    if (test[i].checked==true) {	                   
+	                        typeContrat=test[i].value;	                  
+	                }
+	            }
+	                   			
+  				var e1 = document.getElementById("com_daufinbundle_taxation_expediteur");
+  				var idClientExped = e1.options[e1.selectedIndex].value;
+
+  				var e2 = document.getElementById("com_daufinbundle_taxation_destinataire");
+  				var idClientDestin = e2.options[e2.selectedIndex].value;
+
+  				var e12 = document.getElementById("com_daufinbundle_taxation_villeExpediteur");
+  				var idVilleExped = e12.options[e12.selectedIndex].value;
+  				
+  				var e12 = document.getElementById("com_daufinbundle_taxation_villeDestinataire");
+  				var idVilleDestin = e12.options[e12.selectedIndex].value;
+
+  				var e3 = document.getElementById("com_daufinbundle_taxation_modeExp");
+  				var modeExp = e3.options[e3.selectedIndex].value;
+  				
+
+  				var e4 = document.getElementById("com_daufinbundle_taxation_typeExp");
+  				var typeExped = e4.options[e4.selectedIndex].value;
+
+  				var e5 = document.getElementById("com_daufinbundle_taxation_typeLivraison");
+  				var typeLivr = e5.options[e5.selectedIndex].value;
+  				
+  				var isFragile=document.getElementById("com_daufinbundle_taxation_natureExp").value;
+  				
+  				var nbreColis=document.getElementById("com_daufinbundle_taxation_nbreColis").value;
+  				var nbrePalettes=document.getElementById("com_daufinbundle_taxation_nbrePalettes").value;
+  				var volume=document.getElementById("com_daufinbundle_taxation_volume").value;
+  				var poids=document.getElementById("com_daufinbundle_taxation_poids").value;
+
+  				var crbt=document.getElementById("com_daufinbundle_taxation_crbt").value;
+  				var cheque=document.getElementById("com_daufinbundle_taxation_cheque").value;
+  				var traite=document.getElementById("com_daufinbundle_taxation_traite").value;
+  				var bonLiv=document.getElementById("com_daufinbundle_taxation_cBonLivr").value;
+  				var valDec=document.getElementById("com_daufinbundle_taxation_valeurDecl").value;
+
+
+
+  				if(poids==''){
+  	  				alert("Veuillez saisir le poids de l'expedition");
+  	  				return false;
+  	  				}
+	  			if(nbreColis==''){
+  	  				alert("Veuillez saisir le nombre de colis");
+  	  				return false;
+		  			}
+	  			
+	  			if(typeLivr==''){
+  	  				alert("Veuillez saisir le type de Livraison");
+  	  				return false;
+		  			}
+	  			if(typeExped==''){
+  	  				alert("Veuillez saisir le type d'envoi");
+  	  				return false;
+		  			}
+	  			if(modeExp==''){
+  	  				alert("Veuillez saisir le mode de Port");
+  	  				return false;
+		  			}
+	  			if(idVilleExped=='' || idVilleDestin=='' ){
+  	  				alert("Veuillez saisir un trajet");
+  	  				return false;
+		  			}
+	  			
+
+	  			//var typCli=test.options[test.selectedIndex].value;
+	  			
+	  			 var typeClientDest;
+
+	            var test1 = document.getElementsByName("typeClientDest");
+	            var sizes1 = test1.length;
+	           
+	            for (i=0; i < sizes1; i++) {
+	                    if (test1[i].checked==true) {	                   
+	                        typeClientDest=test1[i].value;	                  
+	                }
+	            }
+	  			
+	  			if(document.getElementById("clientExped").value=='' && typeContrat=='particulier' ){
+  	  				alert("Veuillez saisir le Client Expéditeur");
+  	  				return false;
+		  			}
+	  			if(document.getElementById("clientDestin").value==''  && typeClientDest=='particulier' ){
+  	  				alert("Veuillez saisir le Client Destinataire");
+  	  				return false;
+		  			}
+		  				
+		  				
+  				
+  	  				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_calcul_montant'),
+		          type: "POST",
+		          data: { "idClientExped" : idClientExped, 
+			        	  "idClientDestin" : idClientDestin,
+			        	  "idVilleExped" : idVilleExped,
+			        	  "idVilleDestin" : idVilleDestin,
+			        	  "typeContrat":typeContrat,
+			        	  "modeExp" : modeExp,
+			        	  "typeExp" : typeExped,
+			        	  "typeLivr" : typeLivr,
+			        	  "isFragile" : isFragile,
+			        	  "nbreColis" : nbreColis,
+			        	  "nbrePalettes" : nbrePalettes,
+			        	  "volume" : volume,
+			        	  "poids" : poids,
+			        	  "crbt" : crbt,
+			        	  "cheque" : cheque,
+			        	  "traite" : traite,
+			        	  "bonLiv" : bonLiv,
+			        	  "valDec" : valDec },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 
+		            
+		             var obj = jQuery.parseJSON(data);
+		           //  alert(data);
+		             if (obj.hasOwnProperty('codeError')) {
+			             //Show Error
+			             alert("ERROR : "+obj.error);
+			             if(obj.codeError==12){
+
+			            	 var id='#formTypeManu';
+			        		 var n=document.getElementById("com_daufinbundle_taxation_nbreColis").value;;
+			        		 
+			        		 $(id).html(''); 
+			            	 // alert('mezian');
+
+			                   for(var i=0;i<n; i++)
+			                   { 
+			                       $(id).append('<label for="poidsColis'+ i +'" >Poids Colis '+(i+1)+' </label> <input type="text"  id="poidsColis'+ i +'" name="poidsColis'+ i +'  "/>');
+			                          
+			                   }
+			        		 
+			        		 
+				             }
+		             }else {
+		             document.getElementById("1").value=obj.prixTransport;
+		             document.getElementById("2").value=obj.prixVAlorem;
+		             document.getElementById("3").value=obj.retourFond;
+		             document.getElementById("4").value=obj.prixEnrig;
+		             document.getElementById("5").value=obj.prixBL;
+		             document.getElementById("6").value=obj.prixTaxeAvis;
+		             document.getElementById("7").value=obj.prixRamassage;
+		             document.getElementById("8").value=obj.autreFrais;
+
+		             
+		             document.getElementById("9").value=obj.montatHT;
+		             document.getElementById("10").value=obj.tva;
+		             document.getElementById("11").value=obj.montantTTC;
+		             document.getElementById("12").value=obj.prixManut;
+		             document.getElementById("14").value=obj.prixLivraison;
+		             document.getElementById("15").value=obj.prixLivrGMS;
+		             document.getElementById("16").value=obj.prixCheque;
+		             document.getElementById("17").value=obj.prixCrbt;
+		             document.getElementById("18").value=obj.prixTraite;
+		             //les TVA
+		             
+		             document.getElementById("19").value=obj.tvaManut;
+		             document.getElementById("20").value=obj.tvaLivraison;
+		             document.getElementById("21").value=obj.tvaLivGMS;
+		             document.getElementById("22").value=obj.tvaCheque;
+		             document.getElementById("23").value=obj.tvaCrbt;
+		             document.getElementById("24").value=obj.tvaTraite;
+		             document.getElementById("25").value=obj.tvaTransport;
+		             document.getElementById("26").value=obj.tvaRetourBL;
+		             document.getElementById("27").value=obj.tvaValorem;
+
+		             document.getElementById("28").value=obj.prixEnrig;
+		             document.getElementById("29").value=obj.prixTaxeAvis;
+		             document.getElementById("30").value=obj.prixRamassage;
+		             document.getElementById("31").value=obj.tvaEnrig;
+		             document.getElementById("32").value=obj.tvaTaxeAvis;
+		             document.getElementById("33").value=obj.tvaRamassage;
+
+
+		             
+		             document.getElementById('com_daufinbundle_taxation_submit').disabled = false;
+			        	
+
+		             document.getElementById("ht").value=obj.montatHT;
+		             document.getElementById("tva").value=obj.tva;
+		             document.getElementById("com_daufinbundle_taxation_montant").value=obj.montantTTC;
+		             
+		             document.getElementById('light').style.display='block';
+		             document.getElementById('fade').style.display='block';
+		             
+		           
+		          		}	
+		          }
+		       });
+		       
+		
+  }
+ 
+</script>
+   <script type="text/javascript">
+ 
+   function chargerSite(sl){
+
+
+	   var idSL;
+
+	   if(sl.id=='com_daufinbundle_taxation_expediteur') idSL='#siteExp';
+	   else if(sl.id=='com_daufinbundle_taxation_destinataire') idSL='#siteDest';
+		  
+	        var e1 = document.getElementById(sl.id);
+			var idClient = e1.options[e1.selectedIndex].value;	   		      				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_charger_site'),
+		          type: "POST",
+		          data: { "idClient" : idClient
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 		                
+		        	  var obj = jQuery.parseJSON(data);
+						 $(idSL).html(''); 		        	 
+		               for(var i=0;i<obj.length; i++)
+		               { 
+		                   $(idSL).append('<option value="'+ obj[i].id +'"> '+ obj[i].libelleSite +' </option>');
+		                       
+		               }}	
+		       });
+		       
+		
+  }
+ 
+</script>
+   <script type="text/javascript">
+   function  showSite(cb){
+
+	   var idSite=cb.value;
+	   var idClient;
+	   
+	  if(cb.name=="siteExped"){
+	        var e1 = document.getElementById("com_daufinbundle_taxation_expediteur");
+			 idClient = e1.options[e1.selectedIndex].value;
+	   }else {
+			var e2 = document.getElementById("com_daufinbundle_taxation_destinataire");
+			 idClient = e2.options[e2.selectedIndex].value;
+	   }
+			
+	  
+
+	   $.ajax({
+	          url: Routing.generate('com_daufin_ajax_get_site'),
+	          type: "POST",
+	          data: { "idSite" : idSite,
+	        	      "idClient" : idClient
+		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 		                
+	        	  var obj = jQuery.parseJSON(data);
+
+	        	  
+					//alert(data);
+	        	  if(cb.name=="siteExped"){
+		        	  var x="";
+	        		  var v=document.getElementById("tdSiteRight");
+	        		  if(v!=null) x=v.innerHTML;
+	        		  
+	        		 document.getElementById("trSiteDetail").innerHTML ="<td colspan=\"3\" id=\"tdSiteLeft\"><strong> client: </strong>"+obj.client+"<strong> Contrat Actif: </strong>"+obj.numContrat+"<strong> Adresse : </strong>"+obj.adresseSite+"<strong>  Tel </strong>"+obj.tel+"</td><td colspan=\"3\" id=\"tdSiteRight\">"+x+"</td>" ; 	
+	        	  }
+	 	        else {
+						var y="";
+	 	        	    var w=document.getElementById("tdSiteLeft");
+
+		        		  if(w!=null) y=w.innerHTML;
+						document.getElementById("trSiteDetail").innerHTML ="<td colspan=\"3\" id=\"tdSiteLeft\">"+y+"</td><td colspan=\"3\" id=\"tdSiteRight\"><strong> client: </strong> "+obj.client+"<strong> Contrat Actif: </strong>"+obj.numContrat+" <strong>Adresse : </strong>"+obj.adresseSite+"<strong>  Tel </strong>"+obj.tel+"</td>" ;	
+	            }
+	        	 
+	        	  
+
+					}	
+	       });
+	   
+	   }
+</script>
+      <script type="text/javascript">
+   function  testCodeDeclaration(){
+
+	  
+	   var code=document.getElementById("com_daufinbundle_taxation_codeDeclaration").value;
+	   
+	   
+	   if(code.length==10){
+
+		  
+	   $.ajax({
+	          url: Routing.generate('com_daufin_ajax_test_codeDeclaration'),
+	          type: "POST",
+	          data: { "code" : code
+		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 		                
+	        	  var obj = jQuery.parseJSON(data);          
+	        		  
+	    document.getElementById("divCodeDeclaration").innerHTML  =obj.message ; 
+
+	    if(obj.code==17){
+	    	 document.getElementById("com_daufinbundle_taxation_codeDeclaration").className="valid";
+	    	 document.getElementById("calculer").disabled = false;
+		    }	
+	    else 
+	    	document.getElementById("com_daufinbundle_taxation_codeDeclaration").className="error";
+
+
+					}	
+	       });
+
+	   }
+	   }
+</script>
+<script type="text/javascript">
+function enableButton(c){
+	if(c.value=='Palettes'){
+		
+		document.getElementById("buttonShowForm").disabled = false;
+		document.getElementById("com_daufinbundle_taxation_nbrePalettes").disabled = false;
+		
+		}
+	else{
+		document.getElementById("buttonShowForm").disabled = true;
+		document.getElementById("com_daufinbundle_taxation_nbrePalettes").disabled = true;
+		 var id='#formTypeManu';		
+		 $(id).html(''); 
+		}
+}
+function showForm(c){
+
+
+
+		 var id='#formTypeManu';
+		 var n=document.getElementById("com_daufinbundle_taxation_nbrePalettes").value;;
+		 
+		 $(id).html(''); 
+    	 // alert('mezian');
+
+           for(var i=0;i<n; i++)
+           { 
+               $(id).append('<label for="colisPalettes'+ i +'" >Colis/palettes '+(i+1)+' </label> <input type="text" onChange="verifNbreColis();" id="colisPalettes'+ i +'" name="colisPalettes'+ i +'  "/>');
+                  
+           }
+		 
+		 
+}
+
+   
+</script>
+ <script type="text/javascript">
+ 
+   function chargerSecteur(sl){
+
+
+	   var idSL;
+
+	
+	   if(sl.id=='com_daufinbundle_taxation_villeExpediteur') idSL='#secteurExp';
+	   else if(sl.id=='com_daufinbundle_taxation_villeDestinataire') idSL='#secteurDest';
+		  
+	        var e1 = document.getElementById(sl.id);
+			var idVille = e1.options[e1.selectedIndex].value;	   		      				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_charger_secteur'),
+		          type: "POST",
+		          data: { "idVille" : idVille
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller.
+		                       // alert('ffd');        
+		        	  var obj = jQuery.parseJSON(data);
+						 $(idSL).html(''); 		        	 
+		               for(var i=0;i<obj.length; i++)
+		               { 
+		                   $(idSL).append('<option value="'+ obj[i].id +'"> '+ obj[i].libelleSecteur +' </option>');
+		                       
+		               }}	
+		       });
+		       
+		
+  }
+ 
+</script>
+<script type="text/javascript">
+function verifNbreColis(){
+	
+	var nbre=document.getElementById("com_daufinbundle_taxation_nbrePalettes").value;
+	
+	var s=0;
+	var a=0;
+	for( i=0;i<nbre;i++){
+		var c=document.getElementById("colisPalettes"+ i).value;
+   			if(c==null || c=="") {i=n; a=0;}
+   			
+   			else { s=s+parseInt(document.getElementById("colisPalettes"+ i ).value); a=1;}
+		}
+	if(a==1)
+		document.getElementById("com_daufinbundle_taxation_nbreColis").value=s;   
+ 
+
+	
+}
+</script>
+
+   <script type="text/javascript">
+ 
+   function chargerAgences(sl){
+
+
+	   var idSL="#agenceDest";
+
+	 
+		  
+	        var e1 = document.getElementById(sl.id);
+			var idVille = e1.options[e1.selectedIndex].value;	   		      				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_com_get_agences_ville'),
+		          type: "POST",
+		          data: { "idVille" : idVille
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 		                
+		        	  var obj = jQuery.parseJSON(data);
+						 $(idSL).html(''); 		        	 
+		               for(var i=0;i<obj.length; i++)
+		               { 
+		                   $(idSL).append('<option value="'+ obj[i].idAgence +'"> '+ obj[i].libelleAgence +' </option>');
+		                       
+		               }}	
+		       });
+		       
+		
+  }
+ 
+</script>
+   
+    <div class="block-flat">  
+   	  <div class="content">
+   
+       {{ form_start(form) }}
+       {{ form_errors(form) }}
+       
+       <table class="form" border="0">
+       <tr class="grandTitre">
+       		<td colspan="2"> Personnel</td>
+       		<td> Code Declaration</td>
+       		<td style="font-size: 12px;"> {{ form_widget(form.codeDeclaration,{'attr': {'onkeyup':'testCodeDeclaration();'}}) }}</td>
+       		  <td style="padding: 7px 8px;font-size: 12px;font-weight: normal;color: black;">Agence Départ</td>   
+			  <td style="padding: 7px 8px;font-size: 12px;font-weight: normal;color: black;">
+ 					   <select name="agenceDepart"   id="agenceDepart">
+ 					   <option value="{{ agence.ID }}">{{ agence.LIBELLE_AG}}</option> 					   
+ 					    </select>
+			   </td>
+       	</tr>
+       	<tr>	
+       		<td>
+			       Ramasseur
+			 </td>
+			 <td >
+			      	  {{ form_errors(form.ramasseur) }}
+			       	  {{ form_widget(form.ramasseur) }}
+			   </td>   
+			   <td colspan="2"><div id="divCodeDeclaration"></div></td> 	  
+			
+			   <td> 
+				 Agence Arrivée	
+			    </td>
+			    <td> <select name="agenceDest"    id="agenceDest"> </select>
+				  </td>
+		</tr>  
+		
+		<tr>
+				<td>Réceptionneur</td>	  
+				<td> 
+			        {{ form_widget(form.receptionneur) }}
+			    </td>
+			    <td>Date & Heure</td>
+			    <td>{{ form_widget(form.dateDeclaration) }}</td>	  
+				
+			   	<td>Agence Transit</td>
+		   <td> {{ form_widget(form.agenceTransit) }}</td>
+			    			    
+	   	</tr>
+	   	<tr  class="grandTitre">
+       			<td style="background-color:#F6E311;" >Expediteur</td>
+       			<td   style="font-size: 12px;background-color:#F6E311;"  >
+       			        <input type="radio" name="typeClientExped" value="compte" onclick="changeTypeClient(this);">En Compte
+                        <input type="radio" name="typeClientExped" value="particulier" onclick="changeTypeClient(this);" checked> Particulier
+                </td>
+       			<td style="background-color: #6D92DD;" >Destinataire</td>
+       			<td   style="font-size: 12px;background-color: #6D92DD;"  >
+       			        <input type="radio" name="typeClientDest" value="compte" onclick="changeTypeClient(this);">En Compte
+                        <input type="radio" name="typeClientDest" value="particulier" onclick="changeTypeClient(this);" checked> Particulier
+                </td>
+       			<td  colspan="2">Mode</td>
+       	</tr>
+
+        <tr>
+           <td style="background-color:#F6E311;"  > Client </td>
+           <td style="background-color:#F6E311;" > 
+                <div id="divClientPart1">  
+               	
+                	<input id="clientExped" name="clientExped" class="typeahead" type="text" data-provide="typeahead" autocomplete="off"
+                	 data-source='{{ClientParticulier}}' onBlur ="ToDoPart1();" />
+                	 </div>
+             	 <script type="text/javascript">
+                	 function ToDoPart1()
+                	 {
+                	 	var name=document.getElementById("clientExped").value;
+                	 	if (name!='')
+				        {
+				            $.ajax({
+				                url: Routing.generate('com_daufin_com_Taxation_find_Adresse'),
+				                type: "POST",
+				                data: {
+				                    "name": name
+				                },
+				                success: function (data) {
+				                    var obj = jQuery.parseJSON(data);
+				                    if (obj.hasOwnProperty('codeError'))
+				                    {
+				                        document.getElementById("adresseExped").value='';
+				                    	document.getElementById("telExped").value='';
+				                    }
+				                    else
+				                    {
+				                    	document.getElementById("adresseExped").value=obj.adresseC;
+				                    	document.getElementById("telExped").value=obj.TelC;
+				                    }
+				                }
+				            });
+				        }
+                	 }
+                	 </script>
+                <div id="divClientCompte1" class="toHide"> {{ form_widget(form.expediteur,{'attr': {'onClick':'chargerSite(this);'}}) }} </div>
+           
+            </td>  
+		   <td style="background-color: #6D92DD;"> Client</td>
+		   <td style="background-color: #6D92DD;"> 
+		          <div id="divClientPart2">
+		          	<input class="typeahead" type="text" data-provide="typeahead" autocomplete="off"
+                	 data-source='{{ClientParticulier}}'  id="clientDestin"  name="clientDestin" onBlur ="ToDoPart2();"  />
+                	  </div>
+                	  <script type="text/javascript">
+                	  function ToDoPart2()
+                	 {
+                	 	var name=document.getElementById("clientDestin").value;
+                	 	if (name!='')
+				        {
+				            $.ajax({
+				                url: Routing.generate('com_daufin_com_Taxation_find_Adresse'),
+				                type: "POST",
+				                data: {
+				                    "name": name
+				                },
+				                success: function (data) {
+				                    var obj = jQuery.parseJSON(data);
+				                    if (obj.hasOwnProperty('codeError'))
+				                    {
+				                        document.getElementById("adresseDestin").value='';
+				                    	document.getElementById("telDestin").value='';
+				                    }
+				                    else
+				                    {
+				                    	document.getElementById("adresseDestin").value=obj.adresseC;
+				                    	document.getElementById("telDestin").value=obj.TelC;
+				                    }
+				                }
+				            });
+				        }
+                	 }
+                	  </script>
+		          <div id="divClientCompte2"  class="toHide">  {{ form_widget(form.destinataire,{'attr': {'onClick':'chargerSite(this);'}}) }}</div>
+		   </td>
+		   <td>Mode</td>
+		   <td> {{ form_widget(form.modeExp) }}</td>
+		
+		</tr>
+		<tr>
+		    <td style="background-color:#F6E311;" ><div id="divLabAdresseSite1"> Adresse</div></td>
+		    <td style="background-color:#F6E311;" > 
+		      <div id="divAdressePart1"><input type="text" id="adresseExped"   name="adresseExped"  /> </div>
+		      <div id="divSiteCompte1"  class="toHide"> <select name="siteExped"  onclick="showSite(this)"  id="siteExp"> </select></div>
+		      </td>
+		    <td style="background-color: #6D92DD;" ><div id="divLabAdresseSite2"> Adresse</div></td>
+		    <td style="background-color: #6D92DD;" > 
+		     <div id="divAdressePart2"> <input type="text" id="adresseDestin" name="adresseDestin"  /> </div>
+		     <div id="divSiteCompte2"  class="toHide"> <select  name="siteDest"  onclick="showSite(this)"  id="siteDest"></select> </select></div>
+		     </td>
+		    <td></td>
+			<td></td>
+		 </tr>
+
+		 <tr>     
+		   <td style="background-color:#F6E311;" >Ville</td>
+		   <td style="background-color:#F6E311;" > {{ form_widget(form.villeExpediteur,{'attr': {'onClick':'chargerSecteur(this);'}}) }}</td>     	    
+			<td style="background-color: #6D92DD;">Ville</td>  
+			<td style="background-color: #6D92DD;">
+			   {{ form_widget(form.villeDestinataire,{'attr': {'onClick':'chargerSecteur(this);chargerAgences(this);'}}) }}</td>
+			<td></td>
+			<td></td>
+		  </tr>
+		  <tr  >
+		     <td style="background-color:#F6E311;" >  <div id="secteurExpLibelle"> Secteur  </div></td>
+		    <td style="background-color:#F6E311;" >
+		      <div id="secteurExpInput">  <select name="secteurExped"    id="secteurExp"> </select></div>
+		         
+		    </td>
+		    <td style="background-color: #6D92DD;"> <div id="secteurDestLibelle">Secteur</div></td>
+		    <td style="background-color: #6D92DD;"> 		    
+		      <div id="secteurDestInput">
+		          <select name="secteurDest"     id="secteurDest"> </select>  
+		               </div>   
+		    </td>
+		    <td></td>
+			<td></td>
+		 </tr>
+		  <tr  id="trSiteDetail">
+		    <td style="background-color:#F6E311;" > Tel</td>
+		    <td style="background-color:#F6E311;" >
+		          <div id="divTelPart1"><input type="text" id="telExped"   name="telExped"  /> 
+		         </div>
+		         <div id="divDetail1"> 
+		         </div>
+		    </td>
+		    <td style="background-color: #6D92DD;">Tel</td>
+		    <td style="background-color: #6D92DD;">
+		     <div id="divTelPart2"><input type="text" id="telDestin"  name="telDestin"  />	 </div>
+		         <div id="divDetail2"> 
+		         </div>
+		    </td>
+		    <td></td>
+			<td></td>
+		 </tr>
+     	  <tr class="grandTitre">
+     	    <td colspan="6"  > Expédition</td>
+          </tr>
+          
+          <tr>
+   			 <td>Type d'envoi</td>
+   			 <td>{{ form_widget(form.typeExp) }}</td>
+   			 <td>Type de Manutention</td>
+   			 <td><select id="typeManut" name="typeManut"   onchange="enableButton(this);">
+				        <option value="Colis">Colis</option>
+				        <option value="Palettes">Palettes</option>
+			        </select></td>
+			 <td rowspan="6" colspan="2">
+			 <div id="formTypeManu">
+			 
+			 </div>
+			 
+			 </td>  
+			   
+           </tr>
+           <tr>
+			 <td>Nature Marchandaise</td>
+			 <td>Fragile: {{ form_widget(form.natureExp) }} </td>
+			 <td>Nombre de Colis</td>
+			 <td> {{ form_widget(form.nbreColis) }}</td>	 
+			 
+		   </tr>
+		   <tr>
+		     <td></td>
+		     <td></td>
+		     <td>Poids</td>
+		     <td>{{ form_widget(form.poids) }}</td>
+		     
+           </tr>
+           <tr>
+              <td></td>
+              <td></td>
+              <td>Volume</td>
+              <td>{{ form_widget(form.volume) }}</td>
+             
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>Nombre de Palettes</td>
+              <td> {{ form_widget(form.nbrePalettes,{ 'attr': {'disabled':'disabled'}}) }}</td>
+              
+            </tr>  
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><input type="button" id="buttonShowForm" value="Colis/Palettes" class="btn-rad" disabled="disabled" onclick="showForm(this);"/></td>
+              
+            </tr> 
+            <tr class="grandTitre">
+               <td colspan="6"  >Services</td>
+            </tr>
+   			<tr>
+	   			 <td width="16%">  
+	   			   <input type="checkbox" value="Simple"  id="activ_simple" name="activ_simple" checked="checked" onclick="handleClick(this);"/>
+	   			                   <label for="simple" class="">Simple</label>
+	   		    	
+	   		 	</td>
+	   		 	<td width="16%">
+	   		 	     <input type="checkbox" name="activ_crbt" id="activ_crbt" onclick="handleClick(this);" value="0" >
+	   		 	      {{ form_label(form.crbt) }}
+	   		 	</td>
+	  			<td width="16%">
+	  			 	<input type="checkbox" name="activ_cheque" id="activ_cheque" onclick="handleClick(this);" value="0" >
+				    {{ form_label(form.cheque)  }}
+	  			</td>
+	  			<td width="16%">
+	  			   <input type="checkbox" name="activ_traite" id="activ_traite" onclick="handleClick(this);" value="0" >
+				   {{ form_label(form.traite)  }}
+	  			</td width="16%">
+				<td>
+				   <input type="checkbox" name="activ_bon_livr" id="activ_bon_livr" onclick="handleClick(this);" value="0" >
+				   {{ form_label(form.cBonLivr)  }}
+	  			</td>
+				<td width="16%">
+				    <input type="checkbox" name="activ_valeurDecl"  id="activ_valeurDecl" onclick="handleClick(this);" value="0" >
+				    {{ form_label(form.valeurDecl)  }}
+	  			</td>
+  			</tr>  			
+  			<tr>
+  			<td width="16%">
+  			</td>
+  			<td width="16%">
+  			        {{ form_errors(form.crbt)}}
+			        {{ form_widget(form.crbt,{ 'attr': {'disabled':'disabled'}}) }}
+  			</td>    
+			
+  			<td width="16%">
+  			        {{ form_errors(form.cheque)}}
+			        {{ form_widget(form.cheque,{ 'attr': {'disabled':'disabled'}}) }}
+  			</td>
+  			
+  			<td width="16%">
+  			        {{ form_errors(form.traite)}}
+			        {{ form_widget(form.traite,{ 'attr': {'disabled':'disabled'}}) }}
+  			</td>
+  			
+  			<td width="16%">
+  			        {{ form_errors(form.cBonLivr)}}
+			        {{ form_widget(form.cBonLivr,{ 'attr': {'disabled':'disabled'}}) }}
+  			</td>     
+			<td width="16%">
+			        {{ form_errors(form.valeurDecl)}}
+			        {{ form_widget(form.valeurDecl,{ 'attr': {'disabled':'disabled'}}) }}
+			</td>		      
+		 </tr>
+	     <tr class="grandTitre" >
+	       <td colspan="6"  >  Livraison</td>
+	     </tr>
+	     <tr >  
+		       <td>Type de Livraison</td>
+		       <td colspan="2"> {{ form_widget(form.typeLivraison) }}</td>
+	           <td>Remarque</td>
+	  		   <td colspan="2"> {{ form_widget(form.remarque) }}</td>
+  		 </tr>
+  		 <tr  class="grandTitre">
+  		     <td colspan="6" >Calcul</td>
+   		 </tr>   		 
+   		 <tr>
+   		    <td> </td>
+   		    <td> </td>
+   		    <td> </td>
+   		    <td>H.T</td>
+   		    <td colspan="2"><input type="text" id="ht" readonly="readonly" name="com_ht"  />DH</td>
+   		  </tr>
+   		  <tr>
+   		    <td> </td>
+   		    <td> </td>
+   		    <td><input type="button" value="Calculer" id="calculer"  readonly="readonly" class="btn-rad" disabled="disabled" onClick="calculMontant();"/> </td>  
+   		    <td>T.V.A</td>
+   		    <td colspan="2"><input type="text" id="tva" name="com_tva" readonly="readonly"  />DH</td>
+   		 </tr>
+   		 <tr>
+   		    <td> </td>
+   		    <td> </td>
+   		    <td>{{ form_widget(form.submit,{'label':'Valider','disabled':true}) }} </td>  
+   		    <td>Montant TTC</td>
+   		    <td colspan="2">{{ form_widget(form.montant) }}DH</td>
+   		 </tr>
+       </table>
+        
+	
+      
+</div>
+<div id="light" class="white_content">
+			<a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"> 
+			Fermer La fenetre</a>
+			<table>
+                <tr>
+                    <td> <h4>
+                        Rubrique</h4>
+                    </td>
+                    <td>  <h4> 
+                        Prix
+                          </h4>
+                         
+                    </td>
+                </tr>
+                 <tr>
+                    <td> 
+                        Transport 
+                    </td>
+                    <td>
+                        <input id="1" type="text" readonly="readonly" name="prixTransport" value="0.0"/>
+                   </td>
+                </tr>
+                 <tr>
+                    <td> 
+                        Taxe AD VALOREM 
+                    </td>
+                    <td>
+                       <input id="2" type="text" readonly="readonly" name="prixValAD" value="0.0"/>
+                    </td>
+                </tr>
+                    <tr>
+                    <td> 
+                        Retour de Fond 
+                    </td>
+                    <td>
+                         <input id="3" type="text" readonly="readonly" name="prixRetourFond" value="0.0"/>
+                    </td>
+                </tr>
+                    <tr>
+                    <td> 
+                        Enregistrement 
+                    </td>
+                    <td>
+                        <input id="4" type="text" readonly="readonly" name="prixEnrig"value="0.0"/>
+                    </td>
+                </tr>
+                    <tr>
+                    <td> 
+                        Retour de BL 
+                    </td>
+                    <td>
+                         <input id="5" type="text" readonly="readonly" name="prixRetourBL" value="0.0"/>
+                    </td>
+                </tr>
+                    <tr>
+                    <td> 
+                       Taxe d'avis 
+                    </td>
+                    <td>
+                         <input id="6" type="text" readonly="readonly" name="prixTaxeAvis" value="0.0"/>
+                    </td>
+                </tr>
+                 <tr>
+                    <td> 
+                        Ramassage 
+                    </td>
+                    <td>
+                        <input id="7" type="text" readonly="readonly" name="prixRamassage" value="0.0"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td> 
+                        Autres Frais 
+                    </td>
+                    <td>
+                         <input id="8" type="text" readonly="readonly" name="prixAutreFrais"value="0.0"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td> 
+                        TOTAL H.T 
+                    </td>
+                    <td>
+                        <input id="9" type="text" readonly="readonly" name="prixHT" value="0.0"/>
+                    </td>
+                </tr>
+                 <tr>
+                    <td> 
+                        T.V.A 
+                    </td>
+                    <td>
+                         <input id="10" type="text" readonly="readonly" name="prixTVA" value="0.0"/>
+                    </td>
+                </tr>
+                    <tr>
+                    <td> 
+                        TOTAL T.T.C 
+                    </td>
+                    <td>
+                           <input id="11" type="text" readOnly="readonly" name="prixTTC" value="0.0"/>
+                         
+                         
+                           <input id="12" type="text" hidden="hidden" readOnly="readonly"  name="prixManut" value="0.0"/>
+                           <input id="14" type="text" hidden="hidden"  readOnly="readonly" name="prixLivraison" value="0.0"/>
+                           <input id="15" type="text" hidden="hidden"  readOnly="readonly" name="prixLivrGMS" value="0.0"/>
+                           <input id="16" type="text" hidden="hidden" readOnly="readonly"  name="prixCheque" value="0.0"/>
+                           <input id="17" type="text" hidden="hidden" readOnly="readonly"  name="prixCrbt" value="0.0"/>
+                           <input id="18" type="text" hidden="hidden" readOnly="readonly"  name="prixTraite" value="0.0"/>
+                           
+                         
+                           
+                           
+                           
+                           
+                           
+                           <input id="19" type="text" hidden="hidden" readOnly="readonly"  name="tvaManut" value="0.0"/>
+                           <input id="20" type="text" hidden="hidden"  readOnly="readonly" name="tvaLivraison" value="0.0"/>
+                           <input id="21" type="text" hidden="hidden"  readOnly="readonly" name="tvaLivrGMS" value="0.0"/>
+                           <input id="22" type="text" hidden="hidden" readOnly="readonly"  name="tvaCheque" value="0.0"/>
+                           <input id="23" type="text" hidden="hidden" readOnly="readonly"  name="tvaCrbt" value="0.0"/>
+                           <input id="24" type="text" hidden="hidden" readOnly="readonly"  name="tvaTraite" value="0.0"/>
+                           <input id="25" type="text" hidden="hidden" readOnly="readonly"  name="tvaTransport" value="0.0"/>
+                           <input id="26" type="text" hidden="hidden" readOnly="readonly"  name="tvaRetourBL" value="0.0"/>
+                           <input id="27" type="text" hidden="hidden" readOnly="readonly"  name="tvaValorem" value="0.0"/>
+                           
+                             <input id="28" type="text" hidden="hidden" readOnly="readonly"  name="prixEnrig" value="0.0"/>
+                           <input id="29" type="text" hidden="hidden" readOnly="readonly"  name="prixTaxeAvis" value="0.0"/>
+                           <input id="30" type="text" hidden="hidden" readOnly="readonly"  name="prixRamassage" value="0.0"/>
+                           
+                            
+                             <input id="31" type="text" hidden="hidden" readOnly="readonly"  name="tvaEnrig" value="0.0"/>
+                           <input id="32" type="text" hidden="hidden" readOnly="readonly"  name="tvaTaxeAvis" value="0.0"/>
+                           <input id="33" type="text" hidden="hidden" readOnly="readonly"  name="tvaRamassage" value="0.0"/>
+              
+                    </td>
+                </tr>
+            </table>
+            
+</div>
+	{{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Expéditions Transport</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Expéditions Trnasport</a></li>
+                  <li class="active">Liste des Expéditions Transport</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+<script type="text/javascript">
+
+   function ChargVoyage(){
+
+	   var e1 = document.getElementById("trajet");
+	   var idTrajet = e1.options[e1.selectedIndex].value;
+	   
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_voyage_charg'),
+	          type: "POST",
+	          data: { "idTrajet" : idTrajet
+		        },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 
+	               var obj = jQuery.parseJSON(data);
+	              $('#select_voyg').html('');
+                      
+	              if (obj.hasOwnProperty('code')) {
+			             //Show Error
+			             alert("ERROR : "+obj.message);
+			             return;
+	              }	                
+	        	  
+	        	
+	              for (i in obj){
+	                  $('#select_voyg').append(
+                              "<option value='" + obj[i].ID + "'>" + 'Num' + obj[i].ID + '_' + obj[i].DATE_PLANIF + "</option>"
+	                     );
+	                  }
+             }	
+	       });
+	   
+	   }
+</script>
+
+<script type="text/javascript">
+    function AfficheAll(source)
+    {
+        if(source.checked!=0)
+        {
+       $("#responsive").hide();
+        }
+        else
+        {
+            $("#responsive").show();
+            $("#normal").hide();
+        }
+    }
+</script>
+
+<script type="text/javascript">    
+           function ChargExpTansp()
+           {
+                    
+                    $("#responsive").hide();
+                    
+                    var e2 = document.getElementById("select_voyg");
+                    var idVoyage = e2.options[e2.selectedIndex].value;
+                    var frm='ExpTrsp';
+                    alert(idVoyage);
+                    //var e3 = document.getElementById("dateAffect");
+                  //  var vDateAffect = e3.value;
+                   // alert(vDateAffect);
+                    
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_exp_tansp_charg'),
+	          type: "POST",
+	          data: { "idVoyage" : idVoyage,
+                         "frm":frm
+		        },
+	          success: function(data) {
+                      alert('success');
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 
+	               var obj = jQuery.parseJSON(data);
+	              $('#body_ExpTrsp').html('');
+                      
+	              if (obj.hasOwnProperty('code')) {
+			             //Show Error
+			             alert("ERROR : "+obj.message);
+			             return;
+	              }	                
+	        	  
+	        $("#normal").show();	
+	              for (i in obj){
+	                  $('#body_ExpTrsp').append(
+                            "<tr>" +   
+	                      "<td>" + obj[i].ID + "</td>" +
+                              "<td>" + obj[i].DATE_CREATION + "</td>" +
+	                      "<td>" + obj[i].S_TRAJET + '_' + obj[i].VILLE_Depart + '_' +obj[i].VILLE_Arrivee + '_' + obj[i].CODE_SOUS_TRAJET + "</td>" +
+	                      "<td>" + obj[i].NBRE_EXPEDITION + "</td>" +
+                              "<td align='center' class=' '>" + 
+                              "<a class='label label-success' href='/daufin/web/app_dev.php/com_ExpeTrans/" + obj[i].ID + "/show'>" +
+                              "<i class='fa   fa-folder-open'></i></a>" +
+                              "<a class='label label-info' href='/daufin/web/app_dev.php/com_ExpeTrans/" + obj[i].ID + "/edit'>" +
+                              "<i class='fa fa-pencil-square-o'></i></a>" +
+                              "</td>" +
+                              "</tr>");
+	                  }
+             }	
+	       });
+           }
+   </script>   
+    
+    
+    
+    <a href="{{ path('com_ExpeTrans_auto_creation') }}">
+        <button class="btn btn-info">
+         Generer N.Elements       
+        </button>
+    </a>
+    <a href="{{ path('com_ExpeTrans_update_auto') }}">
+        <button class="btn btn-warning" id="Autom">
+         Affectation Autom      
+        </button>
+    </a>
+<div class="block-flat">   
+<table class="no-border">
+    
+       <th style="width:250px;">Date de Création</th>
+       <th style="width:250px;">Trajet</th>
+       <th style="width:250px;">Voyage</th>
+       <th style="width:250px;">Action</th>
+
+    <tbody class="no-border-x no-border-y">
+       <tr>
+                <td><input type="text" id="dateCreat" name="dateCreation" class="form-control datetime"/>
+                    <script type="text/javascript">
+                    var date = new Date();
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+
+                    if (month < 10) month = "0" + month;
+                    if (day < 10) day = "0" + day;
+
+                    var today = year + "-" + month + "-" + day;
+                    document.getElementById('dateCreat').value = today;
+                    </script>
+                </td>
+                <td><select id="trajet" onChange="ChargVoyage();" class="form-control parsley-validated">
+                <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     {% for trajet in trajets %}
+		           <option value="{{ trajet.id }}"> {{ trajet.libelleTrajet }}</option>
+		     {% endfor %} 
+		    </select>
+		</td>
+                <td>
+               	<select id="select_voyg" name="voyage" class="form-control parsley-validated"></select>
+                </td>
+                <td>
+                 <bouton class="btn btn-default" type="button" onClick="ChargExpTansp();">Chercher</bouton> 
+                 <input type="checkbox" id="chkbx" onChange="AfficheAll(this);"/>Afficher Tout  
+                </td>
+       </tr>
+</tbody>   
+</table>
+<div class="table-responsive" id="responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date de Creation</th>
+                <th>Sous Trajet</th>
+                <th>Nombre d'Expedition</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_ExpeTrans_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.sTrajet}}</td>
+                <td>{{ entity.nbreExpedition }}</td>
+                <td align="center">
+                    <a href="{{ path('com_ExpeTrans_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_ExpeTrans_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+        <div id="normal">
+            <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date de Creation</th>
+                <th>Sous Trajet</th>
+                <th>Nombre d'Expedition</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="body_ExpTrsp">
+        </tbody>
+    </table>
+        </div>
+</div>
+    {% endblock %}

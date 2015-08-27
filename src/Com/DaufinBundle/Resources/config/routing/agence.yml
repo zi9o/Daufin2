@@ -1,0 +1,30 @@
+com_agence:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Agence:index" }
+
+com_agence_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Agence:show" }
+
+com_agence_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Agence:new" }
+
+com_agence_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Agence:create" }
+    methods:  POST
+
+com_agence_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Agence:edit" }
+
+com_agence_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Agence:update" }
+    methods:  [POST, PUT]
+
+com_agence_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Agence:delete" }
+    methods:  [POST, DELETE]

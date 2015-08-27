@@ -1,0 +1,51 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Secteurs</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Secteurs</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <a href="{{ path('com_secteur_new') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code Secteur</th>
+                <th>Libelle</th>
+                <th>Ville</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_secteur_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.codeSecteur }}</td>
+                <td>{{ entity.libelleSecteur }}</td>
+                <td>{{ entity.ville }}</td>
+                <td align="center">
+                    <a href="{{ path('com_secteur_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_secteur_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}

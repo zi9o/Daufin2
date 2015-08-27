@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ContSite" table="cont_site">
+    <indexes>
+      <index name="FK_CONT_SITE" columns="CONTART"/>
+      <index name="FK_CONT_SITE2" columns="SITE"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="typeSite" type="string" column="TYPE_SITE" length="25" nullable="true"/>
+    <many-to-one field="site" target-entity="Site">
+      <join-columns>
+        <join-column name="SITE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="contart" target-entity="Contrat">
+      <join-columns>
+        <join-column name="CONTART" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

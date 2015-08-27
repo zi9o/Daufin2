@@ -1,0 +1,30 @@
+com_Ramasser:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:index" }
+
+com_Ramasser_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:show" }
+
+com_Ramasser_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:new" }
+
+com_Ramasser_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:create" }
+    methods:  POST
+
+com_Ramasser_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:edit" }
+
+com_Ramasser_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:update" }
+    methods:  [POST, PUT]
+
+com_Ramasser_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:RamasserDe:delete" }
+    methods:  [POST, DELETE]

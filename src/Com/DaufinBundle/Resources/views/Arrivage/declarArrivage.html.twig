@@ -1,0 +1,392 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Validation d'arrivage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Arrivage / Declaration</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+ <style>
+ .white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+#addColis:focus{
+background-color: #a5a7f0;
+}
+.trHeader th{
+font-weight: bold;
+font-size: 13px;
+background-color: #6d6262;
+color: #E4E3E3;
+}
+.trERROR td{
+background-color: #F9B0AD;
+}
+.trSUCCES td{
+background-color: #C0E7AC;
+}
+ </style>
+     <script>
+
+ $(document).ready(function() {
+	  var $datepicker = $( "#datepicker" );
+	 // alert('ddd');
+
+	  $datepicker.datepicker('setDate', new Date());
+   // $( "#datepicker" ).datepicker();
+  });
+  </script>
+  <script type="text/javascript">
+  function getDetailFromVehVou()
+  {
+	  var e1 = document.getElementById("voyage");
+		var idVoyage = e1.options[e1.selectedIndex].value;
+
+		var e2 = document.getElementById("vehicule");
+		var idVehicule = e2.options[e2.selectedIndex].value;
+		
+     $.ajax({
+          url:Routing.generate('com_daufin_ajax_arrivage_get_detail_by_vehicule'),
+          type: "POST",
+          data: { "voyage" : idVoyage,
+        	  	  "vehicule" : idVehicule
+        	  	
+	        	   },
+          success: function(data) {
+             //(success) do something...
+             //variable "data" contains data returned by the controller. 
+        	  var obj = jQuery.parseJSON(data);
+              if (obj.hasOwnProperty('codeError')) 
+							 alert("ERROR : "+obj.error);
+              else {
+            	  var text=" <strong>Voyage : </strong> code="+obj[0].idVoyage+"     Date Planification= "+obj[0].DatePlanif+"<br/><strong>Vehicule : </strong>"+obj[0].Matricule+"Marque: "+obj[0].marque+" "; 
+          	      document.getElementById("detailVoyageVehicule").innerHTML=text ; 
+
+          	      document.getElementById("idVoyage").value=idVoyage;
+          	      document.getElementById("addColis").disabled=false;
+          	    document.getElementById("validation").disabled=false;
+                
+                  }
+        }	
+       });
+  }
+</script>
+ <script type="text/javascript">
+function valider(){
+
+	
+	var table = $('#printTable').tableToJSON(); // Convert the table into a javascript object
+	   //  console.log(table);
+	  // alert(JSON.stringify(table));
+	   var voyage = document.getElementById("idVoyage").value;
+	     
+		  
+	       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_arrivage_valid_declaration'),
+		          type: "POST",
+		          data: { "tableChargement" : table,
+			               "idVoyage": voyage
+			          
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 	
+		              
+		               
+					 
+		               var obj = jQuery.parseJSON(data);
+		               
+		               if (obj.hasOwnProperty('codeError')) {
+							 alert("ERROR : "+obj.message);
+		                     var content = '';
+		               		 for (var i = 0; i < obj.tableExpError.length; i++) {
+		               			var classTR;
+		               			 if( obj.tableExpError[i].SorE=='E') classTR="trERROR";
+		               			 else classTR="trSUCCES";
+		               			content += '<tr class="'+classTR+'"><td>' +  obj.tableExpError[i].Declaration + '</td>';
+		               			content += '<td>' +  obj.tableExpError[i].typeManu + '</td>';
+		               			content += '<td>' +  obj.tableExpError[i].nbreColis + '</td>';
+		               			content += '<td>' +  obj.tableExpError[i].nbreColisExact + '</td>';
+		               			content += '<td>' +  obj.tableExpError[i].idExped + '</td></tr>';
+
+			               		 }
+		               		 $('#tableError tbody').html(content);
+		               	     document.getElementById('light').style.display='block';
+				             document.getElementById('fade').style.display='block';
+			               
+		               }
+		               else {    
+		            	   alert("SUCCES : "+obj.message);
+	        				}
+
+		          }     
+	             	
+		       });
+	
+}
+
+</script>
+<script type="text/javascript">
+ 
+   function chargerVoyage(sl){
+  
+	        var e1 = document.getElementById(sl.id);
+			var vehicule = e1.options[e1.selectedIndex].value;
+				   		      				
+		       $.ajax({
+		          url: Routing.generate('com_daufin_ajax_arrivage_get_voyage_by_vehicule'),
+		          type: "POST",
+		          data: { "vehicule" : vehicule
+			        	   },
+		          success: function(data) {
+		             //(success) do something...
+		             //variable "data" contains data returned by the controller. 		                
+		        	  var obj = jQuery.parseJSON(data);
+		        	  if (obj.hasOwnProperty('code')) 
+							 alert("ERROR : "+obj.message);
+         			  else {
+             			  	 $("#voyage").html(''); 
+             			  	 		        	 
+				               for(var i=0;i<obj.length; i++)
+				            	    
+					               $("#voyage").append('<option value="'+ obj[i].idVoyage +'"> '+ obj[i].idVoyage +'-'+obj[i].LibelleTrajet+'['+obj[i].DatePlanif+'] </option>');
+				               }	
+		                } });
+		        }
+</script>
+ <script type="text/javascript">
+
+
+   function addColis(){
+	   
+
+	   var num = document.getElementById("addColis").value;
+	if(num.length===13){
+	
+	   var codeDeclaration=num.substring(0,10);
+	   var numColis=num.substring(10,num.length);
+	   var voyage = document.getElementById("idVoyage").value;
+	   document.getElementById("addColis").value='';
+	   document.getElementById("addColis").focus();
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_arrivage_get_expediton'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration,
+	        	      "voyage": voyage
+		          
+		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			else {    
+
+        			 		 //cherhcer emplacement
+        					 var oTable = document.getElementById('printTable');
+     	    				 var size = oTable.rows.length;  
+     	    				 var index=size;
+     	    				 var nbre=0; 
+     	   					 for (var i = 1; i < size; i++)
+         	   					 {
+     	     					  var oCells = oTable.rows.item(i).cells;
+     	       					  var cellLength = oCells.length;
+								//alert(oCells);
+      	      						 if(oCells.item(2).innerHTML==obj.codeDeclaration)
+          	      						 {
+          	      						 nbre++;
+	              							 if(oCells.item(4).innerHTML==numColis)
+		              							 {
+		                							alert('Cet Colis est deja scannee.');		                               				 
+		                               				return;
+		                               			  }
+	              	 						  else if(oCells.item(4).innerHTML>numColis) 
+		               								{index=i;
+		               							//	alert('boucle');
+		               								  //break;
+		               								  }
+	              	 						 // else index=i;
+
+     	    								}
+      	      						 else 
+          	      						 { 
+          	      						  //  nbre=0;
+		      	      						
+		      	      					  }
+      	      						 
+     	   					 		}
+     	   				if(nbre<obj.nbreUnite)	 
+              			addRow('printTable',index,obj.sousTrajet,obj.expedTrans,obj.codeDeclaration,obj.nbreUnite,numColis,obj.typeManu);
+
+     	   				else
+         	   			alert("nombre de colis deppasse pour l'expedition en cours");
+        			}  
+	          }     
+             	
+	       });
+	   
+   
+	   }
+	   
+   }
+   </script>
+   <script language="javascript">
+  function addRow(tableID,index,sousTraj,expTrans,codeDeclaration,nbreColis,numColis,poidsTotal){
+	  var table=document.getElementById(tableID);
+	//  var rowCount=table.rows.length;
+	  var row=table.insertRow(index);
+	  
+	  var cell1=row.insertCell(0);
+	  var newText  = document.createTextNode(sousTraj);
+	  cell1.appendChild(newText);
+
+	  var cell2=row.insertCell(1);
+	   newText  = document.createTextNode(expTrans);
+	  cell2.appendChild(newText);
+
+	  var cell3=row.insertCell(2);
+	   newText  = document.createTextNode(codeDeclaration);
+	  cell3.appendChild(newText);
+
+	  var cell4=row.insertCell(3);
+	   newText  = document.createTextNode(nbreColis);
+	  cell4.appendChild(newText);
+
+	  var cell5=row.insertCell(4);
+	   newText  = document.createTextNode(numColis);
+	  cell5.appendChild(newText);
+
+	  var cell6=row.insertCell(5);
+	   newText  = document.createTextNode(poidsTotal);
+	  cell6.appendChild(newText);
+
+	  }
+function deleteRow(tableID){
+	try{
+		var table=document.getElementById(tableID);
+		var rowCount=table.rows.length;
+		for(var i=0;i<rowCount;i++)
+			{
+			 var row=table.rows[i];
+			 var chkbox=row.cells[0].childNodes[0];
+			    if(null!=chkbox&&true==chkbox.checked)
+				      {table.deleteRow(i);rowCount--;i--;}
+			      }
+	     }catch(e){
+		     alert(e);
+		     }
+	 }
+	</script>
+ 
+ 
+
+   
+<div class="block-flat">   
+   
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+     <tr>
+     <td style="width: 80px">Agence</td>
+        <td style="width: 180px">{{ agence.CODE_AGENCE }} -- {{ agence.LIBELLE_AG }}</td>
+     <td style="width: 80px">Date</td>
+     <td style="width: 230px">  {{ date }}</td>
+     <td rowspan="2"><div id="detailVoyageVehicule"></div></td>
+     </tr>
+     
+	<tr>
+		
+		    <td style="width: 80px">Vehicule</td>
+		<td>
+		    <select id="vehicule" onchange="chargerVoyage(this)">
+		       <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     {% for vehicule in vehicules %}
+		           <option value="{{ vehicule.id }}"> {{ vehicule.matriculeVeh }}</option>
+		     {% endfor %}		           
+		    </select>
+		</td>
+		 </td>
+		<td style="width: 80px">Voyage</td>
+		<td>
+			<select id="voyage" onclick="getDetailFromVehVou();">	           
+		    </select>
+		</td>
+		
+	</tr>
+
+</table>
+<div style="margin-top: 20px;">
+
+    <table class="table">
+
+		            <tr >
+		                <td colspan="2" style="font-weight: bold;color:#6d1410 ;font-size: 14px;">
+		                   Code Colis 
+		                </td>
+		                <td  colspan="3" style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+		                	<input type="text" name="colis" size="20" id="addColis" disabled="disabled"  onKeyUp="addColis()">
+		                	<input type="hidden" name="voyage" id="idVoyage" >
+		                </td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+		                	<input type="button" value="Fin de Declaration" disabled="disabled" id="validation" onclick="valider()">
+		                </td>
+		            
+		           
+		            </tr>
+		            </table>
+
+
+		    <table class="table" id="printTable">
+
+		            <tr >
+		            	<td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Sous Trajet</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Exp Transp</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Declaration</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Nombre Colis</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Num Colis</td>
+		                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">Unite Manu</td>
+		            </tr>
+		        
+		    </table>
+</div>
+</div>
+<div id="light" class="white_content">
+			<a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"> 
+			Fermer La fenetre</a>
+			<table id="tableError">
+			<thead>
+			  <tr class="trHeader">
+			   <th>Declaration</th><th>Type Manu</th><th>Nombre Entrer</th><th>Nombre Exacte</th><th>ID Exped</th>
+			  </tr>
+			</thead>
+            <tbody id="tableError"></tbody>
+                
+            </table>
+            
+</div>
+</div>
+
+  
+    {% endblock %}
+    
+    

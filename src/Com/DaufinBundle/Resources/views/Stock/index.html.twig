@@ -1,0 +1,77 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+{% block _container %}
+        <div class="page-head">
+                <h2>Stock Liste</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Stock Liste</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Stock list</h1>
+    <table class='no-border'>
+        <tbody class='no-border-x no-border-y'>
+            <tr>
+                <td>
+    <label class="required">Date de Stockage</label> 
+    <input type='texte' class="form-control datetime" id='dateSelect'/>                    
+                </td>
+                <td>
+    <label class="required">Agence</label> 
+    <select class="form-control parsley-validated" id='IdAgence'>
+            {% for agence in agences %}
+	<option value="{{ agence.id }}"> {{ agence.libelleAg }}</option>
+            {% endfor %}
+    </select>
+                </td>           
+                <td>
+    <button class='btn btn-primary' onClick='Chereche()' > Chercher </button>                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr size='2'>
+    <p></p>
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type Stock</th>
+                <th>Agence</th>
+                <th>Unite Manitention</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_stock_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.typeStock }}</td>
+                <td>{{ entity.agence}}</td>
+                <td>{{ entity.uniteManu }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_stock_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_stock_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_stock_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,63 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Réglement Factures</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Facturation</a></li>
+                  <li class="active">Reglement</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container%}
+    <h1>Reglement list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datereglement</th>
+                <th>Datecreation</th>
+                <th>Totalmontantttc</th>
+                <th>Montantreglement</th>
+                <th>Statutreglement</th>
+                <th>Modereglement</th>
+                <th>Refreglement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_reglement_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateReglement %}{{ entity.dateReglement|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.totalMontantTTC }}</td>
+                <td>{{ entity.montantReglement }}</td>
+                <td>{{ entity.statutReglement }}</td>
+                <td>{{ entity.modeReglement }}</td>
+                <td>{{ entity.refReglement }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_reglement_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_reglement_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_reglement_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

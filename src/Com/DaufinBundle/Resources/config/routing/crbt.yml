@@ -1,0 +1,30 @@
+com_Crbt:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Crbt:index" }
+
+com_Crbt_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Crbt:show" }
+
+com_Crbt_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Crbt:new" }
+
+com_Crbt_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Crbt:create" }
+    methods:  POST
+
+com_Crbt_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Crbt:edit" }
+
+com_Crbt_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Crbt:update" }
+    methods:  [POST, PUT]
+
+com_Crbt_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Crbt:delete" }
+    methods:  [POST, DELETE]

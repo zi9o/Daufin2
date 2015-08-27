@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Crbt list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titrecrbt</th>
+                <th>Datecrbt</th>
+                <th>Montantcrbt</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_Crbt_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.titreCrbt }}</td>
+                <td>{% if entity.dateCrbt %}{{ entity.dateCrbt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.montantCrbt }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('com_Crbt_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('com_Crbt_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_Crbt_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="OpererOrdre" table="operer_ordre">
+    <indexes>
+      <index name="FK_OPERER_ORDRE" columns="PERSONNEL"/>
+      <index name="FK_OPERER_ORDRE2" columns="ORDRE_LV_RM"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dateOperation" type="datetime" column="DATE_OPERATION" nullable="true"/>
+    <many-to-one field="ordreLvRm" target-entity="OrdreLvRm">
+      <join-columns>
+        <join-column name="ORDRE_LV_RM" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="personnel" target-entity="Personnel">
+      <join-columns>
+        <join-column name="PERSONNEL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

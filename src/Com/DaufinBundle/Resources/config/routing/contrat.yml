@@ -1,0 +1,30 @@
+com_Contrat:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Contrat:index" }
+
+com_Contrat_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Contrat:show" }
+
+com_Contrat_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Contrat:new" }
+
+com_Contrat_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Contrat:create" }
+    methods:  POST
+
+com_Contrat_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Contrat:edit" }
+
+com_Contrat_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Contrat:update" }
+    methods:  [POST, PUT]
+
+com_Contrat_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Contrat:delete" }
+    methods:  [POST, DELETE]

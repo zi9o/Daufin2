@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Site" table="site">
+    <indexes>
+      <index name="FK_Site_Client" columns="Client"/>
+      <index name="FK_SITE_SECTEUR" columns="secteur"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="libelleSite" type="string" column="LIBELLE_SITE" length="56" nullable="true"/>
+    <field name="adresSite" type="string" column="ADRES_SITE" length="56" nullable="true"/>
+    <many-to-one field="secteur" target-entity="Secteur">
+      <join-columns>
+        <join-column name="secteur" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="client" target-entity="Client">
+      <join-columns>
+        <join-column name="Client" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

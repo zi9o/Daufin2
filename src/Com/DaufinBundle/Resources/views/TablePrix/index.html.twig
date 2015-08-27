@@ -1,0 +1,59 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste Des Taxes</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste Des Prix</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <a href="{{ path('com_table_prix_new') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rubrique</th>
+                <th>Sous Trajet</th>
+                <th>Type de Valorisation</th>
+                <th>Valeur Min</th>
+                <th>Valeur Max</th>
+                <th>TVA</th>
+                <th>Valeur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_table_prix_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.rub }}</td>
+                <td>{{ entity.sTrajet }}</td>
+                <td>{{ entity.idTVal }}</td>
+                <td>{{ entity.valeurMin }}</td>
+                <td>{{ entity.valeurMax }}</td>
+                <td>{{ entity.tva }}</td>
+                 <td>{{ entity.valeur }}</td>
+                <td align="center">
+                    <a href="{{ path('com_table_prix_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_table_prix_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}

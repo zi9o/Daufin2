@@ -1,0 +1,30 @@
+com_suiv_service:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:SuivService:index" }
+
+com_suiv_service_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:SuivService:show" }
+
+com_suiv_service_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:SuivService:new" }
+
+com_suiv_service_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:SuivService:create" }
+    methods:  POST
+
+com_suiv_service_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:SuivService:edit" }
+
+com_suiv_service_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:SuivService:update" }
+    methods:  [POST, PUT]
+
+com_suiv_service_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:SuivService:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,40 @@
+com_Exptransp_Voyage:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:index" }
+    
+com_Exptransp_Voyage_propChargement:
+    path:     /propChargement
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:propChargement" }
+com_Exptransp_Voyage_validChargement:
+    path:     /validChargement
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:validChargement" }
+com_Exptransp_Voyage_feuilleChargement:
+    path:     /feuilleChargement
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:feuilleChargement" }
+
+com_Exptransp_Voyage_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:show" }
+
+com_Exptransp_Voyage_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:new" }
+
+com_Exptransp_Voyage_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:create" }
+    methods:  POST
+
+com_Exptransp_Voyage_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:edit" }
+
+com_Exptransp_Voyage_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:update" }
+    methods:  [POST, PUT]
+
+com_Exptransp_Voyage_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:ExptranspVoyage:delete" }
+    methods:  [POST, DELETE]

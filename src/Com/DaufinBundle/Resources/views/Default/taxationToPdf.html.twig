@@ -1,0 +1,136 @@
+<page orientation="Paysage" style="font-size: 14px;width:200mm; height:145mm " format="200x145">
+<style>
+table {
+    border:1px dotted #CCC;
+    border-collapse:collapse;
+}
+td {
+border:1px dotted #CCC;
+    border-collapse:collapse;
+}
+tr td{
+border-left: none;
+border-right: none;
+	}
+
+</style>
+
+   <div id="wrapper" style="margin-top: 120px; margin-left: 20px;width: 650px">
+       <table border="1" style="width: 100%"  >   
+   <tr> <td style="width: 100px;height: 35px;" >Code Déclaration</td> <td style="text-align:center;">{{ entityExped.codeDeclaration }}</td> 
+         <td style="width: 80px"> N° de Facture</td> <td style="text-align:center;"> {{ entityExped.id }}</td> 
+          <td colspan="2" style="width:280px"></td></tr>
+   <tr><td colspan="4"> {{ agence.ADRESSE_AG }} <br>
+                        {{ agence.LIBELLE_AG }} 
+        </td>
+   <td  rowspan="7" colspan="2" style="width:300px;">
+    <div style="margin-left: 20px">   
+     <table border="1" width="280px">
+	  <tr>
+	      <td style="width: 80px;text-align: center;">Port Payé</td>
+	      <td style="width: 110px;text-align: center;">Taxes </td>
+	      <td style="width: 80px;text-align: center;">Port Dû</td>
+	  </tr>
+	   <tr>
+	      <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixTransport|number_format(2, '.', ',')}} {% endif %}</td>
+	  	  <td style="text-align:center;">Transport </td>
+	  	  <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ prixTransport|number_format(2, '.', ',') }} {% endif %}</td>
+	  </tr>
+	
+	  <tr>
+	       <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixRamassage|number_format(2, '.', ',') }} {% endif %}</td>
+	       <td style="text-align:center;">Ramassage </td>
+	       <td style="text-align:center;">{% if entityExped.mdPort=="portDu" %}{{ prixRamassage|number_format(2, '.', ',') }} {% endif %} </td>
+	  </tr>
+	  <tr><td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixManut|number_format(2, '.', ',')}} {% endif %}</td>
+	      <td style="text-align:center;">Manutention </td>
+	      <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ prixManut|number_format(2, '.', ',') }} {% endif %}</td>
+	  </tr>
+	   <tr>
+	      <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixVAlorem|number_format(2, '.', ',') }} {% endif %}</td>
+	      <td style="text-align:center;">Taxe AD Valorem </td>
+	      <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ prixVAlorem|number_format(2, '.', ',') }} {% endif %}</td></tr>
+	  <tr>
+	      <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ retourFond|number_format(2, '.', ',') }} {% endif %}</td>
+	      <td style="text-align:center;">Retour de Fonds</td>
+	      <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ retourFond|number_format(2, '.', ',') }} {% endif %}</td></tr>
+	  <tr>
+	      <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixBL|number_format(2, '.', ',') }} {% endif %}</td>
+	      <td style="text-align:center;">Retour BL</td>
+	      <td style="text-align:center;">{% if entityExped.mdPort=="portDu" %}{{ prixBL|number_format(2, '.', ',') }} {% endif %} </td></tr>
+	  <tr>
+	       <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixLivraison|number_format(2, '.', ',') }} {% endif %}</td>
+	       <td style="text-align:center;">Livraison à domicile</td>
+	       <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ prixLivraison|number_format(2, '.', ',') }} {% endif %}</td>
+	  </tr>
+	  <tr>
+	        <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixTaxeAvis|number_format(2, '.', ',') }} {% endif %}</td>
+	        <td style="text-align:center;"> Taxe d'avis </td>
+	        <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ prixTaxeAvis|number_format(2, '.', ',') }} {% endif %}</td>
+	 </tr>
+	  <tr>
+	        <td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ prixEnrig|number_format(2, '.', ',') }} {% endif %}</td>
+	        <td style="text-align:center;">Enregistrement</td>
+	        <td style="text-align:center;">{% if entityExped.mdPort=="portDu" %}{{ prixEnrig|number_format(2, '.', ',') }} {% endif %} </td>
+	  </tr>
+	  <tr><td style="text-align:center;">{% if entityExped.mdPort=="portPaye" %}{{ autreFrais|number_format(2, '.', ',') }} {% endif %}</td>
+	      <td style="text-align:center;">Autre Frais</td>
+	      <td style="text-align:center;"> {% if entityExped.mdPort=="portDu" %}{{ autreFrais|number_format(2, '.', ',') }} {% endif %}</td>
+	  </tr>
+	  <tr ><td colspan="3"> <hr size=2 color="black"></td></tr>
+	  <tr>
+	      <td style="text-align:center;"><strong>{% if entityExped.mdPort=="portPaye" %}{{ montatHT|number_format(2, '.', ',') }} {% endif %}</strong></td>
+	      <td style="text-align:center;"><strong>Total HT</strong></td>
+	      <td style="text-align:center;"><strong>{% if entityExped.mdPort=="portDu" %}{{ montatHT|number_format(2, '.', ',') }} {% endif %}</strong> </td>
+	  </tr>
+	  <tr>
+	      <td style="text-align:center;"><strong>{% if entityExped.mdPort=="portPaye" %}{{ tva|number_format(2, '.', ',') }} {% endif %}</strong></td>
+	      <td style="text-align:center;"><strong>Total TVA</strong></td>
+	      <td style="text-align:center;"> <strong>{% if entityExped.mdPort=="portDu" %}{{ tva|number_format(2, '.', ',') }} {% endif %}</strong></td>
+	  </tr>
+	  <tr>
+	      <td style="text-align:center;"><strong>{% if entityExped.mdPort=="portPaye" %}{{ montantTTC|number_format(2, '.', ',') }} {% endif %}</strong></td>
+	      <td style="text-align:center;"><strong>Total TTC</strong></td>
+	      <td style="text-align:center;"> <strong>{% if entityExped.mdPort=="portDu" %}{{ montantTTC|number_format(2, '.', ',') }} {% endif %}</strong></td>
+	    </tr>
+	  </table> 
+    </div>    
+  </td></tr>
+   <tr><td style="width:80px;height: 30px;"> Expéditeur</td>
+    <td colspan="3" >{% if entityExped.envClient.typeClient=="Particulier" %} 
+                       	 {{ entityExped.envClient.nomPart }}  {{ entityExped.envClient.prenomPart }}
+                      {% else %} {{  entityExped.envClient.RSociale  }} 
+                 	{% endif %}
+    </td></tr>
+   <tr ><td style="width:80px;height: 30px;" > Destinataire</td>
+   <td colspan="3"> {% if entityExped.envClient.typeClient=="Particulier" %} 
+                       	 {{ entityExped.recClient.nomPart }}  {{ entityExped.recClient.prenomPart }}
+                      {% else %} {{  entityExped.recClient.RSociale  }} 
+                 	{% endif %}
+    </td></tr>
+    <tr><td style="width:80px; height: 30px;" > Provenance</td> 
+        <td style="width:90px;text-align:center;"> {{ entityExped.envVille }}</td>
+        <td style="width:80px;"> Destination</td>
+        <td style="width:90px;text-align:center;">  {{ entityExped.recVille }}</td>
+    </tr>
+    <tr><td style="width:80px;height: 30px;" > Nombre Colis</td>
+        <td style="text-align:center;"> {{ entityExped.nbrColis }}</td>
+       <td style="width:80px" > Poids Total</td>
+       <td style="text-align:center;" > {{ entityExped.poidsExp|number_format(2, '.', ',') }}</td>
+  </tr> 
+  <tr> <td style="width:80px;height: 30px;" > Volume</td>
+	   <td style="text-align:center;"> {{ entityExped.volumeExp|number_format(2, '.', ',') }}</td>
+	   <td > Valeur Déclarée </td>
+	   <td style="text-align:center;">
+	                           {% if entityExped.expVal %} 
+                       	           {{ entityExped.expVal|number_format(2, '.', ',') }}
+                               {% else %} 
+                                   0.00
+                 	           {% endif %}
+	   </td>
+   </tr>   
+    <tr><td colspan="4" style="height: 30px;" > Fait à {{ entityExped.envVille }} Le {{ date }}</td></tr>   
+  </table>
+  </div> 
+ 
+</page>

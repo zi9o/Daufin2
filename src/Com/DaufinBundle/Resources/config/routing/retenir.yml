@@ -1,0 +1,30 @@
+com_Retenir:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Retenir:index" }
+
+com_Retenir_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Retenir:show" }
+
+com_Retenir_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Retenir:new" }
+
+com_Retenir_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Retenir:create" }
+    methods:  POST
+
+com_Retenir_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Retenir:edit" }
+
+com_Retenir_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Retenir:update" }
+    methods:  [POST, PUT]
+
+com_Retenir_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Retenir:delete" }
+    methods:  [POST, DELETE]

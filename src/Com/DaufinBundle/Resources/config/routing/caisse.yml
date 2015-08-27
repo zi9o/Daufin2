@@ -1,0 +1,41 @@
+com_caisse:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Caisse:index" }
+
+com_caisse_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Caisse:show" }
+com_caisse_show_caisse_agence:
+    path:     /Caisse/Agence/show
+    defaults: { _controller: "ComDaufinBundle:Caisse:showCaisseAgence" }
+
+com_caisse_new_caisse_agence:
+    path:     /Caisse/Agence/new
+    defaults: { _controller: "ComDaufinBundle:Caisse:newCaisseAgence" }
+com_caisse_create_caisse_agence:
+    path:     /Caisse/Agence/create
+    defaults: { _controller: "ComDaufinBundle:Caisse:createCaisseAgence" }
+    methods:  POST
+    
+com_caisse_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Caisse:new" }
+
+com_caisse_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Caisse:create" }
+    methods:  POST
+
+com_caisse_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Caisse:edit" }
+
+com_caisse_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Caisse:update" }
+    methods:  [POST, PUT]
+
+com_caisse_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Caisse:delete" }
+    methods:  [POST, DELETE]

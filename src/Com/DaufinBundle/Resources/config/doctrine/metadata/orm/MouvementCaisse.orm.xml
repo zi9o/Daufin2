@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="MouvementCaisse" table="mouvement_caisse">
+    <indexes>
+      <index name="FK_MOUVEMENT_Caisse_AGENCE" columns="AGENCE"/>
+      <index name="FK_MOUVEMENT_Caisse_PERSONNEL" columns="PERSONNEL"/>
+      <index name="FK_MOUVEMENT_Caisse_CAISSE" columns="Caisse"/>
+      <index name="FK_MOUVEMENT_Caisse_EXPEDITION" columns="Expedition"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="typeMouvement" type="string" column="TYPE_Mouvement" length="20" nullable="true"/>
+    <field name="libelleMouvement" type="string" column="Libelle_Mouvement" length="30" nullable="true"/>
+    <field name="dateMouvement" type="datetime" column="DATE_MOUVEMENT" nullable="true"/>
+    <field name="valeur" type="float" column="Valeur" precision="10" scale="0" nullable="true"/>
+    <many-to-one field="expedition" target-entity="Expedition">
+      <join-columns>
+        <join-column name="Expedition" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="caisse" target-entity="Caisse">
+      <join-columns>
+        <join-column name="Caisse" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="personnel" target-entity="Personnel">
+      <join-columns>
+        <join-column name="PERSONNEL" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="agence" target-entity="Agence">
+      <join-columns>
+        <join-column name="AGENCE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

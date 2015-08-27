@@ -1,0 +1,137 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Feuille du chargement</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Chargement</a></li>
+                  <li class="active">Feuille</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+<script type="text/javascript">
+
+function chargerVehicule(sl){
+
+    var e1 = document.getElementById(sl.id);
+	var trajet = e1.options[e1.selectedIndex].value;
+
+	if(trajet=='notSend'){
+		 $("#vehicule").html('<option selected="true" disabled="disabled"> --SELECTIONNER--</option>');
+		 return false;
+	  }
+		   		      				
+       $.ajax({
+          url:  Routing.generate('com_daufin_ajax_charger_vehicule'),
+          type: "POST",
+          data: { "voyage" : trajet
+	        	   },
+          success: function(data) {
+             //(success) do something...
+             //variable "data" contains data returned by the controller. 		                
+        	  var obj = jQuery.parseJSON(data);
+        	  if (obj.hasOwnProperty('code')) 
+					 alert("message : "+obj.message);
+ 			  else {
+						 $("#vehicule").html('');
+							 		        	 
+		               for(var i=0;i<obj.length; i++)
+		               { 
+		                   $("#vehicule").append('<option value="'+ obj[i].idVehicule +'">'+obj[i].Marque+' -['+ obj[i].Matricule +'] </option>');
+		             
+		               }
+		               }	
+
+          }
+
+	       });
+       
+}
+</script>
+
+<script type="text/javascript">
+
+function valider(){
+	    var e1 = document.getElementById("voyage");
+		var voyage = e1.options[e1.selectedIndex].value;
+
+		var e2 = document.getElementById("vehicule");
+	    var vehicule = e2.options[e2.selectedIndex].value;
+
+	    var numPlombage1= document.getElementById("plomb1").value;
+	    var numPlombage2= document.getElementById("plomb2").value;
+	    var numPlombage3= document.getElementById("plomb3").value;
+	    var numPlombage4= document.getElementById("plomb4").value;
+
+	   
+	       $.ajax({
+	           url: Routing.generate('com_daufin_ajax_valider_feuille_chargement'),
+	           type: "POST",
+	           data: {  "voyage" : voyage,
+		                "vehicule" : vehicule,
+		                "numPlombage1" : numPlombage1,
+		                "numPlombage2" : numPlombage2,
+		                "numPlombage3" : numPlombage3,
+		                "numPlombage4" : numPlombage4
+	 	        	   },
+	           success: function(data) {
+	              //(success) do something...
+	              //variable "data" contains data returned by the controller. 		                
+	         	  var obj = jQuery.parseJSON(data);
+
+	         	 if (obj.hasOwnProperty('code')) 
+					 alert("ERROR : "+obj.message);
+			      else {			
+			    	  var url=obj.urlPDF;								 
+					  var wnd = window.open(url);
+			          }
+	 
+
+	           }
+				});
+
+	
+}
+</script>
+ 
+<div class="block-flat">   
+
+<table>
+	<tr>
+		<td>Trajet - Voyage</td>
+		<td >
+			 <select id="voyage" onchange="chargerVehicule(this)">
+			       <option selected="true" disabled="disabled"> --SELECTIONNER--</option>
+		     {% for voyage in voyages %}
+		           <option value="{{ voyage.idVoyage }}"> {{ voyage.libelleTrajet }}-{{ voyage.idVoyage }}</option>
+		     {% endfor %}		           
+		    </select>
+		 
+		</td>
+		<td>Vehicule</td>
+		<td >		
+			<select id="vehicule">
+			  <option selected="true" disabled="disabled"> --SELECTIONNER--</option>	           
+		    </select>
+		</td>
+		<td ></td>
+		
+	</tr>
+		<tr>
+			<td><input type="text" name="plomb1" id="plomb1" placeholder="Num plombage 1" required="required" size="15"/> </td>		
+			<td><input type="text" name="plomb2" id="plomb2" placeholder="Num plombage 2" required="required" size="15"/> </td>		
+			<td><input type="text" name="plomb3" id="plomb3" placeholder="Num plombage 3" required="required" size="15"/> </td>		
+			<td><input type="text" name="plomb4" id="plomb4" placeholder="Num plombage 4" required="required" size="15"/> </td>		
+			<td><input type="button" value="Valider" onclick="valider()"> </td>		
+		</tr>
+</table>
+
+
+</div>
+</div>  
+    {% endblock %}
+    
+    

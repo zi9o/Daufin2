@@ -1,0 +1,30 @@
+com_PasserPar:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:PasserPar:index" }
+
+com_PasserPar_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:PasserPar:show" }
+
+com_PasserPar_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:PasserPar:new" }
+
+com_PasserPar_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:PasserPar:create" }
+    methods:  POST
+
+com_PasserPar_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:PasserPar:edit" }
+
+com_PasserPar_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:PasserPar:update" }
+    methods:  [POST, PUT]
+
+com_PasserPar_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:PasserPar:delete" }
+    methods:  [POST, DELETE]

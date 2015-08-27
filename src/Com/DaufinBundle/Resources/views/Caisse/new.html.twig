@@ -1,0 +1,26 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Ajouter Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Ajouter</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Caisse creation</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_caisse') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

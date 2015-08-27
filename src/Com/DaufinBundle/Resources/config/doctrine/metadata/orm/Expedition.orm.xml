@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Expedition" table="expedition">
+    <indexes>
+      <index name="FK_REGROUPER" columns="EXP_TRANSP"/>
+      <index name="FK_ENV_CLIENT" columns="ENV_Client"/>
+      <index name="FK_REC_CLIENT" columns="REC_Client"/>
+      <index name="FK_REC_VILLE" columns="REC_VILLE"/>
+      <index name="FK_EXP_Fact" columns="FACTURE"/>
+      <index name="FK_EXP_CLientRegl" columns="Client_Reglee"/>
+      <index name="FK_ENV_VILLE" columns="ENV_VILLE"/>
+      <index name="FK_ORDRE_LV_RM" columns="ORDRE_LV"/>
+      <index name="FK_ENV_Site" columns="EnvSite"/>
+      <index name="FK_Rec_Site" columns="RecSite"/>
+      <index name="FK_ENVSECTEUR" columns="envSecteur"/>
+      <index name="FK_RECSECTEUR" columns="recSecteur"/>
+      <index name="FK_ENVAGENCE" columns="envAgence"/>
+      <index name="FK_RECAGENCE" columns="recAgence"/>
+    </indexes>
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="envDate" type="datetime" column="ENV_DATE" nullable="true"/>
+    <field name="envRemarque" type="string" column="ENV_REMARQUE" length="50" nullable="true"/>
+    <field name="recDate" type="datetime" column="REC_DATE" nullable="true"/>
+    <field name="recRemarque" type="string" column="REC_REMARQUE" length="50" nullable="true"/>
+    <field name="poidsExp" type="float" column="POIDS_EXP" precision="10" scale="0" nullable="true"/>
+    <field name="volumeExp" type="float" column="VOLUME_EXP" precision="10" scale="0" nullable="true"/>
+    <field name="nbrColis" type="integer" column="NBR_COLIS" nullable="true"/>
+    <field name="nbrPalets" type="integer" column="NBR_PALETS" nullable="true"/>
+    <field name="dateDecl" type="datetime" column="DATE_DECL" nullable="true"/>
+    <field name="mdPort" type="string" column="MD_PORT" length="56" nullable="true"/>
+    <field name="expVal" type="float" column="EXP_VAL" precision="10" scale="0" nullable="true"/>
+    <field name="etatExp" type="string" column="ETAT_EXP" length="56" nullable="true"/>
+    <field name="totalMontant" type="float" column="TOTAL_MONTANT" precision="10" scale="0" nullable="true"/>
+    <field name="taxType" type="string" column="TAX_TYPE" length="30" nullable="true"/>
+    <field name="modeRegl" type="string" column="MODE_REGL" length="30" nullable="true"/>
+    <field name="etatRegl" type="string" column="ETAT_REGL" length="56" nullable="true"/>
+    <field name="dateReglement" type="datetime" column="DATE_REGLEMENT" nullable="true"/>
+    <field name="lvDate" type="datetime" column="LV_DATE" nullable="true"/>
+    <field name="lvRemarque" type="string" column="LV_REMARQUE" length="50" nullable="true"/>
+    <field name="typeLivraison" type="string" column="type_Livraison" length="20" nullable="true"/>
+    <field name="codeDeclaration" type="string" column="code_Declaration" length="30" nullable="true"/>
+    <field name="refpaiement" type="string" column="RefPaiement" length="30" nullable="true"/>
+    <many-to-one field="recsecteur" target-entity="Secteur">
+      <join-columns>
+        <join-column name="recSecteur" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="recagence" target-entity="Agence">
+      <join-columns>
+        <join-column name="recAgence" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="recClient" target-entity="Client">
+      <join-columns>
+        <join-column name="REC_Client" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="recsite" target-entity="Site">
+      <join-columns>
+        <join-column name="RecSite" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="expTransp" target-entity="ExpTransp">
+      <join-columns>
+        <join-column name="EXP_TRANSP" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="recVille" target-entity="Ville">
+      <join-columns>
+        <join-column name="REC_VILLE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="ordreLv" target-entity="OrdreLvRm">
+      <join-columns>
+        <join-column name="ORDRE_LV" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="facture" target-entity="Facture">
+      <join-columns>
+        <join-column name="FACTURE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="envClient" target-entity="Client">
+      <join-columns>
+        <join-column name="ENV_Client" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="envsecteur" target-entity="Secteur">
+      <join-columns>
+        <join-column name="envSecteur" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="envsite" target-entity="Site">
+      <join-columns>
+        <join-column name="EnvSite" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="envVille" target-entity="Ville">
+      <join-columns>
+        <join-column name="ENV_VILLE" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="clientReglee" target-entity="Client">
+      <join-columns>
+        <join-column name="Client_Reglee" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="envagence" target-entity="Agence">
+      <join-columns>
+        <join-column name="envAgence" referenced-column-name="ID"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

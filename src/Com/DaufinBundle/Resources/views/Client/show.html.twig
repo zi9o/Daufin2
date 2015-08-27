@@ -1,0 +1,100 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Afficher Client</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Afficher Client</li>
+                </ol>
+        </div>
+{% endblock %}
+
+
+{% block container %}
+    
+    <a href="{{ path('com_Client') }}">
+        <button class="btn btn-default">
+         <i class="fa  fa-reply fa-1x"></i>Retour à la liste         
+        </button>
+    </a>
+   <div style="float:right;">
+       <a href="{{ path('com_Client_edit', { 'id': entity.id }) }}">
+        <button class="btn btn-info" style="width:100px;">Editer</button>
+       </a>
+   </div>
+    <br>
+<div align="center"> 
+    <table class="record_properties" style="width:400px;" >
+        <tbody>
+            <tr>
+                <th style="width:35%;">Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Code Client</th>
+                <td>{{ entity.codeClient }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ entity.telClt }}</td>
+            </tr>
+            <tr>
+                <th>Fax</th>
+                <td>{{ entity.faxClt }}</td>
+            </tr>
+            <tr>
+                <th>Contact</th>
+                <td>{{ entity.contact }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ entity.adresseClt }}</td>
+            </tr>
+            <tr>
+                <th>Raison Sociale</th>
+                <td>{{ entity.rSociale }}</td>
+            </tr>
+            <tr>
+                <th>Patente</th>
+                <td>{{ entity.patente }}</td>
+            </tr>
+            <tr>
+                <th>Registre Commerce</th>
+                <td>{{ entity.rCommerce }}</td>
+            </tr>
+            <tr>
+                <th>Identifiant Fiscale</th>
+                <td>{{ entity.idFiscale }}</td>
+            </tr>
+            <tr>
+                <th>Directeur General</th>
+                <td>{{ entity.dirGeneral }}</td>
+            </tr>
+            <tr>
+                <th>Directeur Financier</th>
+                <td>{{ entity.dirFinancier }}</td>
+            </tr>
+            <tr>
+                <th>Nom Particulier</th>
+                <td>{{ entity.nomPart }} </td>
+            </tr>
+            <tr>
+                <th>Prénom Particulier</th>
+                <td>{{ entity.prenomPart }}</td>
+            </tr>
+            <tr>
+                <th>C.I.N Particulier</th>
+                <td>{{ entity.cinPer }}</td>
+            </tr>
+            <tr>
+                <th>Type Client</th>
+                <td>{{ entity.typeClient }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    {{ form(delete_form) }}
+{% endblock %}

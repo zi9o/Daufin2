@@ -1,0 +1,128 @@
+#com_user_homepage:
+    #path:     /hello/{name}
+    #defaults: { _controller: ComUserBundle:Default:index }
+
+com_user_homepage:
+    path:     /
+#    defaults: { _controller: ComUserBundle:Security:index }
+    defaults: { _controller: ComDaufinBundle:Taxation:index }
+    
+# FOS USER AND SONATA ADMIN ROUTES
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /change-password
+        
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix:   /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+soanata_user:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+sonata_user_impersonating:
+    pattern: /
+    defaults: { _controller: SonataPageBundle:Page:catchAll }
+    
+# SECURITY
+fos_user_security_login:
+    pattern: /connexion
+    defaults: { _controller: FOSUserBundle:Security:login }
+    requirements:
+        _method: GET
+
+fos_user_security_check:
+    pattern: /connexion/verification
+    defaults: { _controller: FOSUserBundle:Security:check }
+    requirements:
+        _method: POST
+
+fos_user_security_logout:
+    pattern: /deconnexion
+    defaults: { _controller: FOSUserBundle:Security:logout }
+    requirements:
+        _method: GET
+
+# REGISTRATION
+fos_user_registration_register:
+    pattern: /inscription
+    defaults: { _controller: FOSUserBundle:Registration:register }
+    requirements:
+        _method: GET|POST
+
+fos_user_registration_check_email:
+    pattern: /inscription/e-mail
+    defaults: { _controller: FOSUserBundle:Registration:checkEmail }
+    requirements:
+        _method: GET
+
+fos_user_registration_confirm:
+    pattern: /inscription/confirmation/{token}
+    defaults: { _controller: FOSUserBundle:Registration:confirm }
+    requirements:
+        _method: GET
+
+fos_user_registration_confirmed:
+    pattern: /inscription/confirmation
+    defaults: { _controller: FOSUserBundle:Registration:confirmed }
+    requirements:
+        _method: GET
+
+# RESETTING PASSWORD
+fos_user_resetting_request:
+    pattern: /mot-de-passe-oublie/reinitialisation
+    defaults: { _controller: FOSUserBundle:Resetting:request }
+    requirements:
+        _method: GET
+
+fos_user_resetting_send_email:
+    pattern: /mot-de-passe-oublie/e-mail
+    defaults: { _controller: FOSUserBundle:Resetting:sendEmail }
+    requirements:
+        _method: GET|POST
+
+fos_user_resetting_check_email:
+    pattern: /mot-de-passe-oublie/verification
+    defaults: { _controller: FOSUserBundle:Resetting:checkEmail }
+    requirements:
+        _method: GET
+
+fos_user_resetting_reset:
+    pattern: /mot-de-passe-oublie/{token}
+    defaults: { _controller: FOSUserBundle:Resetting:reset }
+    requirements:
+        _method: GET|POST
+
+# PROFILE
+fos_user_profile_show:
+    pattern: /profile
+    defaults: { _controller: FOSUserBundle:Profile:show }
+    requirements:
+        _method: GET
+
+fos_user_profile_edit:
+    pattern: /profile/editer
+    defaults: { _controller: FOSUserBundle:Profile:edit }
+    requirements:
+        _method: GET|POST

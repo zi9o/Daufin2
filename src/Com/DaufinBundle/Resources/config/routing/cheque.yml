@@ -1,0 +1,30 @@
+com_Cheque:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Cheque:index" }
+
+com_Cheque_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Cheque:show" }
+
+com_Cheque_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Cheque:new" }
+
+com_Cheque_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Cheque:create" }
+    methods:  POST
+
+com_Cheque_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Cheque:edit" }
+
+com_Cheque_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Cheque:update" }
+    methods:  [POST, PUT]
+
+com_Cheque_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Cheque:delete" }
+    methods:  [POST, DELETE]

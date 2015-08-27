@@ -1,0 +1,293 @@
+# you can read more about security in the related section of the documentation
+# http://symfony.com/doc/current/book/security.html
+security:
+    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+    encoders:
+        #Symfony\Component\Security\Core\User\User: plaintext
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    #role_hierarchy:
+        #ROLE_ADMIN:       ROLE_USER
+        #ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_SONATA_ADMIN, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        SONATA:
+            - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
+        ROLE_SHOW_ALL_AGENCE:
+        ROLE_SHOW_AGENCE: [ROLE_SHOW_AGENCE]
+        ROLE_EDIT_AGENCE:
+        ROLE_ADD_AGENCE:
+        ROLE_DELETE_AGENCE:
+        
+        ROLE_SHOW_ALL_VILLE:
+        ROLE_SHOW_VILLE:
+        ROLE_EDIT_VILLE:
+        ROLE_ADD_VILLE:
+        ROLE_DELETE_VILLE:
+        
+        ROLE_SHOW_ALL_CHEQUE:
+        ROLE_SHOW_CHEQUE:
+        ROLE_EDIT_CHEQUE:
+        ROLE_ADD_CHEQUE:
+        ROLE_DELETE_CHEQUE:
+        
+        ROLE_SHOW_ALL_MOUVEMENT_CAISSE:
+        ROLE_SHOW_MOUVEMENT_CAISSE:
+        ROLE_EDIT_MOUVEMENT_CAISSE:
+        ROLE_ADD_MOUVEMENT_CAISSE:
+        ROLE_DELETE_MOUVEMENT_CAISSE:
+        
+        ROLE_SHOW_ALL_CAISSE:
+        ROLE_SHOW_CAISSE:
+        ROLE_EDIT_CAISSE:
+        ROLE_ADD_CAISSE:
+        ROLE_DELETE_CAISSE:
+        
+        
+        ROLE_SHOW_CAISSE_AGENCE:
+        ROLE_ADD_CAISSE_AGENCE:
+        ROLE_SHOW_MOUVEMENT_CAISSE_AGENCE:
+        ROLE_ADD_MOUVEMENT_CAISSE_AGENCE:
+        
+        ROLE_SHOW_ALL_VEHICULE:
+        ROLE_SHOW_VEHICULE:
+        ROLE_EDIT_VEHICULE:
+        ROLE_ADD_VEHICULE:
+        ROLE_DELETE_VEHICULE:
+        
+        ROLE_SHOW_ALL_TRAJET:
+        ROLE_SHOW_TRAJET:
+        ROLE_EDIT_TRAJET:
+        ROLE_ADD_TRAJET:
+        ROLE_DELETE_TRAJET:
+        
+        ROLE_SHOW_ALL_SOUS_TRAJET:
+        ROLE_SHOW_SOUS_TRAJET:
+        ROLE_EDIT_SOUS_TRAJET:
+        ROLE_ADD_SOUS_TRAJET:
+        ROLE_DELETE_SOUS_TRAJET:
+        
+        ROLE_SHOW_ALL_TYPE_VALEUR:
+        ROLE_SHOW_TYPE_VALEUR:
+        ROLE_EDIT_TYPE_VALEUR:
+        ROLE_ADD_TYPE_VALEUR:
+        ROLE_DELETE_TYPE_VALEUR:
+        
+        ROLE_SHOW_ALL_TABLE_PRIX:
+        ROLE_SHOW_TABLE_PRIX:
+        ROLE_EDIT_TABLE_PRIX:
+        ROLE_ADD_TABLE_PRIX:
+        ROLE_DELETE_TABLE_PRIX:
+        
+        ROLE_SHOW_ALL_SITE:
+        ROLE_SHOW_SITE:
+        ROLE_EDIT_SITE:
+        ROLE_ADD_SITE:
+        ROLE_DELETE_SITE:
+        
+        ROLE_SHOW_ALL_TAXATION:
+        ROLE_SHOW_TAXATION:
+        ROLE_EDIT_TAXATION:
+        ROLE_ADD_TAXATION:
+        ROLE_DELETE_TAXATION:
+        
+        ROLE_SHOW_ALL_PERSONNEL:
+        ROLE_SHOW_PERSONNEL:
+        ROLE_EDIT_PERSONNEL:
+        ROLE_ADD_PERSONNEL:
+        ROLE_DELETE_PERSONNEL:
+        
+        ROLE_SHOW_ALL_SECTEUR:
+        ROLE_SHOW_SECTEUR:
+        ROLE_EDIT_SECTEUR:
+        ROLE_ADD_SECTEUR:
+        ROLE_DELETE_SECTEUR:
+        
+        ROLE_SHOW_ALL_CLIENT:
+        ROLE_SHOW_CLIENT:
+        ROLE_EDIT_CLIENT:
+        ROLE_ADD_CLIENT:
+        ROLE_DELETE_CLIENT:
+        
+        ROLE_SHOW_ALL_CONTRAT:
+        ROLE_SHOW_CONTRAT:
+        ROLE_EDIT_CONTRAT:
+        ROLE_ADD_CONTRAT:
+        ROLE_DELETE_CONTRAT:
+        
+        ROLE_SHOW_ALL_VOYAGE:
+        ROLE_SHOW_VOYAGE:
+        ROLE_EDIT_VOYAGE:
+        ROLE_ADD_VOYAGE:
+        ROLE_DELETE_VOYAGE:
+        
+        ROLE_SHOW_ALL_EXPEDITION_TRANSPORT_VOYAGE:
+        ROLE_SHOW_EXPEDITION_TRANSPORT_VOYAGE:
+        ROLE_EDIT_EXPEDITION_TRANSPORT_VOYAGE:
+        ROLE_ADD_EXPEDITION_TRANSPORT_VOYAGE:
+        ROLE_DELETE_EXPEDITION_TRANSPORT_VOYAGE:
+        
+        
+        ROLE_SHOW_ALL_BON_LIVRAISON:
+        ROLE_SHOW_BON_LIVRAISON:
+        ROLE_EDIT_BON_LIVRAISON:
+        ROLE_ADD_BON_LIVRAISON:
+        ROLE_DELETE_BON_LIVRAISON:
+        
+        
+        ROLE_SHOW_ALL_CRBT:
+        ROLE_SHOW_CRBT:
+        ROLE_EDIT_CRBT:
+        ROLE_ADD_CRBT:
+        ROLE_DELETE_CRBT:
+        
+        ROLE_SHOW_ALL_TRAITE:
+        ROLE_SHOW_TRAITE:
+        ROLE_EDIT_TRAITE:
+        ROLE_ADD_TRAITE:
+        ROLE_DELETE_TRAITE:
+        
+        ROLE_SHOW_ALL_OPERATION_EXPEDITION:
+        ROLE_SHOW_OPERATION_EXPEDITION:
+        ROLE_EDIT_OPERATION_EXPEDITION:
+        ROLE_ADD_OPERATION_EXPEDITION:
+        ROLE_DELETE_OPERATION_EXPEDITION:
+        
+        ROLE_SHOW_ALL_OPERATION_VOYAGE:
+        ROLE_SHOW_OPERATION_VOYAGE:
+        ROLE_EDIT_OPERATION_VOYAGE:
+        ROLE_ADD_OPERATION_VOYAGE:
+        ROLE_DELETE_OPERATION_VOYAGE:
+        
+        
+        ROLE_VALIDER_PORT_PAYE:
+        ROLE_VALIDER_CHEQUE:
+        ROLE_VALIDER_TRAITE:
+        ROLE_VALIDER_CRBT:
+        ROLE_VALIDER_RETOUR_BL:
+        
+        ROLE_PROPOSER_CHARGEMENT:
+        ROLE_VALIDER_CHARGEMENT:
+        ROLE_FEUILLE_CHARGEMENT:
+        ROLE_DECLARER_ARRIVAGE:
+        ROLE_PLAN_LIVRAISON:
+        ROLE_DECLARER_LIVRAISON:
+        
+        
+        
+        ROLE_SUIVI_EXPEDITIONS:
+        ROLE_SUIVI_SERVICES:
+        ROLE_SYNTEHSE_EXPEDITIONS:
+        ROLE_SYNTEHSE_SERVICES: 
+        
+        ROLE_SUIVI_VOYAGES:
+        
+        ROLE_SHOW_ALL_FACTURE:
+        ROLE_SHOW_FACTURE:
+        ROLE_ADD_FACTURE:
+        
+        ROLE_SHOW_ALL_RUBRIQUE:
+        ROLE_SHOW_RUBRIQUE:
+        ROLE_EDIT_RUBRIQUE:
+        ROLE_ADD_RUBRIQUE:
+        ROLE_DELETE_RUBRIQUE:
+        
+        
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        #in_memory:
+            #memory:
+                #users:
+                    #user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                    #admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+
+        fos_userbundle:
+            id: fos_user.user_manager
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # -> custom firewall for the admin area of the URL
+        admin:
+            pattern:      /admin/
+            form_login:
+                provider:       fos_userbundle
+                login_path:     sonata_user_admin_security_login
+                use_forward:    true
+                use_referer: true
+                check_path:     sonata_user_admin_security_check
+                #failure_path:   null
+            logout:
+                path:           sonata_user_admin_security_logout
+                target:         homepage
+            anonymous:    true
+        # -> end custom configuration
+        rest:
+            pattern:  ^/api/
+            security: false
+        
+        # defaut login area for standard users
+        main:
+            pattern:            ^/
+            form_login:
+                provider:       fos_userbundle
+                login_path:     fos_user_security_login
+                use_forward:    true
+                use_referer:    true
+                check_path:     fos_user_security_check
+                #failure_path:   null
+                default_target_path: fos_user_profile_show
+            logout:
+                path: fos_user_security_logout
+                target: homepage
+            anonymous:    true
+        
+        # the login page has to be accessible for everybody
+        demo_login:
+            pattern:  ^/demo/secured/login$
+            security: false
+
+        # secures part of the application
+        demo_secured_area:
+            pattern:    ^/demo/secured/
+            # it's important to notice that in this case _demo_security_check and _demo_login
+            # are route names and that they are specified in the AcmeDemoBundle
+            form_login:
+                check_path: _demo_security_check
+                login_path: _demo_login
+            logout:
+                path:   _demo_logout
+                target: _demo
+            #anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mot-de-passe-oublie, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/, role: ROLE_USER }
+        - { path: ^/profile, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/deconnexion$, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/bundles, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/css, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/js, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#    - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#    - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: ROLE_USER }

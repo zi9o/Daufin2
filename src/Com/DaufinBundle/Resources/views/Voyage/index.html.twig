@@ -1,0 +1,57 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste Des Voyages</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste Des Voyages</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_daufin_form_ajouter_voyage') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Code Voyage</th>
+                <th>Etat de Voyage</th>
+                <th>Date de Planification</th>
+                 
+                <th>Trajet</th>
+                <th>Vehicule</th>
+                <th>Chauffeur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_voyage_show', { 'id': entity.idVoyage }) }}">{{ entity.idVoyage }}</a></td>
+                <td>{{ entity.etatVoyage }}</td>
+                <td>{% if entity.datePlanification %}{{ entity.datePlanification|date('Y-m-d H:i:s') }}{% endif %}</td>
+                 
+                <td><a href="{{ path('com_trajet_show', { 'id': entity.idTrajet }) }}">{{ entity.libelleTrajet }}</a></td>
+                <td><a href="{{ path('com_vehicule_show', { 'id': entity.idVehicule }) }}">{{ entity.matriculeVehicule }}</a></td>
+                 <td><a href="{{ path('com_Personnel_show', { 'id': entity.idPersonnel }) }}">{{ entity.nomPersonnel }} {{ entity.prenomPersonnel }} -{{ entity.matriculePersonnel }}</a></td>
+                <td align="center">
+                    <a href="{{ path('com_voyage_show', { 'id': entity.idVoyage }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_voyage_edit', { 'id': entity.idVoyage }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}

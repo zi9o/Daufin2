@@ -1,0 +1,65 @@
+{% extends 'ComDaufinBundle::layout.html.twig' %}
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Exp.Transport / Voyage</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Exp.Transport / Voyage</li>
+                </ol>
+        </div>
+{% endblock %}
+{% block container -%}
+    <h1>ContTablePrix list</h1>
+
+   <div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contrat</th>
+                <th>Rubrique</th>
+                <th>Sous Trajet</th>
+                <th>Type de Valorisation</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th>TVA</th>
+                <th>Valeur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_ContTablePrix_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('com_Contrat_show', { 'id': entity.id }) }}">{{ entity.idContart.id }}</a></td>
+                <td>{{ entity.idRub }}</td>
+                <td>{{ entity.idSTrajet }}</td>
+                <td>{{ entity.idTVal }}</td>
+                <td>{{ entity.valeurMin }}</td>
+                <td>{{ entity.valeurMax }}</td>
+                <td>{{ entity.tva }}</td>
+                 <td>{{ entity.valeur }}</td>
+                <td align="center">
+                    <a href="{{ path('com_ContTablePrix_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_ContTablePrix_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+        <ul>
+        <li>
+            <a href="{{ path('com_ContTablePrix_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+</div> 
+
+    {% endblock %}

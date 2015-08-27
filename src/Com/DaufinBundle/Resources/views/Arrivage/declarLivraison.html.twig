@@ -1,0 +1,161 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Validation de Livraison</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Livraison / Validation</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+
+ <style>
+ .white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+#addColis:focus{
+background-color: #a5a7f0;
+}
+.trHeader th{
+font-weight: bold;
+font-size: 13px;
+background-color: #6d6262;
+color: #E4E3E3;
+}
+.trERROR td{
+background-color: #F9B0AD;
+}
+.trSUCCES td{
+background-color: #C0E7AC;
+}
+ </style>
+ <script type="text/javascript">
+
+
+   function getExpediton(){
+	   
+
+	   var num = document.getElementById("addColis").value;
+	if(num.length===10){
+	
+	   var codeDeclaration=num.substring(0,10);
+	  // var numColis=num.substring(10,num.length);
+	   document.getElementById("addColis").value='';
+	   document.getElementById("addColis").focus();
+	  
+       $.ajax({
+	          url:Routing.generate('com_daufin_ajax_livraison_get_expedition'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				 document.getElementById("validation").disabled=false;
+     	   				 document.getElementById("codeDeclaration").value=codeDeclaration;
+     	   				 var txt='<strong>Type Manutention   </strong>'+obj.typeManu+' <br/>  <strong>Nombre Unite  </strong>'+obj.nbreUnite;
+     	   				$("#showDetail").html(txt); 
+     	   				}
+        		  
+	          }     
+             	
+	       });
+	   
+   
+	   }
+	   
+   }
+   </script>
+    <script type="text/javascript">
+
+
+   function validerExpediton(){
+	   
+
+	   var codeDeclaration= document.getElementById("codeDeclaration").value;
+	  
+       $.ajax({
+	          url: Routing.generate('com_daufin_ajax_livraison_valid_livraison'),
+	          type: "POST",
+	          data: { "codeDeclaration" : codeDeclaration	        	   
+		          		        	   },
+	          success: function(data) {
+	             //(success) do something...
+	             //variable "data" contains data returned by the controller. 	
+	               var obj = jQuery.parseJSON(data);
+				 	
+	               if (obj.hasOwnProperty('codeError')) 
+						 alert("ERROR : "+obj.message);
+        			
+     	   				else{
+     	   				alert("ERROR : "+obj.message);
+     	   				}        		  
+	          }                  	
+	       }); 
+       } 
+   </script>
+<div class="block-flat" onload=" document.getElementById('date').value = Date();">   
+
+<table>
+     <tr>
+	     <td style="width: 180px">Agence</td>
+	        <td style="width: 180px">{{ agence.CODE_AGENCE }} -- {{ agence.LIBELLE_AG }} </td>
+	     <td style="width: 180px">Date</td>
+	     <td style="width: 130px"> {{ date }}</td>
+     </tr>
+     <tr >
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 14px;">
+                   Code Déclaration 
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="text" name="colis" size="20" id="addColis" onKeyUp="getExpediton()">  
+                	<input type="hidden" id="codeDeclaration" readonly="readonly">           
+                </td>
+                <td style="font-weight: bold;color:#6d1410 ;font-size: 13px;">
+                	<input type="button" value="Valider Livraison" disabled="disabled" id="validation" onclick="validerExpediton()">
+                </td>
+                <td></td>
+                 
+       </tr>
+     
+
+</table>
+<div style="margin-top: 20px;">
+
+    <table class="table">
+
+		   <tr>
+       
+          <td colspan="4"><div id="showDetail"></div></td>
+       </tr>            
+
+   </table>
+</div>
+</div>
+
+ 
+
+  
+    {% endblock %}
+    
+    

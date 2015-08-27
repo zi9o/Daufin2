@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Cheque</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Numcheque</th>
+                <td>{{ entity.numCheque }}</td>
+            </tr>
+            <tr>
+                <th>Titrecheque</th>
+                <td>{{ entity.titreCheque }}</td>
+            </tr>
+            <tr>
+                <th>Montantchq</th>
+                <td>{{ entity.montantChq }}</td>
+            </tr>
+            <tr>
+                <th>Dateecheance</th>
+                <td>{{ entity.dateEcheance|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Naturecheque</th>
+                <td>{{ entity.natureCheque }}</td>
+            </tr>
+            <tr>
+                <th>Etatcheque</th>
+                <td>{{ entity.etatCheque }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Cheque') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_Cheque_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

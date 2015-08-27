@@ -1,0 +1,34 @@
+com_Client:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:Client:index" }
+
+com_Client_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:Client:show" }
+
+com_Client_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:Client:new" }
+
+com_Client_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:Client:create" }
+    methods:  POST
+
+com_Client_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:Client:edit" }
+
+com_Client_compteedit:
+    path:     /compteedit
+    defaults: { _controller: "ComDaufinBundle:Client:compteedit" }
+
+com_Client_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:Client:update" }
+    methods:  [POST, PUT]
+
+com_Client_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:Client:delete" }
+    methods:  [POST, DELETE]

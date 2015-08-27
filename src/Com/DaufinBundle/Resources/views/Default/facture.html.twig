@@ -1,0 +1,117 @@
+<page orientation="Portrait" style="font-size: 14px;" format="A4"  backtop="60mm" backbottom="30mm" backleft="5mm" backright="5mm" >
+<style>
+
+#data th{
+font-weight: bold;
+font-size: 12px;
+background-color:gray;
+height: 30px;
+text-align: center;
+}
+#data td{
+ 
+font-size: 11px;
+text-align: left;
+padding-left: 2px;
+}
+.page_footer{
+ 
+}
+
+table.page_footer {width: 100%; border: none; padding: 0mm}
+
+</style>
+
+		<page_header >
+		
+		 
+
+            
+		</page_header>
+		<page_footer style="width:100%;margin-top:-100px;">
+		<table class="page_footer">
+			<tr>
+				<td style="width: 100%; text-align: right;">
+					page [[page_cu]]/[[page_nb]]
+				</td>
+			</tr>
+		</table>
+	</page_footer>
+		
+		<div style=" float: right; width: 400px; height: 110px;margin-top: 10px;margin-left: 400px;">
+		  
+		  <table  style="width: 100%">
+				  <tr><td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;"> Client</td> </tr>
+				  <tr><td style="width: 30%;">Code Client :</td> <td style="width: 60%;">{{ codeClient }}</td></tr>
+				  <tr><td style="width: 30%;">Client :</td><td style="width: 60%;">{{ nom }}</td></tr>
+				  <tr><td style="width: 30%;">Adresse Client :</td><td style="white-space: pre; width: 60%;">{{ adresse }}</td> </tr>
+				  <tr><td style="width: 30%;">Tél Client :</td><td style="width: 60%;">{{ telClient }}</td> </tr>
+		  </table>
+		 
+        </div>
+        		<div style=" width: 500px; height: 35px; margin-top: 20px;margin-left: 150;">
+		   <table style="width: 100%;">
+		  <tr><td style="padding-left: 20px">Facture N°:</td>
+		     <td style="padding-left: 20px;text-align: center; font-weight: bold;">{{ facture.numFacture }} {{ duplicata }}</td>
+		     <td style="width: 100px"></td>
+		     <td style="text-align: center;padding-left: 20px">{{ ville }}, Le {{ dateNow }}</td>
+		  </tr>
+		  </table>
+		 
+        </div>
+		
+		 <table style="margin-top: 8px;margin-left:25px;width:92%;border: 1px solid green;" id="data">
+            <thead>
+            <tr >
+                <th style="width: 15%;">Code Déclaration</th>
+                <th style="width: 12%;">Date </th>
+                <th style="width: 15%;">Agence Départ</th>
+                <th style="width: 15%;">Agence Arrivée</th>
+                <th style="width: 9%;">Mode Port</th>
+                <th style="width: 11%;">Montant HT</th>
+                <th style="width: 12%;">Montant TVA</th>
+                <th style="width: 12%;">Montant TTC</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in data %}
+            <tr>
+                <td>{{ entity.declaration }}</td>
+                <td>{{ entity.dateEnvoi }}</td>
+                <td>{{ entity.agD }}</td>
+                <td>{{ entity.agA }}</td>
+                <td>{{ entity.modePort }}</td>           
+                <td style="text-align: right;">{{ entity.montantHT|number_format(2, '.', ',')}}</td>
+                <td style="text-align: right;">{{ entity.montantTVA|number_format(2, '.', ',')}}</td>
+                <td style="text-align: right;">{{ entity.montantTTC|number_format(2, '.', ',')}}</td>
+            </tr>
+            {% endfor %}
+             </tbody>
+            </table >
+            <table style="margin-top: 10px;margin-left:25px;width:92%;" id="data">
+            <tr>
+                <td   style="font-weight:bold;font-size: 14px;width: 70%; text-align: right;"></td>
+                <td   style="font-weight:bold;font-size: 14px;width: 20%;">Montant HT (DH):</td>
+                <td   style="font-weight:bold;font-size: 14px;width: 10%;text-align: left;">{{ totalHT|number_format(2, '.', ' ')}}</td>
+            </tr>
+            <tr> 
+                <td   style="font-weight:bold;font-size: 14px;width: 70%; text-align: right;"></td> 
+                <td  style="font-weight:bold;font-size: 14px;width: 20%;">Montant TVA (DH):</td>
+                <td   style="font-weight:bold;font-size: 14px;width: 10%;text-align: left;">{{ totalTVA|number_format(2, '.', ' ')}}</td>
+             </tr>
+             <tr>
+                <td   style="font-weight:bold;font-size: 14px;width: 70%; text-align: right;"></td>
+                <td   style="font-weight:bold;font-size: 14px;width: 20%;">Montant TTC (DH):</td>
+                <td   style="font-weight:bold;font-size: 14px;width: 10%;text-align: left;">{{ totalTTC|number_format(2, '.', ' ')}}</td>
+             </tr>
+             
+          </table>
+           <div style=" width: 90%; margin-top: 30px;margin-left: 30; font-size: 13px;">
+		      
+		Cette facture est arr&ecirc;tée &agrave; la somme de: <br> 
+		 <div style="font-weight: bold; margin-top: 5px;">
+            {{ montantLettre }}.
+		 </div>
+        </div>
+        
+</page>

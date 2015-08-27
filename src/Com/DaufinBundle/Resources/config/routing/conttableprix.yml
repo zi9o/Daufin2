@@ -1,0 +1,30 @@
+com_ContTablePrix:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:index" }
+
+com_ContTablePrix_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:show" }
+
+com_ContTablePrix_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:new" }
+
+com_ContTablePrix_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:create" }
+    methods:  POST
+
+com_ContTablePrix_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:edit" }
+
+com_ContTablePrix_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:update" }
+    methods:  [POST, PUT]
+
+com_ContTablePrix_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:ContTablePrix:delete" }
+    methods:  [POST, DELETE]

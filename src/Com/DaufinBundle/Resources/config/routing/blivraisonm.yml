@@ -1,0 +1,30 @@
+com_BLivraison:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:index" }
+
+com_BLivraison_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:show" }
+
+com_BLivraison_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:new" }
+
+com_BLivraison_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:create" }
+    methods:  POST
+
+com_BLivraison_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:edit" }
+
+com_BLivraison_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:update" }
+    methods:  [POST, PUT]
+
+com_BLivraison_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:BlivraisonM:delete" }
+    methods:  [POST, DELETE]

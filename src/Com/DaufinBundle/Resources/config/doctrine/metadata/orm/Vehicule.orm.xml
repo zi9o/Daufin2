@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Vehicule" table="vehicule">
+    <id name="id" type="bigint" column="ID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="matriculeVeh" type="string" column="MATRICULE_VEH" length="48" nullable="true"/>
+    <field name="marqueVeh" type="string" column="MARQUE_VEH" length="48" nullable="true"/>
+    <field name="modelVeh" type="string" column="MODEL_VEH" length="48" nullable="true"/>
+    <field name="typeVehicule" type="string" column="TYPE_VEHICULE" length="48" nullable="true"/>
+    <field name="poidsVide" type="float" column="POIDS_VIDE" precision="10" scale="0" nullable="true"/>
+    <field name="poidsPlein" type="float" column="POIDS_PLEIN" precision="10" scale="0" nullable="true"/>
+    <many-to-many field="voyage" target-entity="Voyage" inversed-by="vehicule">
+      <join-table name="effectuer">
+        <join-columns>
+          <join-column name="VEHICULE" referenced-column-name="ID"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="VOYAGE" referenced-column-name="ID"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

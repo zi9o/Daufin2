@@ -1,0 +1,27 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Contrat</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Contrats/ Ajouter</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Ajouter Contrat</h1>
+<div  style="width:25%;">
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_Contrat') }}">
+            retour à la liste
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Mouvement Caisse</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Caisse /Ajouter</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>Mouvement Caisse</h1>
+
+    <form action="{{ path('com_caisse_create_caisse_agence') }}" method="post">
+      <table class="form" border="0">
+      <tr >
+       		<td  > Agence</td>
+       		<td  style="font-size: 12px;font-weight: bold;"> {{ caisses[0].agence  }}  
+       		 </td>
+       		<td style="font-size: 12px;"></td>
+       		<td > 
+       		</td>
+   
+       	</tr>
+       <tr >
+       		<td  > Caisse</td>
+       		<td>  
+       		  <select id="caisse" name="caisse" required="required" class="form-control parsley-validated">
+       		     {% for entity in caisses %}
+       		      
+		           <option value="{{ entity.id }}"> {{ entity.libelleCaisse  }} - {{ entity.categorieCaisse  }}</option>
+		            {% endfor %}
+       		  </select>
+       		 </td>
+       		<td style="font-size: 12px;">  Type Mouvement</td>
+       		<td ><select id="typeMouvement" name="typeMouvement" class="form-control parsley-validated">
+       		       <option value="Retrait">Retrait</option>
+       		       <option value="Versement">Versement</option>
+       		    </select>
+       		 </td>
+   
+       	</tr>
+       	<tr>	
+       		<td>Libellé Mouvement</td>
+			<td ><input type="text" id="libelleMouvement" name="libelleMouvement" maxlength="50" class="form-control parsley-validated" /></td>   
+			</td>   
+			<td>Valeur Mouvement</td>   
+			<td><input type="text" id="valeur" name="valeur" class="form-control parsley-validated" /> </td>
+		</td>
+		</tr>
+	    <tr>	
+       		<td>Expédition</td>
+			<td ><select name="expedition" class="form-control parsley-validated">
+			          <option value="">--SELECTIONNER--</option>
+			       {% for expedition in expeditions %}
+		             <option value="{{ expedition.id }}"> {{ expedition.codeDeclaration  }}</option>
+		           {% endfor %}
+			     </select>   
+			<td> </td>   
+			<td> </td>
+		</tr>  
+	   	<tr>
+				<td> </td>	  
+				<td>  <button type="submit" name="submit">Créer</button>  </td>
+			    <td> </td>
+			    <td></td>	  		    
+	   	</tr>
+    
+    </table>
+   </form>
+{% endblock %}

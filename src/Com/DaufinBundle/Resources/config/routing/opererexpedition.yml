@@ -1,0 +1,30 @@
+com_Oprer_Expedition:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:index" }
+
+com_Oprer_Expedition_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:show" }
+
+com_Oprer_Expedition_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:new" }
+
+com_Oprer_Expedition_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:create" }
+    methods:  POST
+
+com_Oprer_Expedition_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:edit" }
+
+com_Oprer_Expedition_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:update" }
+    methods:  [POST, PUT]
+
+com_Oprer_Expedition_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:OpererExpedition:delete" }
+    methods:  [POST, DELETE]

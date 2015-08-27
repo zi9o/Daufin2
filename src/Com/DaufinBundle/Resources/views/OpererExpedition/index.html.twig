@@ -1,0 +1,56 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Operation Expédition</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">EXPEDITIONS</a></li>
+                  <li class="active">Opération /Afficher</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <h1>liste des Opérations</h1>
+
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code Déclaration</th>
+                <th>Personnel</th>
+                <th>Agence Départ</th>
+                <th>Agence Arrivée</th>
+                <th>Date opération</th>
+                <th>Type opération</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_Oprer_Expedition_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td> {% if entity.exept %}{{ entity.exept.codeDeclaration }}{% endif %}</td>
+                <td> {% if entity.personnel %}{{ entity.personnel }}{% endif %}</td>
+                <td>  {% if entity.exept %}{{ entity.exept.envAgence }}{% endif %}</td>
+                <td>  {% if entity.exept %}{{ entity.exept.recAgence }}{% endif %}</td>
+                <td>{% if entity.dateOperation %}{{ entity.dateOperation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.typeOperation }}</td>
+                <td>
+                
+                   
+                        <a href="{{ path('com_Oprer_Expedition_show', { 'id': entity.id }) }}">Afficher</a>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+     
+    </div>
+    </div>
+    {% endblock %}

@@ -1,0 +1,57 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste des Mouvement Stock</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste des Mouvement Stock</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <a href="{{ path('com_mouvement_stock_new') }}">
+        <button class="btn btn-info">
+         Nouveau Element        
+        </button>
+    </a>
+<div class="block-flat">        
+<div class="table-responsive">
+    <table class="table table-bordered" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date de Mouvement</th>
+                <th>Agence</th>
+                <th>Unite Manutention</th>
+                <th>Mouvement</th>
+                <th>Personnel</th>
+                <th>Action</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('com_mouvement_stock_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateMouv %}{{ entity.dateMouv|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.agence }}</td>
+                <td>{{ entity.uniteManu }}</td>
+                <td>{{ entity.mouvement }}</td>
+                <td>{{ entity.personnel }}</td>
+                 <td align="center">
+                    <a href="{{ path('com_mouvement_stock_show', { 'id': entity.id }) }}" class="label label-success">
+                            <i class="fa   fa-folder-open"></i></a>
+                    <a href="{{ path('com_mouvement_stock_edit', { 'id': entity.id }) }}" class="label label-info">
+                        <i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+    {% endblock %}
+
