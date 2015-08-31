@@ -1,0 +1,59 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste du Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste du Personnel</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <h1>ReglementFacture</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{{ entity.dateCreation|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ entity.montant }}</td>
+            </tr>
+            <tr>
+                <th>Modereglement</th>
+                <td>{{ entity.modeReglement }}</td>
+            </tr>
+            <tr>
+                <th>Refreglement</th>
+                <td>{{ entity.refReglement }}</td>
+            </tr>
+            <tr>
+                <th>Dateeffet</th>
+                <td>{{ entity.dateEffet|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_RegleFacture') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('com_RegleFacture_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

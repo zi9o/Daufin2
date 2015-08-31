@@ -1,0 +1,30 @@
+com_RegleFacture:
+    path:     /
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:index" }
+
+com_RegleFacture_show:
+    path:     /{id}/show
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:show" }
+
+com_RegleFacture_new:
+    path:     /new
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:new" }
+
+com_RegleFacture_create:
+    path:     /create
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:create" }
+    methods:  POST
+
+com_RegleFacture_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:edit" }
+
+com_RegleFacture_update:
+    path:     /{id}/update
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:update" }
+    methods:  [POST, PUT]
+
+com_RegleFacture_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ComDaufinBundle:ReglementFacture:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,27 @@
+{% extends"ComDaufinBundle::layout.html.twig"%}
+
+{% block _container %}
+        <div class="page-head">
+                <h2>Liste du Personnel</h2>
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">PARAMETRES</a></li>
+                  <li class="active">Liste du Personnel</li>
+                </ol>
+        </div>
+{% endblock %}
+
+{% block container%}
+    <h1>ReglementFacture edit</h1>
+
+    {{ form(edit_form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('com_RegleFacture') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
