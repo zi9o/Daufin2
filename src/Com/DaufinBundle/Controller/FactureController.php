@@ -11,13 +11,15 @@ use Com\DaufinBundle\Entity\Client;
 use Com\DaufinBundle\Entity\Expedition;
 use Com\DaufinBundle\Entity\SuivService;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-
 use ExcelAnt\Adapter\PhpExcel\Workbook\Workbook,
     ExcelAnt\Adapter\PhpExcel\Sheet\Sheet,
     ExcelAnt\Adapter\PhpExcel\Writer\Writer,
     ExcelAnt\Table\Table,
     ExcelAnt\Coordinate\Coordinate;
 use ExcelAnt\Adapter\PhpExcel\Writer\WriterFactory,
+    ExcelAnt\Collections\StyleCollection,
+    ExcelAnt\Style\Fill,
+    ExcelAnt\Style\Font,
     ExcelAnt\Adapter\PhpExcel\Writer\PhpExcelWriter\Excel5;
 
 /**
@@ -341,23 +343,23 @@ class FactureController extends Controller {
      * Lists all Facture entities.
      * @Secure(roles="ROLE_ADD_FACTURE")
      */
-    public function genererFactureAction(){
-        
-        
+    public function genererFactureAction() {
+
+
         $em = $this->getDoctrine()->getManager();
-        
-        $connection = $em->getConnection();     
-        $params = $this->getRequest()->request->all();      
+
+        $connection = $em->getConnection();
+        $params = $this->getRequest()->request->all();
         $idExpeditions = $params['idExpeditions'];
-        
-        $ids=array();
+
+        $ids = array();
         foreach ($idExpeditions as $value) {
             array_push($ids, $value);
         }
-        
+
         $inQuery = implode(',', array_fill(0, count($ids), '?'));
-             
-            $request = "SELECT
+
+        $request = "SELECT
                 e.id as id_exp,
                 code_Declaration as code_dec,
                 DATE_DECL as date_declaration,
@@ -376,164 +378,160 @@ class FactureController extends Controller {
              join suiv_service as s on (e.id=s.exept)
             
              where e.id IN(" . $inQuery . ")           
-             group by e.code_Declaration";          
-             
-            $statement = $connection->prepare($request);
-            
-         foreach ($ids as $k => $id)
-                {
-                    $statement->bindValue(($k+1), $id);
-                }
-            $statement->execute();
-            
-            $results = $statement->fetchAll();
-            
-            if (sizeof($results) >= 1)  {
-                $exped=$em->getRepository("ComDaufinBundle:Expedition")->find($idExpeditions[0]);
-                //$exped=new Expedition();
-                
-                if($exped->getFacture()!=null){
-                    $response = array("codeError" => 40,
-                            "message" => "Expedition ".$exped->getCodeDeclaration()." est associée a la facture ".$exped->getFacture()->getNumFacture(),);
-                    return new Response(json_encode($response));
-                }
-                $date=new \DateTime();
-                $codeClient;
-                $client;
-                $telClient;
-                
-                if($exped->getMdPort()=='portDu'){
-                    $codeClient=$exped->getRecClient()->getCodeClient();
-                    $telClient=$exped->getRecClient()->getTelClt();
+             group by e.code_Declaration";
 
-                    if($exped->getRecClient()->getTypeClient()=='Compte'){
-                      $client=$exped->getRecClient()->getRSociale();
-                        }
-                    else{
-                        $client=$exped->getRecClient()->getNomPart().' '.$exped->getRecClient()->getPrenomPart();
-                    }   
-                }
-                else{
-                    
-                    $codeClient=$exped->getEnvClient()->getCodeClient();
-                    $telClient=$exped->getEnvClient()->getTelClt();
-                    
-                    if($exped->getEnvClient()->getTypeClient()=='Compte'){
-                        $client=$exped->getEnvClient()->getRSociale();
-                    }
-                    else{
-                        $client=$exped->getEnvClient()->getNomPart().' '.$exped->getEnvClient()->getPrenomPart();
-                    }
-                }
+        $statement = $connection->prepare($request);
 
-                 if($telClient==null) $telClient='';
-                $response = array("code" => 28,
-                    "expeditions" => $results,
-                    "codeClient" => $codeClient,
-                    "date" => $date->format('Y-m-d'),
-                    "telClient" => $telClient,
-                    "client" => $client,
-                        
-                );
-            return new Response(json_encode($response));
+        foreach ($ids as $k => $id) {
+            $statement->bindValue(($k + 1), $id);
+        }
+        $statement->execute();
+
+        $results = $statement->fetchAll();
+
+        if (sizeof($results) >= 1) {
+            $exped = $em->getRepository("ComDaufinBundle:Expedition")->find($idExpeditions[0]);
+            //$exped=new Expedition();
+
+            if ($exped->getFacture() != null) {
+                $response = array("codeError" => 40,
+                    "message" => "Expedition " . $exped->getCodeDeclaration() . " est associée a la facture " . $exped->getFacture()->getNumFacture(),);
+                return new Response(json_encode($response));
             }
-          else {
-        
+            $date = new \DateTime();
+            $codeClient;
+            $client;
+            $telClient;
+
+            if ($exped->getMdPort() == 'portDu') {
+                $codeClient = $exped->getRecClient()->getCodeClient();
+                $telClient = $exped->getRecClient()->getTelClt();
+
+                if ($exped->getRecClient()->getTypeClient() == 'Compte') {
+                    $client = $exped->getRecClient()->getRSociale();
+                } else {
+                    $client = $exped->getRecClient()->getNomPart() . ' ' . $exped->getRecClient()->getPrenomPart();
+                }
+            } else {
+
+                $codeClient = $exped->getEnvClient()->getCodeClient();
+                $telClient = $exped->getEnvClient()->getTelClt();
+
+                if ($exped->getEnvClient()->getTypeClient() == 'Compte') {
+                    $client = $exped->getEnvClient()->getRSociale();
+                } else {
+                    $client = $exped->getEnvClient()->getNomPart() . ' ' . $exped->getEnvClient()->getPrenomPart();
+                }
+            }
+
+            if ($telClient == null)
+                $telClient = '';
+            $response = array("code" => 28,
+                "expeditions" => $results,
+                "codeClient" => $codeClient,
+                "date" => $date->format('Y-m-d'),
+                "telClient" => $telClient,
+                "client" => $client,
+            );
+            return new Response(json_encode($response));
+        }
+        else {
+
             $response = array("codeError" => 40,
-                    "message" => "Aucune expedition trouvée",);
+                "message" => "Aucune expedition trouvée",);
             return new Response(json_encode($response));
         }
     }
+
     /**
      * Lists all Facture entities.
      * @Secure(roles="ROLE_ADD_FACTURE")
      */
-    public function validerFactureAction(){
-        
+    public function validerFactureAction() {
+
         $em = $this->getDoctrine()->getManager();
-         
+
         $connection = $em->getConnection();
         $params = $this->getRequest()->request->all();
         $idExpeditions = $params['idExpeditions'];
-        
-        $totalTTC=0;
-        $totalTVA=0;
-        $totalHT=0;
-        
-        $client=null;
-        $dataExpeditions=array();
+
+        $totalTTC = 0;
+        $totalTVA = 0;
+        $totalHT = 0;
+
+        $client = null;
+        $dataExpeditions = array();
 
         //get Client
-        $exped=$em->getRepository("ComDaufinBundle:Expedition")->find($idExpeditions[0]);
-        
-            if($exped->getMdPort()=='portDu')
-                $client=$exped->getRecClient();
-            else
-                $client=$exped->getEnvClient();
+        $exped = $em->getRepository("ComDaufinBundle:Expedition")->find($idExpeditions[0]);
+
+        if ($exped->getMdPort() == 'portDu')
+            $client = $exped->getRecClient();
+        else
+            $client = $exped->getEnvClient();
         // créer Facture
-        $facture=new Facture();
+        $facture = new Facture();
         $facture->setDateCreation(new \DateTime());
         $facture->setStatutFacture("nonReglee");
         $facture->setClient($client);
         $facture->setEtatFacture("Modifiable");
-        
+
         $em->persist($facture);
-        
+
         foreach ($idExpeditions as $id) {
-        
-            $exped=$em->getRepository("ComDaufinBundle:Expedition")->find($id);
-            
-            if($exped->getFacture()!=null){
+
+            $exped = $em->getRepository("ComDaufinBundle:Expedition")->find($id);
+
+            if ($exped->getFacture() != null) {
                 $response = array("codeError" => 40,
-                        "message" => "Expedition ".$exped->getCodeDeclaration()." est associée a la facture ".$exped->getFacture()->getNumFacture(),);
+                    "message" => "Expedition " . $exped->getCodeDeclaration() . " est associée a la facture " . $exped->getFacture()->getNumFacture(),);
                 return new Response(json_encode($response));
             }
-             
+
             $exped->setFacture($facture);
-            
-            
-            $suiviServices=$em->getRepository("ComDaufinBundle:SuivService")->findByExept($id);
-            $totalExpTTC=0;
-            $totalExpTVA=0;
-            $totalExpHT=0;
-             foreach ($suiviServices as $service){
-                
+
+
+            $suiviServices = $em->getRepository("ComDaufinBundle:SuivService")->findByExept($id);
+            $totalExpTTC = 0;
+            $totalExpTVA = 0;
+            $totalExpHT = 0;
+            foreach ($suiviServices as $service) {
+
                 //$service=new SuivService();
                 $totalExpHT+=$service->getPrixHt();
                 $totalExpTTC+=$service->getPrixTtc();
                 $totalExpTVA+=$service->getTva();
-                 }
-             $dataExpeditions[]=array_merge(array("declaration"=>$exped->getCodeDeclaration(),
-                                      "agD"=>$exped->getEnvAgence(),
-                                      "agA"=>$exped->getRecAgence(),
-                                      "modePort"=>$exped->getMdPort(),
-                                      "dateEnvoi"=>$exped->getDateDecl()->format("d-m-Y"),
-                                      "montantHT"=>$totalExpHT,
-                                      "montantTVA"=>$totalExpTVA,
-                                      "montantTTC"=>$totalExpTTC,
-              ));
-             $totalTTC+=$totalExpTTC;
-             $totalTVA+=$totalExpTVA;
-             $totalHT+=$totalExpHT;
-                
-    }
+            }
+            $dataExpeditions[] = array_merge(array("declaration" => $exped->getCodeDeclaration(),
+                "agD" => $exped->getEnvAgence(),
+                "agA" => $exped->getRecAgence(),
+                "modePort" => $exped->getMdPort(),
+                "dateEnvoi" => $exped->getDateDecl()->format("d-m-Y"),
+                "montantHT" => $totalExpHT,
+                "montantTVA" => $totalExpTVA,
+                "montantTTC" => $totalExpTTC,
+            ));
+            $totalTTC+=$totalExpTTC;
+            $totalTVA+=$totalExpTVA;
+            $totalHT+=$totalExpHT;
+        }
         $facture->setTotalMontantHT($totalHT);
         $facture->setTotalMontantTTC($totalTTC);
         $facture->setTotalMontantTVA($totalTVA);
-        
+
         $request = "SELECT   Fct_facture_insert() as numFacture";
         $statement = $connection->prepare($request);
-        
+
         $statement->execute();
         $results = $statement->fetchAll();
-        $numFacture=$results[0]['numFacture'];
+        $numFacture = $results[0]['numFacture'];
         $facture->setNumFacture($numFacture);
-         
-         
-     
-        
-   
-        
+
+
+
+
+
+
 //      $statement2 = $connection->prepare("select LIBELLE_VILLE as ville from ville v,agence a, affecter af 
 //                                                where af.personnel=:client 
 //                                                  AND af.agence=a.id 
@@ -541,16 +539,14 @@ class FactureController extends Controller {
 //              $statement2->bindValue('client',$this->getUser()->getPersonnel()->getId());
 //              $statement2->execute();
 //              $results2 = $statement2->fetchAll();
-                
-         $em->flush();  
-  
-        $response = array( 
-        		          "Message" => "Facture Créer avec Numéro: ".$facture->getNumFacture(),
-                "statut" => "1",);
-        
+
+        $em->flush();
+
+        $response = array(
+            "Message" => "Facture Créer avec Numéro: " . $facture->getNumFacture(),
+            "statut" => "1",);
+
         return new Response(json_encode($response));
-        
-        
     }
 
     public function indexFacturesAction() {
@@ -559,9 +555,9 @@ class FactureController extends Controller {
         $entities = $em->getRepository('ComDaufinBundle:Facture')->findAll();
         return $this->render('ComDaufinBundle:Facture:new.html.twig', array(
                     'entities' => $entities,
-
         ));
     }
+
     /**
      * Lists all Facture entities.
      * @Secure(roles="ROLE_SHOW_FACTURE")
@@ -603,7 +599,7 @@ class FactureController extends Controller {
             $dateCreation = $entities->getDateCreation();
             $dateFacturation = $entities->getDateFacturation();
             $codeClient = $entities->getClient()->getCodeClient();
-            $IDclient=$entities->getClient()->getId();
+            $IDclient = $entities->getClient()->getId();
             if ($entities->getClient()->getTypeClient() == 'Compte') {
                 $client = $entities->getClient()->getRSociale();
             } else {
@@ -622,7 +618,7 @@ class FactureController extends Controller {
                         "dateCreation" => $dateCreation->format('Y-m-d'),
                         "telClient" => $telClient,
                         "client" => $client,
-                "IDclient" => $IDclient,
+                        "IDclient" => $IDclient,
             ));
         }
         else {
@@ -633,8 +629,7 @@ class FactureController extends Controller {
         }
     }
 
-    public function EditerFactureAction()
-    {
+    public function EditerFactureAction() {
         $em = $this->getDoctrine()->getManager();
 
         $connection = $em->getConnection();
@@ -643,20 +638,19 @@ class FactureController extends Controller {
         $entitiesCompte = $em->getRepository('ComDaufinBundle:Client')->findBy(array('typeClient' => 'Compte'));
         $entitiesParticulier = $em->getRepository('ComDaufinBundle:Client')->findBy(array('typeClient' => 'Particulier'));
 
-         return $this->render('ComDaufinBundle:Facture:edit.html.twig', array(
+        return $this->render('ComDaufinBundle:Facture:edit.html.twig', array(
                     'AllFactures' => $AllFactures,
                     'entitiesCompte' => $entitiesCompte,
                     'entitiesParticulier' => $entitiesParticulier,
         ));
     }
 
-    public function FindEditFactureAction()
-    {
+    public function FindEditFactureAction() {
         $em = $this->getDoctrine()->getManager();
 
         $connection = $em->getConnection();
         $params = $this->getRequest()->request->all();
-        $numFacture=$params['IDNumFacture'];
+        $numFacture = $params['IDNumFacture'];
 
         $entities = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
 
@@ -690,7 +684,7 @@ class FactureController extends Controller {
             $dateCreation = $entities->getDateCreation();
             $dateFacturation = $entities->getDateFacturation();
             $codeClient = $entities->getClient()->getCodeClient();
-            $IDclient=$entities->getClient()->getId();
+            $IDclient = $entities->getClient()->getId();
             if ($entities->getClient()->getTypeClient() == 'Compte') {
                 $client = $entities->getClient()->getRSociale();
             } else {
@@ -701,19 +695,19 @@ class FactureController extends Controller {
             if ($telClient == null)
                 $telClient = '';
 
-            $ht=$entities->getTotalMontantHT();
-            $tva=$entities->getTotalMontantTVA();
-            $ttc=$entities->getTotalMontantTTC();
+            $ht = $entities->getTotalMontantHT();
+            $tva = $entities->getTotalMontantTVA();
+            $ttc = $entities->getTotalMontantTTC();
 
-           $response= array(
-                        "ht" => $ht,
-                        "tva" => $tva,
-                        "ttc" => $ttc,
-                        "expeditions" => $results,
-                        "codeClient" => $codeClient,
-                        "dateCreation" => $dateCreation->format('Y-m-d'),
-                        "telClient" => $telClient,
-                        "client" => $client,
+            $response = array(
+                "ht" => $ht,
+                "tva" => $tva,
+                "ttc" => $ttc,
+                "expeditions" => $results,
+                "codeClient" => $codeClient,
+                "dateCreation" => $dateCreation->format('Y-m-d'),
+                "telClient" => $telClient,
+                "client" => $client,
                 "IDclient" => $IDclient,
             );
             return new Response(json_encode($response));
@@ -726,8 +720,7 @@ class FactureController extends Controller {
         }
     }
 
-    public function SaveEditFactureAction()
-    {
+    public function SaveEditFactureAction() {
         $em = $this->getDoctrine()->getManager();
 
         $connection = $em->getConnection();
@@ -740,7 +733,7 @@ class FactureController extends Controller {
         $totalTVA = 0;
         $totalHT = 0;
 
-        $facture=$em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
 
         $totalTTC = $facture->getTotalMontantTTC();
         $totalTVA = $facture->getTotalMontantTVA();
@@ -778,15 +771,13 @@ class FactureController extends Controller {
 
         $em->flush();
 
-      
+
         $response = array('message' => "Votre facture a été modifiée avec succès",
-        		          
         );
         return new Response(json_encode($response));
     }
 
-    public function SaveEditDeleteFactureAction()
-    {
+    public function SaveEditDeleteFactureAction() {
         $em = $this->getDoctrine()->getManager();
 
         $connection = $em->getConnection();
@@ -795,23 +786,127 @@ class FactureController extends Controller {
         $idExpedition = $params['idExpedition'];
         $numFacture = $params['IDNumFacture'];
 
-        $facture=$em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
 
         // $facture->setEtatFacture("Final");
-         // default = Modifiable
+        // default = Modifiable
         $em->flush();
 
         $totalTTC = $facture->getTotalMontantTTC();
         $totalTVA = $facture->getTotalMontantTVA();
         $totalHT = $facture->getTotalMontantHT();
-        
-
-            $exped = $em->getRepository("ComDaufinBundle:Expedition")->find($idExpedition);
-
-            $exped->setFacture(NULL);
 
 
-            $suiviServices = $em->getRepository("ComDaufinBundle:SuivService")->findByExept($idExpedition);
+        $exped = $em->getRepository("ComDaufinBundle:Expedition")->find($idExpedition);
+
+        $exped->setFacture(NULL);
+
+
+        $suiviServices = $em->getRepository("ComDaufinBundle:SuivService")->findByExept($idExpedition);
+        $totalExpTTC = 0;
+        $totalExpTVA = 0;
+        $totalExpHT = 0;
+        foreach ($suiviServices as $service) {
+
+            //$service=new SuivService();
+            $totalExpHT+=$service->getPrixHt();
+            $totalExpTTC+=$service->getPrixTtc();
+            $totalExpTVA+=$service->getTva();
+        }
+        $totalTTC-=$totalExpTTC;
+        $totalTVA-=$totalExpTVA;
+        $totalHT-=$totalExpHT;
+
+        if ($totalHT < 0) {
+            $totalHT = 0;
+        }
+        if ($totalTVA < 0) {
+            $totalTVA = 0;
+        }
+        if ($totalTTC < 0) {
+            $totalTTC = 0;
+        }
+
+        $facture->setTotalMontantHT($totalHT);
+        $facture->setTotalMontantTTC($totalTTC);
+        $facture->setTotalMontantTVA($totalTVA);
+
+        $em->flush();
+
+        $response = array('message' => "Votre facture a été modifiée avec succès",);
+        return new Response(json_encode($response));
+    }
+
+    public function SaveEditEtatFactureAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+
+        $params = $this->getRequest()->request->all();
+        $numFacture = $params['IDNumFacture'];
+
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
+
+        $facture->setEtatFacture("Finale");
+        $facture->setImpressionFacture("Originale");
+        // default = Modifiable
+        $em->flush();
+        // $name=$this->imprimFacture($facture->getId());
+        $response = array('message' => "Votre facture a été modifiée avec succès"
+                //,"urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/".$name.".pdf"
+        );
+        return new Response(json_encode($response));
+    }
+
+    public function indexprintFactureAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $AllFactures = $em->getRepository('ComDaufinBundle:Facture')->findBy(array('etatFacture' => 'Finale'));
+
+        return $this->render('ComDaufinBundle:Facture:print.html.twig', array(
+                    'AllFactures' => $AllFactures,
+        ));
+    }
+
+    public function PrintFactureAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $params = $this->getRequest()->request->all();
+        $numFacture = $params['IDNumFacture'];
+
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
+
+        if ($facture->getImpressionFacture() == 'Originale') {
+            $name = $this->imprimFactureOriginal($facture->getId(), '');
+            $response = array("urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/" . $name . ".pdf");
+            $facture->setImpressionFacture("Duplicata");
+            $em->flush();
+        } else {
+            $name = $this->imprimFactureOriginal($facture->getId(), 'Duplicata');
+            $response = array("urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/" . $name . ".pdf");
+        }
+
+
+        return new Response(json_encode($response));
+    }
+
+    private function imprimFactureOriginal($idFacture, $duplicata) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($idFacture);
+
+        $totalTTC = 0;
+        $totalTVA = 0;
+        $totalHT = 0;
+        $client = $facture->getClient();
+
+        $dataExpeditions = array();
+        $expeditions = $em->getRepository("ComDaufinBundle:Expedition")->findByFacture($idFacture);
+
+        foreach ($expeditions as $exped) {
+
+            $suiviServices = $em->getRepository("ComDaufinBundle:SuivService")->findByExept($exped->getId());
             $totalExpTTC = 0;
             $totalExpTVA = 0;
             $totalExpHT = 0;
@@ -822,181 +917,71 @@ class FactureController extends Controller {
                 $totalExpTTC+=$service->getPrixTtc();
                 $totalExpTVA+=$service->getTva();
             }
-            $totalTTC-=$totalExpTTC;
-            $totalTVA-=$totalExpTVA;
-            $totalHT-=$totalExpHT;
+            $dataExpeditions[] = array_merge(array("declaration" => $exped->getCodeDeclaration(),
+                "agD" => $exped->getEnvAgence(),
+                "agA" => $exped->getRecAgence(),
+                "modePort" => $exped->getMdPort(),
+                "dateEnvoi" => $exped->getDateDecl()->format("d-m-Y"),
+                "montantHT" => $totalExpHT,
+                "montantTVA" => $totalExpTVA,
+                "montantTTC" => $totalExpTTC,
+            ));
+            $totalTTC+=$totalExpTTC;
+            $totalTVA+=$totalExpTVA;
+            $totalHT+=$totalExpHT;
+        }
 
-            if($totalHT<0)
-            {
-                $totalHT=0;
-            }
-            if($totalTVA<0)
-            {
-                $totalTVA=0;
-            }
-            if($totalTTC<0)
-            {
-                $totalTTC=0;
-            }
-        
-        $facture->setTotalMontantHT($totalHT);
-        $facture->setTotalMontantTTC($totalTTC);
-        $facture->setTotalMontantTVA($totalTVA);
+        $nom = $facture->getClient()->__toString();
 
-        $em->flush();
 
-        $response = array('message' => "Votre facture a été modifiée avec succès", );
-        return new Response(json_encode($response));
-    }
+        $date = new \DateTime();
+        $convert = explode('.', number_format($totalTTC, 2, '.', ''));
+        $txt = numfmt_create('fr_FR', \NumberFormatter::SPELLOUT)->format($convert[0]);
+        $txt.=' Dirhames';
+        if (isset($convert[1]) && $convert[1] != '') {
+            $txt.=' ,et ';
+            $txt.=numfmt_create('fr_FR', \NumberFormatter::SPELLOUT)->format($convert[1]);
+            $txt.=' Centimes';
+        }
 
-    public function SaveEditEtatFactureAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $connection = $em->getConnection();
-
-        $params = $this->getRequest()->request->all();
-        $numFacture = $params['IDNumFacture'];
-
-        $facture=$em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
-
-        $facture->setEtatFacture("Finale");
-        $facture->setImpressionFacture("Originale");
-         // default = Modifiable
-        $em->flush();
-        // $name=$this->imprimFacture($facture->getId());
-        $response = array('message' => "Votre facture a été modifiée avec succès"
-            //,"urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/".$name.".pdf"
-        );
-        return new Response(json_encode($response));
-    }
-
-    public function indexprintFactureAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $AllFactures = $em->getRepository('ComDaufinBundle:Facture')->findBy(array('etatFacture' => 'Finale'));
-
-         return $this->render('ComDaufinBundle:Facture:print.html.twig', array(
-                    'AllFactures' => $AllFactures,
+        $html = $this->renderView('ComDaufinBundle:Default:facture.html.twig', array(
+            'data' => $dataExpeditions,
+            'facture' => $facture,
+            'ville' => "Casablanca",
+            //'ville'      => $results2[0]['ville'],
+            'dateNow' => $date->format('d-m-Y'),
+            'totalTTC' => $totalTTC,
+            'totalTVA' => $totalTVA,
+            'totalHT' => $totalHT,
+            'duplicata' => $duplicata,
+            'montantLettre' => ucfirst($txt),
+            'codeClient' => $client->getCodeClient(),
+            'nom' => $nom,
+            'adresse' => $client->getAdresseClt(),
+            'telClient' => $client->getTelClt(),
         ));
-    }
-    public function PrintFactureAction()
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $params = $this->getRequest()->request->all();
-        $numFacture = $params['IDNumFacture'];
+        $name = "Facture-" . $facture->getNumFacture() . $duplicata;
 
-        $facture=$em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
-
-        if($facture->getImpressionFacture()=='Originale')
-        {
-            $name=$this->imprimFactureOriginal($facture->getId(),'');
-            $response= array("urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/".$name.".pdf");
-            $facture->setImpressionFacture("Duplicata");
-            $em->flush();
-        }
-        else
-        {
-        	$name=$this->imprimFactureOriginal($facture->getId(),'Duplicata');
-        	$response= array("urlPDF" => "http://daufin.g-logmaroc.com/web/FacturesTaxation/".$name.".pdf");
-        }
-        
-
-        return new Response(json_encode($response));
-    }
-    private function imprimFactureOriginal($idFacture,$duplicata){
-    	
-    	$em = $this->getDoctrine()->getManager();
-    	 
-    	$facture=$em->getRepository('ComDaufinBundle:Facture')->find($idFacture);
-    	
-    	$totalTTC=0;
-    	$totalTVA=0;
-    	$totalHT=0;
-    	$client=$facture->getClient();
-    	
-    	$dataExpeditions=array();
-    	$expeditions=$em->getRepository("ComDaufinBundle:Expedition")->findByFacture($idFacture);
-    	
-    	foreach ($expeditions as $exped) {
-    	    
-    		$suiviServices=$em->getRepository("ComDaufinBundle:SuivService")->findByExept($exped->getId());
-    		$totalExpTTC=0;
-    		$totalExpTVA=0;
-    		$totalExpHT=0;
-    		foreach ($suiviServices as $service){
-    	
-    			//$service=new SuivService();
-    			$totalExpHT+=$service->getPrixHt();
-    			$totalExpTTC+=$service->getPrixTtc();
-    			$totalExpTVA+=$service->getTva();
-    		}
-    		$dataExpeditions[]=array_merge(array("declaration"=>$exped->getCodeDeclaration(),
-    				"agD"=>$exped->getEnvAgence(),
-    				"agA"=>$exped->getRecAgence(),
-    				"modePort"=>$exped->getMdPort(),
-    				"dateEnvoi"=>$exped->getDateDecl()->format("d-m-Y"),
-    				"montantHT"=>$totalExpHT,
-    				"montantTVA"=>$totalExpTVA,
-    				"montantTTC"=>$totalExpTTC,
-    		));
-    		$totalTTC+=$totalExpTTC;
-    		$totalTVA+=$totalExpTVA;
-    		$totalHT+=$totalExpHT;
-    	
-    	} 
-    	
-    	$nom=$facture->getClient()->__toString();
-    	
-    	
-    	$date=new \DateTime();
-    	$convert = explode('.',number_format($totalTTC, 2, '.', ''));
-    	$txt=numfmt_create('fr_FR', \NumberFormatter::SPELLOUT)->format($convert[0]);
-    	$txt.=' Dirhames';
-    	if(isset($convert[1]) && $convert[1]!=''){
-    		$txt.=' ,et ';
-    		$txt.=numfmt_create('fr_FR', \NumberFormatter::SPELLOUT)->format($convert[1]);
-    		$txt.=' Centimes';}
-    	
-    		$html = $this->renderView('ComDaufinBundle:Default:facture.html.twig', array(
-    				'data'      => $dataExpeditions,
-    				'facture'      => $facture,
-    				'ville'      => "Casablanca",
-    				//'ville'      => $results2[0]['ville'],
-    				'dateNow'      => $date->format('d-m-Y'),
-    				'totalTTC'      => $totalTTC,
-    				'totalTVA'      => $totalTVA,
-    				'totalHT'      => $totalHT,
-    				'duplicata'      => $duplicata,
-    				'montantLettre'      =>ucfirst($txt),
-    				'codeClient'      => $client->getCodeClient(),
-    				'nom'      => $nom,
-    				'adresse'      => $client->getAdresseClt(),
-    				'telClient'      => $client->getTelClt(),
-    		));
-    	
-    		$name="Facture-".$facture->getNumFacture().$duplicata;
-    	
-    		$html2pdf = new \Html2Pdf_Html2Pdf('P','A4', 'fr', true, 'UTF-8', array(1, 2, 1, 1));
-    		$html2pdf->pdf->SetDisplayMode('real');
-    		$html2pdf->writeHTML($html);
-    		$html2pdf->Output('FacturesTaxation/'.$name.'.pdf', 'F');
-    		return $name;
+        $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', array(1, 2, 1, 1));
+        $html2pdf->pdf->SetDisplayMode('real');
+        $html2pdf->writeHTML($html);
+        $html2pdf->Output('FacturesTaxation/' . $name . '.pdf', 'F');
+        return $name;
     }
 
-    public function exportAction()
-    {
+    public function exportAction() {
         $em = $this->getDoctrine()->getEntityManager();
         $params = $this->getRequest()->request->all();
         $numFacture = $params['IDNumFacture'];
 
-        $facture=$em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
+        $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
 
         $workbook = new Workbook();
         $workbook->setTitle('Liste des déclarations');
+        // $workbook->addStyles(new StyleCollection([(new Fill())->setColor('ff0000'), new Font()]));
         $sheet = new Sheet($workbook);
+        // (new Fill())->setColor('ff0000');
         $table = new Table();
         $table1 = new Table();
 
@@ -1009,42 +994,42 @@ class FactureController extends Controller {
             'Montant HT',
             'Montant TVA',
             'Montant TTC',
-            ]);
-        $sheet->setRowHeight(20,1);
+        ])->addStyles(new StyleCollection([(new Fill())->setColor('ff0000'), new Font()]));
+        $sheet->setRowHeight(20, 1);
 
-        $sheet->setColumnWidth(20,0);
-        $sheet->setColumnWidth(20,1);
-        $sheet->setColumnWidth(20,2);
-        $sheet->setColumnWidth(20,3);
-        $sheet->setColumnWidth(20,4);
-        $sheet->setColumnWidth(20,5);
-        $sheet->setColumnWidth(20,6);
-        $sheet->setColumnWidth(20,7);
+        $sheet->setColumnWidth(20, 0);
+        $sheet->setColumnWidth(20, 1);
+        $sheet->setColumnWidth(20, 2);
+        $sheet->setColumnWidth(20, 3);
+        $sheet->setColumnWidth(20, 4);
+        $sheet->setColumnWidth(20, 5);
+        $sheet->setColumnWidth(20, 6);
+        $sheet->setColumnWidth(20, 7);
 
         $sheet->setDefaultRowHeight(18);
 
         $sheet->addTable($table1, new Coordinate(1, 1));
-        $totalTTC=0;
-        $totalTVA=0;
-        $totalHT=0;
-        
-        
-        $expeditions=$em->getRepository("ComDaufinBundle:Expedition")->findByFacture($numFacture);
-        
+        $totalTTC = 0;
+        $totalTVA = 0;
+        $totalHT = 0;
+
+
+        $expeditions = $em->getRepository("ComDaufinBundle:Expedition")->findByFacture($numFacture);
+
         foreach ($expeditions as $exped) {
-            
-            $suiviServices=$em->getRepository("ComDaufinBundle:SuivService")->findByExept($exped->getId());
-            $totalExpTTC=0;
-            $totalExpTVA=0;
-            $totalExpHT=0;
-            foreach ($suiviServices as $service){
-        
+
+            $suiviServices = $em->getRepository("ComDaufinBundle:SuivService")->findByExept($exped->getId());
+            $totalExpTTC = 0;
+            $totalExpTVA = 0;
+            $totalExpHT = 0;
+            foreach ($suiviServices as $service) {
+
                 //$service=new SuivService();
                 $totalExpHT+=$service->getPrixHt();
                 $totalExpTTC+=$service->getPrixTtc();
                 $totalExpTVA+=$service->getTva();
             }
-            
+
             $totalTTC+=$totalExpTTC;
             $totalTVA+=$totalExpTVA;
             $totalHT+=$totalExpHT;
@@ -1056,24 +1041,140 @@ class FactureController extends Controller {
                 $exped->getRecAgence(),
                 $exped->getMdPort(),
                 $exped->getDateDecl()->format("d-m-Y"),
-                
                 number_format($totalExpHT, 2, ',', ' '),
                 number_format($totalExpTVA, 2, ',', ' '),
                 number_format($totalExpTTC, 2, ',', ' '),
             ]);
-        
         }
-        $date=new \DateTime();
-        $name="Facture-".$facture->getNumFacture()."-".$date->format('d-m-Y');
+        $date = new \DateTime();
+        $name = "Facture-" . $facture->getNumFacture() . "-" . $date->format('Y-m-d');
 
         $sheet->addTable($table, new Coordinate(1, 2));
         $workbook->addSheet($sheet);
 
-        $writer = (new WriterFactory())->createWriter(new Excel5('ExportFactures/'.$name.'.xls'));
+        $writer = (new WriterFactory())->createWriter(new Excel5('ExportFactures/' . $name . '.xls'));
         $phpExcel = $writer->convert($workbook);
         $writer->write($phpExcel);
 
-        $response= array("urlPDF" => "http://daufin.g-logmaroc.com/web/ExportFactures/".$name.".xls");
+        $response = array("urlPDF" => "http://daufin.g-logmaroc.com/web/ExportFactures/" . $name . ".xls");
         return new Response(json_encode($response));
     }
+
+    public function ExportGenererAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+        $params = $this->getRequest()->request->all();
+        $idExpeditions = $params['idExpeditions'];
+
+        $ids = array();
+        foreach ($idExpeditions as $value) {
+            array_push($ids, $value);
+        }
+
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
+
+        $request = "SELECT
+                e.id as id_exp,
+                code_Declaration as code_dec,
+                DATE_DECL as date_declaration,
+                env_date as Date_envoi,
+                rec_date as Date_rec,
+                (select a.libelle_ag from agence a where a.id=e.envAgence) as AgenceD,
+                (select a.libelle_ag from agence a where a.id=e.recAgence)  as AgenceR,
+                ETAT_EXP as statut,
+                POIDS_EXP as poid,
+                NBR_COLIS as nbColis,
+                md_port as mode,
+                sum(s.prix_HT) as ht,
+                sum(s.tva) as tva,
+                sum(s.prix_ttc) as ttc
+             FROM expedition e
+             join suiv_service as s on (e.id=s.exept)
+            
+             where e.id IN(" . $inQuery . ")           
+             group by e.code_Declaration";
+
+        $statement = $connection->prepare($request);
+
+        foreach ($ids as $k => $id) {
+            $statement->bindValue(($k + 1), $id);
+        }
+        $statement->execute();
+
+        $results = $statement->fetchAll();
+
+        $workbook = new Workbook();
+        $workbook->setTitle('Liste des déclarations');
+        $sheet = new Sheet($workbook);
+        $table = new Table();
+        $table1 = new Table();
+
+        $table1->setRow([
+            'Code Déclaration',
+            'Date Création',
+            'Date Envoi',
+            'Date Reception',
+            'Agence Départ',
+            'Agence Arrivée',
+            'Statut',
+            'Poids',
+            'Nbr Colis',
+            'Mode',
+            'Montant HT',
+            'Montant TVA',
+            'Montant TTC',
+        ]);
+        $sheet->setRowHeight(20, 1);
+
+        $sheet->setColumnWidth(18, 0);
+        $sheet->setColumnWidth(18, 1);
+        $sheet->setColumnWidth(18, 2);
+        $sheet->setColumnWidth(18, 3);
+        $sheet->setColumnWidth(18, 4);
+        $sheet->setColumnWidth(18, 5);
+        $sheet->setColumnWidth(18, 6);
+        $sheet->setColumnWidth(18, 7);
+        $sheet->setColumnWidth(18, 8);
+        $sheet->setColumnWidth(18, 9);
+        $sheet->setColumnWidth(18, 10);
+        $sheet->setColumnWidth(18, 11);
+        $sheet->setColumnWidth(18, 12);
+
+        $sheet->setDefaultRowHeight(18);
+
+        $sheet->addTable($table1, new Coordinate(1, 1));
+
+        foreach ($results as $value) {
+            $table->setRow([
+                $value['code_dec'],
+                $value['date_declaration'],
+                $value['Date_envoi'],
+                $value['Date_rec'],
+                $value['AgenceD'],
+                $value['AgenceR'],
+                $value['statut'],
+                $value['poid'],
+                $value['nbColis'],
+                $value['mode'],
+                number_format($value['ht'], 2, ',', ' '),
+                number_format($value['tva'], 2, ',', ' '),
+                number_format($value['ttc'], 2, ',', ' '),
+            ]);
+        }
+
+        $date = new \DateTime();
+        $name = "Prefacture-" . $date->format('H-i-s d-m-Y');
+
+        $sheet->addTable($table, new Coordinate(1, 2));
+        $workbook->addSheet($sheet);
+
+        $writer = (new WriterFactory())->createWriter(new Excel5('ExportFactures/' . $name . '.xls'));
+        $phpExcel = $writer->convert($workbook);
+        $writer->write($phpExcel);
+
+        $response = array("urlPDF" => "http://daufin.g-logmaroc.com/web/ExportFactures/" . $name . ".xls");
+        return new Response(json_encode($response));
+    }
+
 }

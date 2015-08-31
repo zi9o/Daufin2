@@ -11,337 +11,371 @@
     </div>
 {% endblock %}
 {% block container %}
-  <style>
-<!--
-.grandTitre td{
-font-size: 19px;
-color: #0C2C6C;
- font-weight: bold;
-}
-.hide-row { display:none; }
-.show-row { display:table-row; }
-#formTypeManu{
-}
-
-.error{background-color: #ea1126;}
-.valid{background-color: #85ea11;}
-.black_overlay{
-	display: none;
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	z-index:1001;
-	-moz-opacity: 0.8;
-	opacity:.80;
-	filter: alpha(opacity=80);
-}
-#tableGenererFacture th{
-font-size: 11px;
-font-weight: bold;
-}
-#tableGenererFacture td{
-font-size: 11px;
-}
-.trInfoClient td{
-font-size: 13px;
-font-weight: bold;
-}
-.trTotal td{
-font-size: 12px;
-font-weight: bold;
-}
-.toHide{
-display: none;
-}
-.toShow{
-display: inline;
-}
-
-.white_content {
-	display: none;
-	position: absolute;
-	top: 19%;
-	left:0%;
-	
-	width: 95%;
-	height: 50%;
-	padding: 16px;
-	border: 16px solid orange;
-	background-color: #ECF6D9;
-	z-index:1002;
-	overflow: auto;
-}
--->
-</style>
-    <script type="text/javascript">
-    function validerRecherche()
-    {
-        var codeDec = document.getElementById("CodeDec").value;
-
-        var CCC = document.getElementById("ClientIdCompte");
-        var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
-
-        var CCP = document.getElementById("ClientIdParticulier");
-        var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
-
-        var dateCreationDu = document.getElementById("datepickerCreationDu").value;
-        var dateCreationAu = document.getElementById("datepickerCreationAu").value;
-
-
-        if ((CodeClientCompte == -1 && CodeClientParticulier==-1) && codeDec=='')
-        {
-            
+    <style>
+        <!--
+        .grandTitre td{
+            font-size: 19px;
+            color: #0C2C6C;
+            font-weight: bold;
         }
-        else
+        .hide-row { display:none; }
+        .show-row { display:table-row; }
+        #formTypeManu{
+        }
+
+        .error{background-color: #ea1126;}
+        .valid{background-color: #85ea11;}
+        .black_overlay{
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index:1001;
+            -moz-opacity: 0.8;
+            opacity:.80;
+            filter: alpha(opacity=80);
+        }
+        #tableGenererFacture th{
+            font-size: 11px;
+            font-weight: bold;
+        }
+        #tableGenererFacture td{
+            font-size: 11px;
+        }
+        .trInfoClient td{
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .trTotal td{
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .toHide{
+            display: none;
+        }
+        .toShow{
+            display: inline;
+        }
+
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 19%;
+            left:0%;
+
+            width: 95%;
+            height: 50%;
+            padding: 16px;
+            border: 16px solid orange;
+            background-color: #ECF6D9;
+            z-index:1002;
+            overflow: auto;
+        }
+        -->
+    </style>
+    <script type="text/javascript">
+        function validerRecherche()
         {
+            var codeDec = document.getElementById("CodeDec").value;
+
+            var CCC = document.getElementById("ClientIdCompte");
+            var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
+
+            var CCP = document.getElementById("ClientIdParticulier");
+            var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+
+            if ((CodeClientCompte == -1 && CodeClientParticulier == -1) && codeDec == '')
+            {
+
+            }
+            else
+            {
+                $.ajax({
+                    url: Routing.generate('com_daufin_com_find_facture_search'),
+                    type: "POST",
+                    data: {
+                        "codeDec": codeDec,
+                        "dateCreationDu": dateCreationDu,
+                        "dateCreationAu": dateCreationAu,
+                        "CodeClientCompte": CodeClientCompte,
+                        "CodeClientParticulier": CodeClientParticulier
+                    },
+                    success: function (data) {
+                        var obj = jQuery.parseJSON(data);
+                        if (obj.hasOwnProperty('codeError'))
+                        {
+                            alert("ERROR : " + obj.message);
+                            $('#datatable').dataTable().fnClearTable();
+                        }
+                        else
+                        {
+                            $('#datatable').dataTable().fnClearTable();
+                            var content = '';
+                            for (var i = 0; i < obj.length; i++) {
+                                var dateEnvoi = (obj[i].Date_envoi == null) ? "" : obj[i].Date_envoi;
+                                var daterec = (obj[i].Date_rec == null) ? "" : obj[i].Date_rec;
+                                content += '<tr>';
+                                content += '<td><input type="checkbox" name="ExpTrsp[]" value="' + obj[i].id_exp + '"/> ' + obj[i].code_dec + '</td>';
+
+                                content += '<td>' + obj[i].date_declaration + '</td>';
+                                content += '<td>' + dateEnvoi + '</td>';
+                                content += '<td>' + daterec + '</td>';
+                                content += '<td>' + obj[i].AgenceD + '</td>';
+                                content += '<td>' + obj[i].AgenceR + '</td>';
+                                content += '<td>' + obj[i].statut + '</td>';
+                                content += '<td>' + obj[i].poid + '</td>';
+                                content += '<td>' + obj[i].nbColis + '</td>';
+                                content += '<td>' + obj[i].mode + '</td>';
+                                content += '<td>' + Number(obj[i].ht).toFixed(2) + '</td>';
+                                content += '<td>' + Number(obj[i].tva).toFixed(2) + '</td>';
+                                content += '<td>' + Number(obj[i].ttc).toFixed(2) + '</td>';
+                                content += '</tr>';
+
+                            }
+                            $('#datatable tbody').html(content);
+
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function Exporter() {
+
+            var idExpeditions = [];
+
+            checkboxes = document.getElementsByName('ExpTrsp[]');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                if (checkboxes[i].checked == true)
+                    idExpeditions.push(checkboxes[i].value);
+            }
+
             $.ajax({
-                url: Routing.generate('com_daufin_com_find_facture_search'),
+                url: Routing.generate('com_daufin_com_facture_export_generer'),
                 type: "POST",
                 data: {
-                    "codeDec": codeDec,
-                    "dateCreationDu": dateCreationDu,
-                    "dateCreationAu": dateCreationAu,
-                    "CodeClientCompte": CodeClientCompte,
-                    "CodeClientParticulier": CodeClientParticulier
+                    "idExpeditions": idExpeditions,
                 },
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
-                    if (obj.hasOwnProperty('codeError'))
-                    {
+                    if (obj.hasOwnProperty('codeError')) {
                         alert("ERROR : " + obj.message);
-                        $('#datatable').dataTable().fnClearTable();
+                        return false;
                     }
-                    else
-                    {
-                        $('#datatable').dataTable().fnClearTable();
-                        var content = '';
-                        for (var i = 0; i < obj.length; i++) {
-                            var dateEnvoi = (obj[i].Date_envoi == null) ? "" : obj[i].Date_envoi;
-                            var daterec = (obj[i].Date_rec == null) ? "" : obj[i].Date_rec;
-                            content += '<tr>';
-                            content += '<td><input type="checkbox" name="ExpTrsp[]" value="' + obj[i].id_exp + '"/> ' + obj[i].code_dec + '</td>';
+                    var url = obj.urlPDF;
+                    //document.getElementById("linkFacture").href=url;
+                    //document.getElementById("linkFacture").style.visibility = "visible";
 
-                            content += '<td>' + obj[i].date_declaration + '</td>';
-                            content += '<td>' + dateEnvoi + '</td>';
-                            content += '<td>' + daterec + '</td>';
-                            content += '<td>' + obj[i].AgenceD + '</td>';
-                            content += '<td>' + obj[i].AgenceR + '</td>';
-                            content += '<td>' + obj[i].statut + '</td>';
-                            content += '<td>' + obj[i].poid + '</td>';
-                            content += '<td>' + obj[i].nbColis + '</td>';
-                            content += '<td>' + obj[i].mode + '</td>';
-                            content += '<td>' + Number(obj[i].ht).toFixed(2)  + '</td>';
-                            content += '<td>' + Number(obj[i].tva).toFixed(2)  + '</td>';
-                            content += '<td>' + Number(obj[i].ttc).toFixed(2)  + '</td>';
-                            content += '</tr>';
+                    var wnd = window.open(url);
 
-                        }
-                        $('#datatable tbody').html(content);
 
-                    }
                 }
             });
         }
-    }
     </script>
     <script type="text/javascript">
         function genererFacture()
         {
 
-            var idExpeditions= [];
-            
-        	checkboxes = document.getElementsByName('ExpTrsp[]');
+            var idExpeditions = [];
+
+            checkboxes = document.getElementsByName('ExpTrsp[]');
             for (var i = 0, n = checkboxes.length; i < n; i++) {
-               if(checkboxes[i].checked==true)
-            	   idExpeditions.push(checkboxes[i].value);
-            	}
+                if (checkboxes[i].checked == true)
+                    idExpeditions.push(checkboxes[i].value);
+            }
 
-            
-            
-                $.ajax({
-                    url: Routing.generate('com_daufin_com_facture_generer'),
-                    type: "POST",
-                    data: {
-                        "idExpeditions": idExpeditions,
-                    },
-                    success: function (data) {
-                        //tableGenererFacture
-                        
-                        var obj = jQuery.parseJSON(data);
-                        var nbreDeclaration=Number("0");
-                        var totalTTC=Number("0");
-                        var totalHT=Number("0");
-                        var totalTVA=Number("0");
 
-                        if (obj.hasOwnProperty('codeError')) {  
-                           alert("ERROR : "+obj.message);
-                            return false;
-                            }
 
-                        var content = '';
-                        for (var i = 0; i < obj.expeditions.length; i++) {
-                            var dateEnvoi = (obj.expeditions[i].Date_envoi == null) ? "" : obj.expeditions[i].Date_envoi;
-                            var daterec = (obj.expeditions[i].Date_rec == null) ? "" : obj.expeditions[i].Date_rec;
-                            content += '<tr>';
-                            content += '<td>' + obj.expeditions[i].code_dec + '</td>';
-                            content += '<td>' + obj.expeditions[i].date_declaration + '</td>';
-                            content += '<td>' + dateEnvoi + '</td>';
-                            content += '<td>' + daterec + '</td>';
-                            content += '<td>' + obj.expeditions[i].AgenceD + '</td>';
-                            content += '<td>' + obj.expeditions[i].AgenceR + '</td>';
-                            content += '<td>' + obj.expeditions[i].statut + '</td>';
-                            content += '<td>' + obj.expeditions[i].poid + '</td>';
-                            content += '<td>' + obj.expeditions[i].nbColis + '</td>';
-                            content += '<td>' + obj.expeditions[i].mode + '</td>';
-                            content += '<td>' + Number(obj.expeditions[i].ht).toFixed(2) + '</td>';
-                            content += '<td>' + Number(obj.expeditions[i].tva).toFixed(2) + '</td>';
-                            content += '<td>' + Number(obj.expeditions[i].ttc).toFixed(2) + '</td>';
-                            content += '</tr>';
-                            
-                            totalTTC=totalTTC+Number(obj.expeditions[i].ttc);
-                            totalHT+=Number(obj.expeditions[i].ht);
-                            totalTVA+=Number(obj.expeditions[i].tva);
-                            nbreDeclaration++;
-                        }
-                        content += '<tr class="trTotal">';
-                        content += '<td colspan="2"> TOTAL DECLARATION</td>';
+            $.ajax({
+                url: Routing.generate('com_daufin_com_facture_generer'),
+                type: "POST",
+                data: {
+                    "idExpeditions": idExpeditions,
+                },
+                success: function (data) {
+                    //tableGenererFacture
 
-                        content += '<td>' + nbreDeclaration + '</td>';
-                        
-                        content += '<td></td>';
-                        content += '<td></td>';
-                        content += '<td></td>';
-                        content += '<td></td>';
-                        content += '<td></td>';
-                        content += '<td colspan="2">TOTAL MONTANT</td>';
-                        content += '<td>' + Number(totalHT).toFixed(2) + '</td>';
-                        content += '<td>' + Number(totalTVA).toFixed(2) + '</td>';
-                        content += '<td>' +Number(totalTTC).toFixed(2) + '</td>';
+                    var obj = jQuery.parseJSON(data);
+                    var nbreDeclaration = Number("0");
+                    var totalTTC = Number("0");
+                    var totalHT = Number("0");
+                    var totalTVA = Number("0");
+
+                    if (obj.hasOwnProperty('codeError')) {
+                        alert("ERROR : " + obj.message);
+                        return false;
+                    }
+
+                    var content = '';
+                    for (var i = 0; i < obj.expeditions.length; i++) {
+                        var dateEnvoi = (obj.expeditions[i].Date_envoi == null) ? "" : obj.expeditions[i].Date_envoi;
+                        var daterec = (obj.expeditions[i].Date_rec == null) ? "" : obj.expeditions[i].Date_rec;
+                        content += '<tr>';
+                        content += '<td>' + obj.expeditions[i].code_dec + '</td>';
+                        content += '<td>' + obj.expeditions[i].date_declaration + '</td>';
+                        content += '<td>' + dateEnvoi + '</td>';
+                        content += '<td>' + daterec + '</td>';
+                        content += '<td>' + obj.expeditions[i].AgenceD + '</td>';
+                        content += '<td>' + obj.expeditions[i].AgenceR + '</td>';
+                        content += '<td>' + obj.expeditions[i].statut + '</td>';
+                        content += '<td>' + obj.expeditions[i].poid + '</td>';
+                        content += '<td>' + obj.expeditions[i].nbColis + '</td>';
+                        content += '<td>' + obj.expeditions[i].mode + '</td>';
+                        content += '<td>' + Number(obj.expeditions[i].ht).toFixed(2) + '</td>';
+                        content += '<td>' + Number(obj.expeditions[i].tva).toFixed(2) + '</td>';
+                        content += '<td>' + Number(obj.expeditions[i].ttc).toFixed(2) + '</td>';
                         content += '</tr>';
-                        $('#tableGenererFacture tbody').html(content);
+
+                        totalTTC = totalTTC + Number(obj.expeditions[i].ttc);
+                        totalHT += Number(obj.expeditions[i].ht);
+                        totalTVA += Number(obj.expeditions[i].tva);
+                        nbreDeclaration++;
+                    }
+                    content += '<tr class="trTotal">';
+                    content += '<td colspan="2"> TOTAL DECLARATION</td>';
+
+                    content += '<td>' + nbreDeclaration + '</td>';
+
+                    content += '<td></td>';
+                    content += '<td></td>';
+                    content += '<td></td>';
+                    content += '<td></td>';
+                    content += '<td></td>';
+                    content += '<td colspan="2">TOTAL MONTANT</td>';
+                    content += '<td>' + Number(totalHT).toFixed(2) + '</td>';
+                    content += '<td>' + Number(totalTVA).toFixed(2) + '</td>';
+                    content += '<td>' + Number(totalTTC).toFixed(2) + '</td>';
+                    content += '</tr>';
+                    $('#tableGenererFacture tbody').html(content);
 
 
 
-                        var content2 = '<tr >';
-                        	content2+='<td>Date</td>';
-                        	content2+='<td>Code Client</td>';
-                        	content2+='<td>Client</td>';
-                        	content2+='<td>Tél Client</td>';
-                        	
-                        	content2+='</tr><tr class="trInfoClient">';
-                        	content2+='<td>'+ obj.date+'</td>';
-                        	content2+='<td>'+ obj.codeClient+'</td>';
-                        	content2+='<td>'+ obj.client+'</td>';     
-                        	content2+='<td>'+ obj.telClient+'</td>';   
-                            content2+=' </tr>';
+                    var content2 = '<tr >';
+                    content2 += '<td>Date</td>';
+                    content2 += '<td>Code Client</td>';
+                    content2 += '<td>Client</td>';
+                    content2 += '<td>Tél Client</td>';
 
-                            $('#infoClient').html(content2);
-                        document.getElementById('light').style.display='block';
-                    
-                                            }
-                });
-            
+                    content2 += '</tr><tr class="trInfoClient">';
+                    content2 += '<td>' + obj.date + '</td>';
+                    content2 += '<td>' + obj.codeClient + '</td>';
+                    content2 += '<td>' + obj.client + '</td>';
+                    content2 += '<td>' + obj.telClient + '</td>';
+                    content2 += ' </tr>';
+
+                    $('#infoClient').html(content2);
+                    // document.getElementById('light').style.display = 'block';
+                    $('#myModal').modal('show');
+                }
+            });
+
         }
     </script>
 
     <script type="text/javascript">
         function validerFacture()
         {
-        	 var idExpeditions= [];
-        	 document.getElementById('light').style.display='none';
-         	checkboxes = document.getElementsByName('ExpTrsp[]');
-             for (var i = 0, n = checkboxes.length; i < n; i++) {
-                if(checkboxes[i].checked==true)
-             	   idExpeditions.push(checkboxes[i].value);
-             	}
+            var idExpeditions = [];
+            // document.getElementById('light').style.display = 'none';
+            checkboxes = document.getElementsByName('ExpTrsp[]');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                if (checkboxes[i].checked == true)
+                    idExpeditions.push(checkboxes[i].value);
+            }
 
-           	
-                $.ajax({
-                    url: Routing.generate('com_daufin_com_facture_valider'),
-                    type: "POST",
-                    data: {
-                    	"idExpeditions": idExpeditions,
-                    },
-                    success: function (data) {
-                    	 var obj = jQuery.parseJSON(data);
-                         if (obj.hasOwnProperty('codeError')) {  
-                           alert("ERROR : "+obj.message);
-                            return false;
-                            }
-     	 				 
-     	 			 	//document.getElementById("linkFacture").href=url;
-     	 			 	//document.getElementById("linkFacture").style.visibility = "visible";
-     					 alert("SUCCES : "+obj.Message);		 
-     					  
 
-                        
+            $.ajax({
+                url: Routing.generate('com_daufin_com_facture_valider'),
+                type: "POST",
+                data: {
+                    "idExpeditions": idExpeditions,
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError')) {
+                        alert("ERROR : " + obj.message);
+                        return false;
                     }
-                });
-            
+
+                    //document.getElementById("linkFacture").href=url;
+                    //document.getElementById("linkFacture").style.visibility = "visible";
+                    alert("SUCCES : " + obj.Message);
+
+
+
+                }
+            });
+
         }
     </script>
     <script type="text/javascript">
-    function disableFormulaire()
-    {
-        document.getElementById("datepickerCreationDu").disabled = true;
-        document.getElementById("datepickerCreationAu").disabled = true;
-        document.getElementById("ClientIdCompte").disabled = true;
-        document.getElementById("ClientIdParticulier").disabled = true;
-    }
-</script>
-<script type="text/javascript">
-    function enableFormulaire()
-    {
-
-        document.getElementById("datepickerCreationDu").disabled = false;
-        document.getElementById("datepickerCreationAu").disabled = false;
-        document.getElementById("ClientIdCompte").disabled = false;
-        document.getElementById("ClientIdParticulier").disabled = false;
-    }
-</script>
-<script type="text/javascript">
-    function DecideFormulaire()
-    {
-        var valeur = document.getElementById("CodeDec").value;
-        if (valeur != "")
+        function disableFormulaire()
         {
-            disableFormulaire();
-        }
-        else
-        {
-            enableFormulaire();
-        }
-    }
-</script>
-<script type="text/javascript">
-    function DecideClient()
-    {
-        var CCC = document.getElementById("ClientIdCompte");
-        var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
-
-        var CCP = document.getElementById("ClientIdParticulier");
-        var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
-
-        if(CodeClientCompte!=-1 && CodeClientParticulier==-1)
-        {
-            document.getElementById("ClientIdParticulier").disabled = true;
-            document.getElementById("ClientIdCompte").disabled = false;
-        }
-        else if(CodeClientCompte==-1 && CodeClientParticulier!=-1)
-        {
+            document.getElementById("datepickerCreationDu").disabled = true;
+            document.getElementById("datepickerCreationAu").disabled = true;
             document.getElementById("ClientIdCompte").disabled = true;
-            document.getElementById("ClientIdParticulier").disabled = false;
+            document.getElementById("ClientIdParticulier").disabled = true;
         }
-        else if(CodeClientCompte==-1 && CodeClientParticulier==-1)
+    </script>
+    <script type="text/javascript">
+        function enableFormulaire()
         {
+
+            document.getElementById("datepickerCreationDu").disabled = false;
+            document.getElementById("datepickerCreationAu").disabled = false;
             document.getElementById("ClientIdCompte").disabled = false;
             document.getElementById("ClientIdParticulier").disabled = false;
         }
-    }
-</script>
+    </script>
+    <script type="text/javascript">
+        function DecideFormulaire()
+        {
+            var valeur = document.getElementById("CodeDec").value;
+            if (valeur != "")
+            {
+                disableFormulaire();
+            }
+            else
+            {
+                enableFormulaire();
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function DecideClient()
+        {
+            var CCC = document.getElementById("ClientIdCompte");
+            var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
+
+            var CCP = document.getElementById("ClientIdParticulier");
+            var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
+
+            if (CodeClientCompte != -1 && CodeClientParticulier == -1)
+            {
+                document.getElementById("ClientIdParticulier").disabled = true;
+                document.getElementById("ClientIdCompte").disabled = false;
+            }
+            else if (CodeClientCompte == -1 && CodeClientParticulier != -1)
+            {
+                document.getElementById("ClientIdCompte").disabled = true;
+                document.getElementById("ClientIdParticulier").disabled = false;
+            }
+            else if (CodeClientCompte == -1 && CodeClientParticulier == -1)
+            {
+                document.getElementById("ClientIdCompte").disabled = false;
+                document.getElementById("ClientIdParticulier").disabled = false;
+            }
+        }
+    </script>
     <script type="text/javascript">
         function Select_All(source) {
             checkboxes = document.getElementsByName('ExpTrsp[]');
@@ -411,21 +445,22 @@ display: inline;
                         document.getElementById('datepickerCreationAu').value = today;
                     </script>
                 </td>
-<td colspan="4" ><input class="btn btn-info" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+                <td colspan="4" ><input class="btn btn-info" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
 
-           
+
             </tr>
-            
+
         </table>
         <table>
-        <tr>
-	        <td>Nombre Déclaration</td>
-	        <td><input type="text" size="16"  id="nbreExpedition" readonly="readonly" disabled="disabled" class="form-control text" /></td>
-	        <td>Montant Total (TTC) en DH.</td>
-	        <td><input type="text" size="16"  id="montantTotal" readonly="readonly" disabled="disabled" class="form-control text" /></td>
-	        <td><input class="btn btn-warning" type="button" value="Générer" id="genererFacture" onclick="genererFacture();"></td>
-	        <td><input   class="btn btn-success" type="button" value="Valider" id="validerFacture" onclick="validerFacture();"></td>
-        </tr>
+            <tr>
+                <td>Nombre Déclaration</td>
+                <td><input type="text" size="16"  id="nbreExpedition" readonly="readonly" disabled="disabled" class="form-control text" /></td>
+                <td>Montant Total (TTC) en DH.</td>
+                <td><input type="text" size="16"  id="montantTotal" readonly="readonly" disabled="disabled" class="form-control text" /></td>
+                <!-- Trigger the modal with a button -->
+                <td><input class="btn btn-warning" type="button" value="Générer" id="genererFacture" onclick="genererFacture();"></td>
+                <td><input   class="btn btn-success" type="button" value="Valider" id="validerFacture" onclick="validerFacture();"></td>
+            </tr>
         </table>
     </div>
 
@@ -454,36 +489,65 @@ display: inline;
             </tbody>
         </table>
     </div>
-    <div id="light" class="white_content">
-     <table  style="margin-bottom: 10px;">
-        <tr>
-	        <td><input   type="button" value="Fermer La fenetre" onclick = "document.getElementById('light').style.display='none';"></td>
-	        <td><input   class="btn btn-success" type="button" value="Valider" onclick="validerFacture();"></td>
-        </tr>
-        </table>
-        <table style="margin-bottom: 17px;" id="infoClient"></table>
-     
-			<table class="nono" id="tableGenererFacture">
-            <thead>
-            <tr>
-                <th>Code Déclaration</th>
-                <th>Date Création</th>
-                <th>Date Envoi</th>
-                <th>Date Reception</th>
-                <th>Agence Départ</th>
-                <th>Agence Arrivée</th>
-                <th>Statut</th>
-                <th>Poids</th>
-                <th>Nbr Colis</th>
-                <th>Mode</th>
-                <th>Montant HT</th>
-                <th>Montant TVA</th>
-                <th>Montant TTC</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-            
-</div>
+    {# ----------------------------------------------------------------------------------------------------------------------- #}
+    <style type="text/css">
+        .modal-lg
+        {
+            max-width: 1200px;
+            width: auto;
+            /*height: 900px;  control height here */
+        }
+    </style>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" align="center">Pré Facture générée</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- modal body -->
+
+
+                    <table style="margin-bottom: 17px;" id="infoClient"></table>
+
+                    <table class="nono" id="tableGenererFacture">
+                        <thead>
+                            <tr>
+                                <th>Code Déclaration</th>
+                                <th>Date Création</th>
+                                <th>Date Envoi</th>
+                                <th>Date Reception</th>
+                                <th>Agence Départ</th>
+                                <th>Agence Arrivée</th>
+                                <th>Statut</th>
+                                <th>Poids</th>
+                                <th>Nbr Colis</th>
+                                <th>Mode</th>
+                                <th>Montant HT</th>
+                                <th>Montant TVA</th>
+                                <th>Montant TTC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                    <!-- End modal body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal"  onclick="validerFacture();">Valider</button>
+                        <button  class="btn btn-primary" type="button" id="Export" onclick="Exporter();">
+                            <i class="glyphicon glyphicon-export"> </i>Exporter</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {# ------ -----------------------------------------------------------------------------------------------------------------#}
+
 {% endblock %}

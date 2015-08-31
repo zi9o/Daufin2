@@ -385,7 +385,9 @@ class FindServicesController extends Controller {
                 sum(case  when e.md_port='portPaye' then 1 else 0 end) as nb_portPaye,
                 sum(case  when e.md_port='portPaye' then e.total_montant else 0 end) as PortPaye,
                 sum(case e.etat_regl when 'Reglee' then 1 else 0 end )  as Reglee,
-                sum( case e.etat_regl when 'nonReglee' then 1 else 0 end) as NonReglee";
+                sum( case etat_regl when 'nonReglee' then 1 else 0 end) as NonReglee,
+                sum(case etat_regl when 'Reglee' then TOTAL_MONTANT else 0 end )  as MT_Reglee,
+                sum( case etat_regl when 'nonReglee' then TOTAL_MONTANT else 0 end) as MT_NonReglee";
 
             
             if ($isCheque == 1) {
@@ -508,8 +510,10 @@ class FindServicesController extends Controller {
                 sum(case md_port when 'portDu' then total_montant else 0 end) as PortDU,
                 sum(case md_port when 'portPaye' then 1 else 0 end) as nb_portPaye,
                 sum(case md_port when 'portPaye' then total_montant else 0 end) as PortPaye,
-               sum(case etat_regl when 'Reglee' then 1 else 0 end )  as Reglee,
-                sum( case etat_regl when 'nonReglee' then 1 else 0 end) as NonReglee
+                sum(case etat_regl when 'Reglee' then 1 else 0 end )  as Reglee,
+                sum( case etat_regl when 'nonReglee' then 1 else 0 end) as NonReglee,
+                sum(case etat_regl when 'Reglee' then TOTAL_MONTANT else 0 end )  as MT_Reglee,
+                sum( case etat_regl when 'nonReglee' then TOTAL_MONTANT else 0 end) as MT_NonReglee
                 
                 FROM expedition e 
                 WHERE (e.DATE_DECL BETWEEN :dateCreationDu AND :dateCreationAu) ";
@@ -584,6 +588,8 @@ class FindServicesController extends Controller {
                                 "portPaye" => $results[$i]['PortPaye'],
                                 "nb_Reglee" => $results[$i]['Reglee'],
                                 "nb_NonReglee" => $results[$i]['NonReglee'],
+                                "MT_nb_Reglee" => $results[$i]['MT_Reglee'],
+                                "MT_nb_NonReglee" => $results[$i]['MT_NonReglee'],
                             )
                     );
                     if ($isBon_livr == 1) {
@@ -656,6 +662,8 @@ class FindServicesController extends Controller {
                                 "portPaye" => $res['PortPaye'],
                                 "nb_Reglee" => $res['Reglee'],
                                 "nb_NonReglee" => $res['NonReglee'],
+                                "MT_nb_Reglee" => $res['MT_Reglee'],
+                                "MT_nb_NonReglee" => $res['MT_NonReglee'],
                     ));
                 }
             }

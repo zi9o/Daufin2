@@ -204,8 +204,8 @@
                         content += "<th>Agence Arrivée</th>";
                         content += "<th colspan='2' scope='colgroup'>Port Dû</th>";
                         content += "<th colspan='2' scope='colgroup'>Port Payé</th>";
-                        content += "<th>Réglée</th>";
-                        content += "<th>Non Réglée</th>";
+                        content += "<th colspan='2' scope='colgroup'>Réglée</th>";
+                        content += "<th colspan='2' scope='colgroup'>Non Réglée</th>";
                         if (isCrbt == 1)
                         {
                             content += " <th colspan='2' scope='colgroup'>C/REMBST</th> ";
@@ -231,8 +231,10 @@
                         content += " <th scope='col'>Montant</th> ";
                         content += " <th scope='col'>Nb</th> ";
                         content += " <th scope='col'>Montant</th> ";
-                        content += " <th></th> ";
-                        content += " <th></th>";
+                        content += " <th scope='col'>Nb</th> ";
+                        content += " <th scope='col'>Montant</th>";
+                        content += " <th scope='col'>Nb</th> ";
+                        content += " <th scope='col'>Montant</th>";
                         if (isCrbt == 1)
                         {
                             content += " <th  scope='col'>Prix</th> ";
@@ -269,11 +271,17 @@
                         var portDu=Number("0");
                         var portPaye=Number("0");
 
+                        var nb_NonReglee=Number("0");
+                        var MT_nb_NonReglee=Number("0");
+
                         for (var i = 0; i < obj.length; i++)
                         {
 
                             portDu= portDu+Number(obj[i].portDu);
                             portPaye=portPaye+ Number(obj[i].portPaye);
+
+                            nb_NonReglee=nb_NonReglee+Number(obj[i].nb_NonReglee);
+                            MT_nb_NonReglee=MT_nb_NonReglee+Number(obj[i].MT_nb_NonReglee);
 
                             content += "<tr><td>" + Number(obj[i].nbrDec).toFixed(2) + "</td>";
                             content += '<td>' + obj[i].AgenceD + '</td>';
@@ -283,7 +291,9 @@
                             content += " <td>" + Number(obj[i].nb_portPaye).toFixed(2) + "</td> ";
                             content += " <td>" + Number(obj[i].portPaye).toFixed(2) + "</td> ";
                             content += " <td>" + Number(obj[i].nb_Reglee).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].MT_nb_Reglee).toFixed(2) + "</td> ";
                             content += " <td>" + Number(obj[i].nb_NonReglee).toFixed(2) + "</td> ";
+                            content += " <td>" + Number(obj[i].MT_nb_NonReglee).toFixed(2) + "</td> ";
                             if (isCrbt == 1)
                             {
 
@@ -322,7 +332,9 @@
                         content += "<td></td>";
                         content += "<td  align='center' >"+Number(portPaye).toFixed(2)+"</td>";
                         content += "<td></td>";
+                        content += "<td  align='center' >"+Number(nb_NonReglee).toFixed(2)+"</td>";
                         content += "<td></td>";
+                        content += "<td  align='center' >"+Number(MT_nb_NonReglee).toFixed(2)+"</td>";
                         if (isCrbt == 1)
                         {
                             content += "<td  align='center' >"+Number(prix_bl).toFixed(2)+"</td>";
@@ -486,8 +498,8 @@
                     <th>Agence Arrivée</th>
                     <th colspan="2" scope='colgroup'>Port Dû</th>
                     <th colspan="2" scope='colgroup'>Port Payé</th>
-                    <th>Réglée</th>
-                    <th>Non Réglée</th>
+                    <th colspan="2" scope='colgroup'>Réglée</th>
+                    <th colspan="2" scope='colgroup'>Non Réglée</th>
                     <th colspan="2" scope='colgroup'>C/REMBST</th>
                     <th colspan="2" scope='colgroup'>C/Chéque</th>
                     <th colspan="2" scope='colgroup'>C/Traite</th>
@@ -501,8 +513,10 @@
                     <th scope='col'>Montant</th>
                     <th scope='col'>Nb</th>
                     <th scope='col'>Montant</th>
-                    <th></th>
-                    <th></th>
+                    <th scope='col'>Nb</th>
+                    <th scope='col'>Montant</th>
+                    <th scope='col'>Nb</th>
+                    <th scope='col'>Montant</th>
                     <th  scope='col'>Prix</th>
                     <th  scope='col'>Montant</th>
                     <th  scope='col'>Prix</th>

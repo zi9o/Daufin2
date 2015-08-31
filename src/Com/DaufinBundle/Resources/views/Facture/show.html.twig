@@ -13,12 +13,38 @@
 
 {% block container %}
 
-    
+    <script type="text/javascript">
+        function Exporter(IDNumFacture) {
+
+            $.ajax({
+                    url: Routing.generate('com_daufin_com_facture_export'),
+                    type: "POST",
+                    data: {
+                        "IDNumFacture": IDNumFacture,
+                    },
+                    success: function (data) {
+                         var obj = jQuery.parseJSON(data);
+                         if (obj.hasOwnProperty('codeError')) {  
+                           alert("ERROR : "+obj.message);
+                            return false;
+                            }
+                        var url=obj.urlPDF;
+                        //document.getElementById("linkFacture").href=url;
+                        //document.getElementById("linkFacture").style.visibility = "visible";
+                                 
+                         var wnd = window.open(url);
+
+                        
+                    }
+                });
+        }
+    </script>
     <a href="{{ path('com_daufin_com_facture_All') }}">
         <button class="btn btn-default">
-            <i class="fa  fa-reply fa-1x"></i>Retour à la liste
+            <span class="fa  fa-reply fa-1x"></span>Retour à la liste
         </button>
     </a>
+    
     <table style="width: 100%;">
         <tr><td colspan="2" style="font-weight: bold;font-size: 14px;text-align: center;">Facture N°: </td>
             <td style="padding-left: 20px;text-align: center; font-weight: bold;">{{ entities.numFacture }}</td>
@@ -43,6 +69,10 @@
             <span class="glyphicon glyphicon-edit"></span> Editer la liste des expeditions
         </button>
     </div> #}
+    <div style=" float: right"><button  class="btn btn-primary btn" type="button" id="Export" onclick="Exporter({{ entities.id }});">
+        <i class="glyphicon glyphicon-export"> </i>Exporter</button>
+    </div>
+    <br>
     <table id="datatable">
         <thead>
             <tr><td  colspan="7" style="font-weight: bold;font-size: 14px;text-align: center;"> Expeditions</td></tr>
