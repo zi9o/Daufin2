@@ -271,7 +271,7 @@
                         var portDu=Number("0");
                         var portPaye=Number("0");
 
-                        var nb_NonReglee=Number("0");
+                        var MT_nb_Reglee=Number("0");
                         var MT_nb_NonReglee=Number("0");
 
                         for (var i = 0; i < obj.length; i++)
@@ -280,7 +280,7 @@
                             portDu= portDu+Number(obj[i].portDu);
                             portPaye=portPaye+ Number(obj[i].portPaye);
 
-                            nb_NonReglee=nb_NonReglee+Number(obj[i].nb_NonReglee);
+                            MT_nb_Reglee=MT_nb_Reglee+Number(obj[i].MT_nb_Reglee);
                             MT_nb_NonReglee=MT_nb_NonReglee+Number(obj[i].MT_nb_NonReglee);
 
                             content += "<tr><td>" + Number(obj[i].nbrDec).toFixed(2) + "</td>";
@@ -332,7 +332,7 @@
                         content += "<td></td>";
                         content += "<td  align='center' >"+Number(portPaye).toFixed(2)+"</td>";
                         content += "<td></td>";
-                        content += "<td  align='center' >"+Number(nb_NonReglee).toFixed(2)+"</td>";
+                        content += "<td  align='center' >"+Number(MT_nb_Reglee).toFixed(2)+"</td>";
                         content += "<td></td>";
                         content += "<td  align='center' >"+Number(MT_nb_NonReglee).toFixed(2)+"</td>";
                         if (isCrbt == 1)

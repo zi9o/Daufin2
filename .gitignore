@@ -5,9 +5,6 @@
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
-/bin/
-/composer.phar
-/vendor/
 /web/bundles/
 /web/ExportFactures/Prefacture-16-34-49 27-08-2015.xls
 /web/ExportFactures/Facture-GL15080004-27-08-2015.xls
