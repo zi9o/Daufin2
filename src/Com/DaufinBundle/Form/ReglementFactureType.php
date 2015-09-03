@@ -17,9 +17,6 @@ class ReglementFactureType extends AbstractType
         $builder
             ->add('dateCreation')
             ->add('montant')
-            ->add('modeReglement')
-            ->add('refReglement')
-            ->add('dateEffet')
             ->add('reglement')
             ->add('facture')
         ;

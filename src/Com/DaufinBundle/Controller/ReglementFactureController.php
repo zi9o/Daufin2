@@ -4,10 +4,13 @@ namespace Com\DaufinBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Com\DaufinBundle\Entity\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Com\DaufinBundle\Entity\ReglementFacture;
+use Com\DaufinBundle\Entity\Reglement;
 use Com\DaufinBundle\Form\ReglementFactureType;
 
 /**
@@ -15,8 +18,7 @@ use Com\DaufinBundle\Form\ReglementFactureType;
  *
  * @Route("/com_RegleFacture")
  */
-class ReglementFactureController extends Controller
-{
+class ReglementFactureController extends Controller {
 
     /**
      * Lists all ReglementFacture entities.
@@ -25,78 +27,174 @@ class ReglementFactureController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('ComDaufinBundle:ReglementFacture')->findAll();
+        $entities = $em->getRepository('ComDaufinBundle:Reglement')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        return $this->render('ComDaufinBundle:ReglementFacture:index.html.twig', array(
+                    'entities' => $entities,
+        ));
     }
-    /**
-     * Creates a new ReglementFacture entity.
-     *
-     * @Route("/", name="com_RegleFacture_create")
-     * @Method("POST")
-     * @Template("ComDaufinBundle:ReglementFacture:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new ReglementFacture();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+    public function indexAddReglementAction() {
+        $em = $this->getDoctrine()->getManager();
 
-            return $this->redirect($this->generateUrl('com_RegleFacture_show', array('id' => $entity->getId())));
+        $entitiesCompte = $em->getRepository('ComDaufinBundle:Client')->findBy(array('typeClient' => 'Compte'));
+        $entitiesParticulier = $em->getRepository('ComDaufinBundle:Client')->findBy(array('typeClient' => 'Particulier'));
+
+        return $this->render('ComDaufinBundle:ReglementFacture:new.html.twig', array(
+                    'entitiesCompte' => $entitiesCompte,
+                    'entitiesParticulier' => $entitiesParticulier,
+        ));
+    }
+
+    public function FindindexAddReglementAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+
+        $params = $this->getRequest()->request->all();
+
+        $dateCreationDu = $params['dateCreationDu'];
+        $dateCreationAu = $params['dateCreationAu'];
+        $CodeClientCompte = $params['CodeClientCompte'];
+        $CodeClientParticulier = $params['CodeClientParticulier'];
+
+        $requete = "select id as ID,code_facture as Code from facture 
+                where client=:CodeClient 
+                and etat_Facture='Finale' 
+                and statutFacture<>'Reglee' 
+                and (date_facturation between :dateCreationDu AND :dateCreationAu )";
+
+        $statement = $connection->prepare($requete);
+
+        $statement->bindValue('dateCreationDu', $dateCreationDu);
+        $statement->bindValue('dateCreationAu', $dateCreationAu);
+        if ($CodeClientCompte != -1) {
+            $statement->bindValue('CodeClient', $CodeClientCompte);
+        } else {
+            $statement->bindValue('CodeClient', $CodeClientParticulier);
+        }
+        $statement->execute();
+        $results = $statement->fetchAll();
+        if (sizeof($results) >= 1) {
+            $response = array();
+            foreach ($results as $res) {
+                $response[] = array_merge(
+                        array(
+                            "IDFacture" => $res['ID'],
+                            "CodeFacture" => $res['Code'],
+                ));
+            }
+
+            return new Response(json_encode($response));
+        } else {
+
+            $response = array("codeError" => 40,
+                "message" => "Aucune facture trouvée",);
+            return new Response(json_encode($response));
+        }
+    }
+
+    public function FindMontantindexAddReglementAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $connection = $em->getConnection();
+
+        $params = $this->getRequest()->request->all();
+
+        $ListIDsFacture = $params['ListIDsFacture'];
+
+        $ids = array();
+        foreach ($ListIDsFacture as $value) {
+            array_push($ids, $value);
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
+
+        $requete = "select f.id as ID,
+                f.code_facture as Code,
+                f.montantTTC as AllTTC,
+                (f.montantTTC-sum(case  when rf.montantReglement is not null then rf.montantReglement else 0 end)) as Rest
+                from facture f 
+                left join reglement_facture rf on (rf.facture=f.id)
+                where f.id IN(" . $inQuery . ")
+                group by f.id";
+
+        $statement = $connection->prepare($requete);
+
+        foreach ($ids as $k => $id) {
+            $statement->bindValue(($k + 1), $id);
+        }
+        $statement->execute();
+        $results = $statement->fetchAll();
+        if (sizeof($results) >= 1) {
+            $response = array();
+            foreach ($results as $res) {
+                $response[] = array_merge(
+                        array(
+                            "IDFacture" => $res['ID'],
+                            "CodeFacture" => $res['Code'],
+                            "TTC" => $res['AllTTC'],
+                            "rest" => $res['Rest'],
+                ));
+            }
+
+            return new Response(json_encode($response));
+        } else {
+
+            $response = array("codeError" => 40,
+                "message" => "Aucune facture trouvée",);
+            return new Response(json_encode($response));
+        }
     }
 
-    /**
-     * Creates a form to create a ReglementFacture entity.
-     *
-     * @param ReglementFacture $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(ReglementFacture $entity)
-    {
-        $form = $this->createForm(new ReglementFactureType(), $entity, array(
-            'action' => $this->generateUrl('com_RegleFacture_create'),
-            'method' => 'POST',
-        ));
+    public function createAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $connection = $em->getConnection();
 
-        return $form;
-    }
+        $params = $this->getRequest()->request->all();
 
-    /**
-     * Displays a form to create a new ReglementFacture entity.
-     *
-     * @Route("/new", name="com_RegleFacture_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new ReglementFacture();
-        $form   = $this->createCreateForm($entity);
+        $ListIDsFacture = $params['IDFactures'];
+        $ListMontantsFacture = $params['montantsFactures'];
+        $ModeRegl = $params['ModeRegl'];
+        $montantRegl = floatval($params['montantRegl']);
+        $refRegl = $params['refRegl'];
+        $DateEffet = $params['DateEffet'];
+        $Reglement = new Reglement();
+        $Reglement->setModeReglement($ModeRegl);
+        $Reglement->setRefReglement($refRegl);
+        $Reglement->setMontantReglement($montantRegl);
+        $Reglement->setDateCreation(new \DateTime());
+        $Reglement->setDateEffet(new \DateTime($DateEffet));
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        $em->persist($Reglement);
+        $em->flush();
+
+        foreach ($ListIDsFacture as $key => $value) {
+            $facture = $em->getRepository('ComDaufinBundle:Facture')->find($value);
+            if ($ListMontantsFacture[$key] < $facture->getTotalMontantTTC()) {
+                $facture->setStatutFacture("Partiel");
+            } else if ($ListMontantsFacture[$key] = $facture->getTotalMontantTTC()) {
+                $facture->setStatutFacture("Reglee");
+            }
+            $ReglementFacture = new ReglementFacture();
+            $ReglementFacture->setFacture($facture);
+            $ReglementFacture->setReglement($Reglement);
+            $ReglementFacture->setMontant($ListMontantsFacture[$key]);
+            $ReglementFacture->setDateCreation(new \DateTime());
+            $em->persist($ReglementFacture);
+        }
+
+        $em->flush();
+
+        $response = array(
+            "Message" => "Reglement Créé ",
+            "statut" => "1",);
+
+        return new Response(json_encode($response));
     }
 
     /**
@@ -106,22 +204,83 @@ class ReglementFactureController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $Reglement = $em->getRepository('ComDaufinBundle:Reglement')->find($id);
+        $request = "select 
+
+        f.code_facture as CodeFacture,
+        f.montantTTC as TTC,
+        sum(case  when rf.montantReglement is not null then rf.montantReglement else 0 end) as Paye,
+        (f.montantTTC-(select sum(montantReglement) from reglement_facture where facture=f.id)) as Rest
+
+        from facture f 
+        left join reglement_facture rf on (rf.facture=f.id)
+        join reglement r on (rf.reglement=r.id)
+        where r.id=:regl
+
+        group by f.id";
+
+        $statement = $connection->prepare($request);
+        $statement->bindValue('regl', $Reglement->getId());
+        $statement->execute();
+        $results = $statement->fetchAll();
+
+        return $this->render('ComDaufinBundle:ReglementFacture:show.html.twig', array(
+                    'entity' => $Reglement,
+                    'factures' => $results,
+        ));
+    }
+
+    public function FindMontantindexEditReglementAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ComDaufinBundle:ReglementFacture')->find($id);
+        $connection = $em->getConnection();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ReglementFacture entity.');
+        $params = $this->getRequest()->request->all();
+
+        $idRegl = $params['idRegl'];
+
+        $requete = "select f.id as ID,
+        f.code_facture as CodeFacture,
+        f.montantTTC as TTC,
+        sum(case  when rf.montantReglement is not null then rf.montantReglement else 0 end) as Paye,
+        (f.montantTTC-(select sum(montantReglement) from reglement_facture where facture=f.id)) as Rest
+
+        from facture f 
+        left join reglement_facture rf on (rf.facture=f.id)
+        join reglement r on (rf.reglement=r.id)
+        where r.id=:regl
+
+        group by f.id";
+
+        $statement = $connection->prepare($requete);
+        $statement->bindValue('regl', intval($idRegl));
+
+        $statement->execute();
+        $results = $statement->fetchAll();
+        if (sizeof($results) >= 1) {
+            $response = array();
+            foreach ($results as $res) {
+                $response[] = array_merge(
+                        array(
+                            "IDFacture" => $res['ID'],
+                            "CodeFacture" => $res['CodeFacture'],
+                            "TTC" => $res['TTC'],
+                            "paye" => $res['Paye'],
+                            "rest" => $res['Rest'],
+                            "max" => ($res['Rest'] + $res['Paye']),
+                ));
+            }
+
+            return new Response(json_encode($response));
+        } else {
+
+            $response = array("codeError" => 40,
+                "message" => "Aucune facture trouvée",);
+            return new Response(json_encode($response));
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
     }
 
     /**
@@ -131,85 +290,104 @@ class ReglementFactureController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $Reglement = $em->getRepository('ComDaufinBundle:Reglement')->find($id);
+        $request = "select f.id as ID,f.code_facture as Code
+                from facture f 
+                left join reglement_facture rf on (rf.facture=f.id)
+                left join reglement r on (rf.reglement=r.id)
+                where r.id=:id";
 
-        $entity = $em->getRepository('ComDaufinBundle:ReglementFacture')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ReglementFacture entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-    * Creates a form to edit a ReglementFacture entity.
-    *
-    * @param ReglementFacture $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(ReglementFacture $entity)
-    {
-        $form = $this->createForm(new ReglementFactureType(), $entity, array(
-            'action' => $this->generateUrl('com_RegleFacture_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+        $statement = $connection->prepare($request);
+        $statement->bindValue('id', $id);
+        $statement->execute();
+        $AllFactures = $statement->fetchAll();
+        return $this->render('ComDaufinBundle:ReglementFacture:edit.html.twig', array(
+                    'Reglement' => $Reglement,
+                    'AllFactures' => $AllFactures,
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
     }
-    /**
-     * Edits an existing ReglementFacture entity.
-     *
-     * @Route("/{id}", name="com_RegleFacture_update")
-     * @Method("PUT")
-     * @Template("ComDaufinBundle:ReglementFacture:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
+
+    public function updateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ComDaufinBundle:ReglementFacture')->find($id);
+        $connection = $em->getConnection();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ReglementFacture entity.');
+        $params = $this->getRequest()->request->all();
+
+        $id = intval($params['idRegl']);
+        $ListIDsFacture = $params['IDFactures'];
+        $ListMontantsFacture = $params['montantsFactures'];
+        $ModeRegl = $params['ModeRegl'];
+        $montantRegl = floatval($params['montantRegl']);
+        $refRegl = $params['refRegl'];
+        $DateEffet = $params['DateEffet'];
+        $Reglement = $em->getRepository('ComDaufinBundle:Reglement')->find($id);
+        $Reglement->setModeReglement($ModeRegl);
+        $Reglement->setRefReglement($refRegl);
+        $Reglement->setMontantReglement($montantRegl);
+        $Reglement->setDateEffet(new \DateTime($DateEffet));
+
+        $em->flush();
+
+        foreach ($ListIDsFacture as $key => $value) {
+            $facture = $em->getRepository('ComDaufinBundle:Facture')->find($value);
+            if ($ListMontantsFacture[$key] < $facture->getTotalMontantTTC()) {
+                $facture->setStatutFacture("Partiel");
+            } else if ($ListMontantsFacture[$key] = $facture->getTotalMontantTTC()) {
+                $facture->setStatutFacture("Reglee");
+            }
+            $ReglementFacture = $em->getRepository('ComDaufinBundle:ReglementFacture')->findOneBy(
+                    array(
+                        'facture' => $facture->getId(),
+                        'reglement' => $Reglement->getId())
+            );
+            $ReglementFacture->setMontant($ListMontantsFacture[$key]);
+            $em->persist($ReglementFacture);
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+        $em->flush();
+        $response = array(
+            "Message" => "Reglement modifié ",
+            "statut" => "1",);
 
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('com_RegleFacture_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        return new Response(json_encode($response));
     }
+
+    public function showDetailsFactureAction($idfacture, $idReglement) {
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $Facture = $em->getRepository('ComDaufinBundle:Facture')->find($idfacture);
+        $request = "select  r.date_creation as DateCreation,
+        r.mode_reglement as mode,
+        r.ref_reglement as ref,
+        r.montantreglement as MTRegl,
+        rf.montantreglement as MTFacture
+        from reglement_facture rf 
+        join reglement r on (rf.reglement=r.id)
+        where rf.facture=:idFacture";
+
+        $statement = $connection->prepare($request);
+        $statement->bindValue('idFacture', $idfacture);
+        $statement->execute();
+        $results = $statement->fetchAll();
+
+        return $this->render('ComDaufinBundle:ReglementFacture:showFacture.html.twig', array(
+                    'Facture' => $Facture,
+                    'idReglement' => $idReglement,
+                    'reglements' => $results,
+        ));
+    }
+
     /**
      * Deletes a ReglementFacture entity.
      *
      * @Route("/{id}", name="com_RegleFacture_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,13 +413,13 @@ class ReglementFactureController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('com_RegleFacture_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('com_RegleFacture_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

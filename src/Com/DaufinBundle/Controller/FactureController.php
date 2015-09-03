@@ -848,6 +848,7 @@ class FactureController extends Controller {
         $facture = $em->getRepository('ComDaufinBundle:Facture')->find($numFacture);
 
         $facture->setEtatFacture("Finale");
+        $facture->setDateFacturation(new \DateTime());
         $facture->setImpressionFacture("Originale");
         // default = Modifiable
         $em->flush();

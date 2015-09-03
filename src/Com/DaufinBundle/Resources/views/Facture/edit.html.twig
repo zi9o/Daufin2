@@ -88,26 +88,28 @@
         }
     </script>
     <script type="text/javascript">
-    	function factureNonModifiable () {
-    		
-    	var r = confirm("Etes vous sur de rendre cette facture comme 'NON Modifiable' ?");
-                if (r == true)
-                {
-                	IDFacture = document.getElementById("IDNumFacture");
-                    IDNumFacture = IDFacture.options[IDFacture.selectedIndex].value;
+        function factureNonModifiable() {
 
-                	$.ajax({
-                        url: Routing.generate('com_daufin_com_facture_save_etat_edit'),
-                        type: "POST",
-                        data: {
-                            "IDNumFacture": IDNumFacture,
-                        },
-                        success: function (data) {
-                            window.location.reload();
-                        }
-                    });
-                }
+            var r = confirm("Etes vous sur de rendre cette facture comme 'NON Modifiable' ?");
+            if (r == true)
+            {
+                IDFacture = document.getElementById("IDNumFacture");
+                IDNumFacture = IDFacture.options[IDFacture.selectedIndex].value;
+
+                document.getElementById("validationSauvegarde").disabled = true;
+
+                $.ajax({
+                    url: Routing.generate('com_daufin_com_facture_save_etat_edit'),
+                    type: "POST",
+                    data: {
+                        "IDNumFacture": IDNumFacture,
+                    },
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                });
             }
+        }
     </script>
     <script type="text/javascript">
         function deleteExp(id_exp)
@@ -132,9 +134,9 @@
                         },
                         success: function (data) {
                             var obj = jQuery.parseJSON(data);
-                            
+
                             validerRechercheFacture();
-                           // activeOnBeforeunload();
+                            // activeOnBeforeunload();
                         }
                     });
                 }
@@ -300,9 +302,9 @@
                     },
                     success: function (data) {
                         var obj = jQuery.parseJSON(data);
-                        
+
                         validerRechercheFacture();
-                       // activeOnBeforeunload();
+                        // activeOnBeforeunload();
                     }
                 });
             }
@@ -316,26 +318,26 @@
             IDNumFacture = IDFacture.options[IDFacture.selectedIndex].value;
 
             $.ajax({
-                    url: Routing.generate('com_daufin_com_facture_export'),
-                    type: "POST",
-                    data: {
-                        "IDNumFacture": IDNumFacture,
-                    },
-                    success: function (data) {
-                         var obj = jQuery.parseJSON(data);
-                         if (obj.hasOwnProperty('codeError')) {  
-                           alert("ERROR : "+obj.message);
-                            return false;
-                            }
-                        var url=obj.urlPDF;
-                        //document.getElementById("linkFacture").href=url;
-                        //document.getElementById("linkFacture").style.visibility = "visible";
-                                 
-                         var wnd = window.open(url);
-
-                        
+                url: Routing.generate('com_daufin_com_facture_export'),
+                type: "POST",
+                data: {
+                    "IDNumFacture": IDNumFacture,
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError')) {
+                        alert("ERROR : " + obj.message);
+                        return false;
                     }
-                });
+                    var url = obj.urlPDF;
+                    //document.getElementById("linkFacture").href=url;
+                    //document.getElementById("linkFacture").style.visibility = "visible";
+
+                    var wnd = window.open(url);
+
+
+                }
+            });
         }
     </script>
 
@@ -432,29 +434,29 @@
                         <table class="table editable" id="datatable">
                             <thead>
                                 <tr>
-                                   
+
                                     <td colspan="6"><input type='checkbox' value='All' name="chk_bx_exptrsp" onChange="Select_All(this);"/>
-                            Selectionner Tous
-                        </td>
-                             <td colspan="7">
+                                        Selectionner Tous
+                                    </td>
+                                    <td colspan="7">
                                         <button class="btn btn-success btn-lg btn-block" type="button" data-dismiss="modal"  onclick="SauvegarderFacture();">Ajouter</button>
                                     </td>
-                        </tr>
-                            <tr>
-                                <th>Code Déclaration</th>
-                                <th>Date Création</th>
-                                <th>Date Envoi</th>
-                                <th>Date Reception</th>
-                                <th>Agence Départ</th>
-                                <th>Agence Arrivée</th>
-                                <th>Statut</th>
-                                <th>Poids</th>
-                                <th>Nbr Colis</th>
-                                <th>Mode</th>
-                                <th>Montant HT</th>
-                                <th>Montant TVA</th>
-                                <th>Montant TTC</th>
-                            </tr>
+                                </tr>
+                                <tr>
+                                    <th>Code Déclaration</th>
+                                    <th>Date Création</th>
+                                    <th>Date Envoi</th>
+                                    <th>Date Reception</th>
+                                    <th>Agence Départ</th>
+                                    <th>Agence Arrivée</th>
+                                    <th>Statut</th>
+                                    <th>Poids</th>
+                                    <th>Nbr Colis</th>
+                                    <th>Mode</th>
+                                    <th>Montant HT</th>
+                                    <th>Montant TVA</th>
+                                    <th>Montant TTC</th>
+                                </tr>
                             </thead>
                             <tbody>
                             </tbody>

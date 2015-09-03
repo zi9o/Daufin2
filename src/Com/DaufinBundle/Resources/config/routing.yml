@@ -5,6 +5,10 @@ com_daufin_com_voyage:
 com_daufin_com_incident:
     resource: "@ComDaufinBundle/Resources/config/routing/incident.yml"
     prefix:   /com_Incident
+
+com_daufin_com_regFacture:
+    resource: "@ComDaufinBundle/Resources/config/routing/reglfact.yml"
+    prefix:   /com_Regle_Facture
 #com_daufin_com_stock:
 #    resource: "@ComDaufinBundle/Resources/config/routing/stock.yml"
 #    prefix:   /com_Stock
@@ -765,3 +769,56 @@ com_daufin_com_facture_export_generer:
     options:
         expose: true
 # End Export expedition 
+# Begin Reglement
+com_daufin_com_reglement_Add:
+    path: /GenererReglement
+    defaults: {_controller: ComDaufinBundle:ReglementFacture:indexAddReglement}
+
+com_daufin_com_reglement_all:
+    path: /ConsulterReglement
+    defaults: {_controller: ComDaufinBundle:ReglementFacture:index}
+
+com_daufin_com_reglement_facture:
+    path: /{id}/FactureReglement
+    defaults: {_controller: ComDaufinBundle:ReglementFacture:showDetailsFacture}
+
+com_daufin_com_reglement_Add_search:
+    pattern:  /GenererReglement/Find
+    defaults: { _controller: ComDaufinBundle:ReglementFacture:FindindexAddReglement}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reglement_Add_search_montant:
+    pattern:  /GenererReglement/FindMontant
+    defaults: { _controller: ComDaufinBundle:ReglementFacture:FindMontantindexAddReglement}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reglement_Add_create:
+    pattern:  /GenererReglement/create
+    defaults: { _controller: ComDaufinBundle:ReglementFacture:create}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reglement_Edit_search_montant:
+    pattern:  /EditerReglement/FindMontant
+    defaults: { _controller: ComDaufinBundle:ReglementFacture:FindMontantindexEditReglement}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+
+com_daufin_com_reglement_Edit_create:
+    pattern:  /EditerReglement/update
+    defaults: { _controller: ComDaufinBundle:ReglementFacture:update}
+    requirements:
+            _method: POST
+    options:
+        expose: true
+# End Reglement

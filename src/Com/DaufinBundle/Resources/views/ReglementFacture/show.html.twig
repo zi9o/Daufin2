@@ -2,17 +2,21 @@
 
 {% block _container %}
         <div class="page-head">
-                <h2>Liste du Personnel</h2>
+                <h2>Afficher Reglement</h2>
                 <ol class="breadcrumb">
                   <li><a href="#">Home</a></li>
                   <li><a href="#">PARAMETRES</a></li>
-                  <li class="active">Liste du Personnel</li>
+                  <li Afficher class="active">Afficher Reglement</li>
                 </ol>
         </div>
 {% endblock %}
 
 {% block container%}
-    <h1>ReglementFacture</h1>
+    <a href="{{ path('com_daufin_com_reglement_all') }}">
+        <button class="btn btn-default">
+            <i class="fa  fa-reply fa-1x"></i>Retour à la liste
+        </button>
+    </a>
 
     <table class="record_properties">
         <tbody>
@@ -21,32 +25,59 @@
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Datecreation</th>
+                <th>Date Création</th>
                 <td>{{ entity.dateCreation|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Montant</th>
-                <td>{{ entity.montant }}</td>
+                <td>{{ entity.montantReglement }}</td>
             </tr>
             <tr>
-                <th>Modereglement</th>
+                <th>Mode Reglement</th>
                 <td>{{ entity.modeReglement }}</td>
             </tr>
             <tr>
-                <th>Refreglement</th>
+                <th>Reference Reglement</th>
                 <td>{{ entity.refReglement }}</td>
             </tr>
             <tr>
-                <th>Dateeffet</th>
+                <th>Date Effet</th>
                 <td>{{ entity.dateEffet|date('Y-m-d H:i:s') }}</td>
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
+    <br>
+<div style=" float: right">
+    <a href="{{ path('com_RegleFacture_edit', { 'id': entity.id }) }}">
+    <button  class="btn btn-primary btn" type="button" id="Editer" >
+        <i class="glyphicon glyphicon-export"> </i>Editer</button></a>
+    </div>
+    <br>
+    <table id="datatable">
+        <thead>
+            <tr><td  colspan="7" style="font-weight: bold;font-size: 16px;text-align: center;"> Details des factures réglées</td></tr>
+            <tr>
+                <th style="font-weight: bold;font-size: 14px;">Code Facture</th>
+                <th style="font-weight: bold;font-size: 14px;">Montant TTC</th>
+                <th style="font-weight: bold;font-size: 14px;">Montant Payé</th>
+                <th style="font-weight: bold;font-size: 14px;">Montant Restant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fact in factures %}
+                <tr>
+                    <td><a href="{{ path('com_RegleFacture_show', { 'id': fact.id ,'idReglement': entity.id}) }}">{{ fact.CodeFacture }}</a></td>
+                    <td>{{ fact.TTC|number_format(2, '.', ',')}}</td>
+                    <td>{{ fact.Paye|number_format(2, '.', ',')}}</td>
+                    <td>{{ fact.Rest|number_format(2, '.', ',')}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        {# <ul class="record_actions">
     <li>
-        <a href="{{ path('com_RegleFacture') }}">
-            Back to the list
+        <a href="{{ path('com_daufin_com_reglement_all') }}">
+            Retour
         </a>
     </li>
     <li>
@@ -54,6 +85,6 @@
             Edit
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    
+</ul> #}
 {% endblock %}

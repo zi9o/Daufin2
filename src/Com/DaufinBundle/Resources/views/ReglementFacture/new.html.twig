@@ -1,26 +1,499 @@
 {% extends"ComDaufinBundle::layout.html.twig"%}
 
 {% block _container %}
-        <div class="page-head">
-                <h2>Liste du Personnel</h2>
-                <ol class="breadcrumb">
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">PARAMETRES</a></li>
-                  <li class="active">Liste du Personnel</li>
-                </ol>
-        </div>
+    <div class="page-head">
+        <h2>Reglement Factures</h2>
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">PARAMETRES</a></li>
+            <li class="active">Reglement Factures</li>
+        </ol>
+    </div>
 {% endblock %}
-
 {% block container%}
-    <h1>ReglementFacture creation</h1>
+    <script type="text/javascript">
+        function DecideClient()
+        {
+            disableEdit();
+            var CCC = document.getElementById("ClientIdCompte");
+            var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
 
-    {{ form(form) }}
+            var CCP = document.getElementById("ClientIdParticulier");
+            var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('com_RegleFacture') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+            if (CodeClientCompte != -1 && CodeClientParticulier == -1)
+            {
+                document.getElementById("ClientIdParticulier").disabled = true;
+                document.getElementById("ClientIdCompte").disabled = false;
+            }
+            else if (CodeClientCompte == -1 && CodeClientParticulier != -1)
+            {
+                document.getElementById("ClientIdCompte").disabled = true;
+                document.getElementById("ClientIdParticulier").disabled = false;
+            }
+            else if (CodeClientCompte == -1 && CodeClientParticulier == -1)
+            {
+                document.getElementById("ClientIdCompte").disabled = false;
+                document.getElementById("ClientIdParticulier").disabled = false;
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function validerRecherche()
+        {
+
+            var CCC = document.getElementById("ClientIdCompte");
+            var CodeClientCompte = CCC.options[CCC.selectedIndex].value;
+
+            var CCP = document.getElementById("ClientIdParticulier");
+            var CodeClientParticulier = CCP.options[CCP.selectedIndex].value;
+
+            var dateCreationDu = document.getElementById("datepickerCreationDu").value;
+            var dateCreationAu = document.getElementById("datepickerCreationAu").value;
+
+
+            if ((CodeClientCompte == -1 && CodeClientParticulier == -1))
+            {
+
+            }
+            else
+            {
+                $.ajax({
+                    url: Routing.generate('com_daufin_com_reglement_Add_search'),
+                    type: "POST",
+                    data: {
+                        "dateCreationDu": dateCreationDu,
+                        "dateCreationAu": dateCreationAu,
+                        "CodeClientCompte": CodeClientCompte,
+                        "CodeClientParticulier": CodeClientParticulier
+                    },
+                    success: function (data) {
+                        var obj = jQuery.parseJSON(data);
+                        if (obj.hasOwnProperty('codeError'))
+                        {
+                            alert("ERROR : " + obj.message);
+                            disableEdit();
+                        }
+                        else
+                        {
+                            var content = '';
+                            for (var i = 0; i < obj.length; i++) {
+                                content += '<option value="' + obj[i].IDFacture + '" >' + obj[i].CodeFacture + '</option>';
+
+                            }
+                            $('#ListFacture').html(content);
+                            enableEdit();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+    <div class="table" onload=" document.getElementById('date').value = Date();">
+
+        <table class="table editable">
+            <tr> Sélectionner le client pour lister ses factures :</tr>
+            <tr>
+
+
+                <td  style=" font-size: 16px; ">Client en Compte: </td>
+                <td style=' font-size: 16px; '>
+                    <select class="select2" id='ClientIdCompte' onchange="DecideClient();" >
+                        <option value="-1">---SELECTIONNER---</option> 
+                        {% for entity in entitiesCompte %}  
+                            <option value="{{ entity.id }}"> {{ entity.rSociale }} {{entity.codeClient }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td  style=" font-size: 16px; ">Client Particulier: </td>
+                <td style=' font-size: 16px; '>
+                    <select class="select2" id='ClientIdParticulier' onchange="DecideClient();">
+                        <option value="-1">---SELECTIONNER---</option> 
+                        {% for entity in entitiesParticulier %}  
+                            <option value="{{ entity.id }}"> {{ entity.nomPart }} {{entity.prenomPart }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style=" font-size: 16px; " >Date de création : </td>
+                <td> du :<input type="text" class="form-control datetime" size="20"  id="datepickerCreationDu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() - 2;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 09:00";
+                        document.getElementById('datepickerCreationDu').value = today;
+                    </script>
+                </td>
+                <td> au :
+                    <input type="text" class="form-control datetime" size="20"  id="datepickerCreationAu"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 22:00";
+                        document.getElementById('datepickerCreationAu').value = today;
+                    </script>
+                </td>
+                <td colspan="4" ><input class="btn btn-info" type="button" value="Rechercher" id="validationRecherche" onclick="validerRecherche();"></td>
+
+
+            </tr>
+
+        </table>
+    </div>
+    <div class="row">
+
+
+        <div class="col-md-2 col-md-offset-0">
+            <div class="form-group">
+                <label for="MontantReglement">Montant Reglement:</label>
+                <input type="number" class="form-control" id="MontantReglement" onChange="verifMontant();">
+            </div>
+        </div>
+
+        <div class="col-md-2 col-md-offset-0">
+            <div class="form-group">
+                <label for="ModeReglement">Mode Reglement:</label>
+                <select class="form-control" id="ModeReglement" onchange="ISEnableRef_Paiement();">
+                    <option value="-1"></option>
+                    <option value="0">Cheque</option>
+                    <option value="0">Traite</option>
+                    <option value="-2">Espece</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-md-offset-0">
+            <div class="form-group">
+                <label for="RefPaiement">Référence paiement:</label>
+                <input type="text" class="form-control" id="RefPaiement">
+            </div>
+        </div>
+
+        <div class="col-md-2 col-md-offset-0">
+            <div class="form-group">
+                <label for="dateEffet">Date Effet:</label>
+                <input type="text" class="form-control datetime" size="20"  id="dateEffet"/> 
+                    <script type="text/javascript">
+                        var date = new Date();
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+
+                        if (month < 10)
+                            month = "0" + month;
+                        if (day < 10)
+                            day = "0" + day;
+
+                        var today = year + "-" + month + "-" + day + " 00:00";
+                        document.getElementById('dateEffet').value = today;
+                    </script>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+
+        <div class="col-md-3 col-md-offset-0">
+            <select id="ListFacture" onchange="ISenableButton(this);" multiple="multiple" name="ListFacture[]" class="form-control" style=" width: 100%;">
+
+            </select>
+        </div>
+        <div class="col-md-5">
+            <button id="ButtonShowInput" class="btn btn-danger btn-lg" onclick="showInput();" disabled="disabled">Saisir le(s) montant(s) de(s) facture(s)</button>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-10">
+            <div id="form_MontantFactures">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-2 col-md-offset-4">
+            <button id="ButtonSauvegarder" class="btn btn-success btn-lg btn-block" onclick="Sauvegarder();">Sauvegarder</button>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        function disableEdit() {
+            document.getElementById("ListFacture").disabled = true;
+            document.getElementById("ButtonShowInput").disabled = true;
+            // document.getElementById("validationSauvegarde").disabled = true;
+            // document.getElementById("Export").disabled = true;
+            // DeleteButtons = document.getElementsByName('ExpFacture[]');
+            // for (var i = DeleteButtons.length - 1; i >= 0; i--) {
+            //     DeleteButtons[i].disabled = true;
+            // }
+            // ;
+        }
+        function enableEdit() {
+            document.getElementById("ListFacture").disabled = false;
+            // document.getElementById("validationSauvegarde").disabled = false;
+            // document.getElementById("Export").disabled = false;
+            // DeleteButtons = document.getElementsByName('ExpFacture[]');
+            // for (var i = DeleteButtons.length - 1; i >= 0; i--) {
+            //     DeleteButtons[i].disabled = false;
+            // }
+            // ;
+        }
+        function ISenableSave(argument) {
+            document.getElementById("ButtonSauvegarder").disabled = argument;
+        }
+        document.getElementById("ListFacture").disabled = true;
+        document.getElementById("RefPaiement").disabled = true;
+        ISenableSave(true);
+    </script>
+    <script type="text/javascript">
+        function getSelectValues(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    result.push(opt.value);
+                }
+            }
+            return result;
+        }
+        function getSelectTexts(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+
+            for (var i = 0, iLen = options.length; i < iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                    result.push(opt.text);
+                }
+            }
+            return result;
+        }
+        function ISenableButton(c) {
+            var ListFacture = getSelectValues(document.getElementById("ListFacture"));
+            if (ListFacture.length >= 1)
+            {
+                document.getElementById("ButtonShowInput").disabled = false;
+            }
+            else
+            {
+                document.getElementById("ButtonShowInput").disabled = true;
+            }
+            var id = '#form_MontantFactures';
+            $(id).html('');
+            ISenableSave(true);
+        }
+        function showInput() {
+            IDFactures = document.getElementById("ListFacture");
+            // var ListTextsFacture = getSelectTexts(IDFactures);
+            var ListIDsFacture = getSelectValues(IDFactures);
+
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reglement_Add_search_montant'),
+                type: "POST",
+                data: {
+                    "ListIDsFacture": ListIDsFacture
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError'))
+                    {
+                        alert("ERROR : " + obj.message);
+                    }
+                    else
+                    {
+                        var id = '#form_MontantFactures';
+
+                        $(id).html('');
+                        $(id).append('<label>Montant en DH : </label>');
+                        $(id).append('<br>');
+                        var content = '';
+                        for (var i = 0; i < obj.length; i++)
+                        {
+                            content += '<div class="col-md-2 col-md-offset-0">';
+                            content += '<input type="checkbox" onclick="HandleClick(this);" name="ListeMontant[]" value="' + obj[i].IDFacture + '"/> ';
+                            content += '<label for="facture' + i + '" >' + obj[i].CodeFacture + ' </label> ';
+                            content += ' <label id="labelTTC' + obj[i].IDFacture + '" for="' + obj[i].TTC + '" > (TTC      :' + obj[i].TTC + ')  </label>  ';
+                            content += '</div> <div id="error' + obj[i].IDFacture + '"></div>';
+                            content += '<div class="col-md-3 col-md-offset-0">';
+                            content += '  <input class="form-control" type="number" disabled="disabled" onChange="verifMontant();" id="' + obj[i].IDFacture + '"/> ';
+
+                            content += ' <label id="labelRest' + obj[i].IDFacture + '" for="' + obj[i].rest + '" >  (Le reste :' + obj[i].rest + ')</label>';
+                            content += '</div>';
+                            content += '<br>';
+                        }
+                        ;
+                        $(id).html(content);
+                    }
+                }
+            });
+
+
+        }
+
+
+    </script>
+    <script type="text/javascript">
+        function ISEnableRef_Paiement() {
+            var mode = document.getElementById("ModeReglement");
+            var valMode = mode.options[mode.selectedIndex].value;
+            if (valMode == -2)
+            {
+                document.getElementById("RefPaiement").disabled = true;
+                return true;//activer le boutton Save
+            }
+            else if(valMode == -1)
+            {
+                return false;
+            }
+            else
+            {
+                document.getElementById("RefPaiement").disabled = false;
+                return (document.getElementById("RefPaiement").value!=='');
+            }
+        }
+        function HandleClick(ChBox) {
+            var name = "";
+            name = ChBox.value;
+            document.getElementById(name).disabled = (ChBox.checked != true);
+        }
+        function verifMontant() {
+            var montants = [];
+            var mt;
+            CheckBoxs = document.getElementsByName('ListeMontant[]');
+            for (var i = 0, n = CheckBoxs.length; i < n; i++) {
+                if (CheckBoxs[i].checked === true) 
+                {
+                    mt = document.getElementById(CheckBoxs[i].value).value;
+                    montants.push(mt);
+                    var ttc = document.getElementById("labelTTC" + CheckBoxs[i].value + "").htmlFor;
+                    var rest = document.getElementById("labelRest" + CheckBoxs[i].value + "").htmlFor;
+                    if ((mt > parseFloat(ttc)) || (mt - parseFloat(rest)) > 0) {
+                        ShowError(CheckBoxs[i].value);
+                    }
+                    else
+                    {
+                        HideError(CheckBoxs[i].value);
+                    }
+                }
+            }
+            if(document.getElementById("MontantReglement").value!==''){
+                var s = 0;
+                var a = parseFloat(document.getElementById("MontantReglement").value);
+                for (i = 0; i < montants.length; i++) {
+
+                    s = s + parseFloat(montants[i]);
+
+                }
+                if (a === s && ISEnableRef_Paiement() ) {
+                    ISenableSave(false);
+                }
+                else
+                {
+                    ISenableSave(true);
+                }
+            }
+            else
+            {
+                ISenableSave(true);
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function ShowError(id)
+        {
+            var container = document.getElementById("error" + id);
+            while (container.hasChildNodes())
+            {
+                container.removeChild(container.lastChild);
+            }
+            container.innerHTML = "<div class='alert alert-danger' style='float:left' role='alert'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span><span class='sr-only'>Error:</span>Le montant est incorrect !</div>";
+        }
+        function HideError(id)
+        {
+            var container = document.getElementById("error" + id);
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        function ClearAll() {
+            var id = '#form_MontantFactures';
+            $(id).html('');
+            ISenableSave(true);
+            document.getElementById("ButtonShowInput").disabled = true;
+            $('#ListFacture').html('');
+            document.getElementById("ModeReglement").selectedIndex = -1;
+            document.getElementById("MontantReglement").value = '';
+            document.getElementById("RefPaiement").value = '';
+        }
+    </script>
+    <script type="text/javascript">
+        function Sauvegarder() {
+            var mode = document.getElementById("ModeReglement");
+            var ModeRegl = mode.options[mode.selectedIndex].text;
+            var montantRegl = document.getElementById("MontantReglement").value;
+            var refRegl = document.getElementById("RefPaiement").value;
+            var DateEffet=document.getElementById("dateEffet").value;
+
+            var montantsFactures = [];
+            var IDFactures = [];
+            CheckBoxs = document.getElementsByName('ListeMontant[]');
+            for (var i = 0, n = CheckBoxs.length; i < n; i++) {
+                if (CheckBoxs[i].checked === true) {
+                    montantsFactures.push(document.getElementById(CheckBoxs[i].value).value);
+                    IDFactures.push(CheckBoxs[i].value);
+                }
+            }
+            ClearAll();
+            $.ajax({
+                url: Routing.generate('com_daufin_com_reglement_Add_create'),
+                type: "POST",
+                data: {
+                    "montantsFactures": montantsFactures,
+                    "IDFactures": IDFactures,
+                    "ModeRegl": ModeRegl,
+                    "montantRegl": montantRegl,
+                    "refRegl": refRegl,
+                    "DateEffet":DateEffet,
+                },
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.hasOwnProperty('codeError')) {
+                        alert("ERROR : " + obj.message);
+                        return false;
+                    }
+                    alert("SUCCES : " + obj.Message);
+
+
+
+                }
+            });
+        }
+    </script>
 {% endblock %}

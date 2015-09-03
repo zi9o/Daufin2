@@ -251,6 +251,12 @@
                                     </ul>
                                 </li>
                             {% endif %}
+                            <li><a href="#"><i class="glyphicon glyphicon-tags"></i>Reglement</a>
+                                <ul class="sub-menu">
+                                    <li><a href="{{ path('com_daufin_com_reglement_Add') }}">Générer Reglement</a></li>
+                                    <li><a href="{{ path('com_daufin_com_reglement_all') }}">Consulter Reglement</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#"><i class="fa fa-suitcase"></i>Factures</a>
                                 <ul class="sub-menu">
                                     <li><a href="{{ path('com_daufin_com_find_facture') }}">Générer Facture</a></li>

@@ -2,27 +2,28 @@
 
 {% block _container %}
         <div class="page-head">
-                <h2>Liste du Personnel</h2>
+                <h2>Liste des Reglements</h2>
                 <ol class="breadcrumb">
                   <li><a href="#">Home</a></li>
                   <li><a href="#">PARAMETRES</a></li>
-                  <li class="active">Liste du Personnel</li>
+                  <li class="active">Liste des Reglements</li>
                 </ol>
         </div>
 {% endblock %}
 
 {% block container%}
-    <h1>ReglementFacture list</h1>
 
-    <table class="records_list">
+<div class="block-flat">        
+        <div class="table-responsive">
+    <table class="table editable">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Datecreation</th>
+                <th>Date Création</th>
                 <th>Montant</th>
-                <th>Modereglement</th>
-                <th>Refreglement</th>
-                <th>Dateeffet</th>
+                <th>Mode Reglement</th>
+                <th>Reference Reglement</th>
+                <th>Date Effet</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,30 +32,21 @@
             <tr>
                 <td><a href="{{ path('com_RegleFacture_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.montant }}</td>
+                <td>{{ entity.montantReglement }}</td>
                 <td>{{ entity.modeReglement }}</td>
                 <td>{{ entity.refReglement }}</td>
                 <td>{% if entity.dateEffet %}{{ entity.dateEffet|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('com_RegleFacture_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('com_RegleFacture_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
+                
+                <td align="center">
+                            <a href="{{ path('com_RegleFacture_show', { 'id': entity.id }) }}" class="label label-success">
+                                    <i class="fa   fa-folder-open"></i>show</a>
+                            <a href="{{ path('com_RegleFacture_edit', { 'id': entity.id }) }}" class="label label-info">
+                                <i class="fa fa-pencil-square-o"></i>edit</a>
+                        </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('com_RegleFacture_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+</div>
+</div>
     {% endblock %}
