@@ -779,7 +779,7 @@ com_daufin_com_reglement_all:
     defaults: {_controller: ComDaufinBundle:ReglementFacture:index}
 
 com_daufin_com_reglement_facture:
-    path: /{id}/FactureReglement
+    path: /{id}/{idReglement}/FactureReglement
     defaults: {_controller: ComDaufinBundle:ReglementFacture:showDetailsFacture}
 
 com_daufin_com_reglement_Add_search:

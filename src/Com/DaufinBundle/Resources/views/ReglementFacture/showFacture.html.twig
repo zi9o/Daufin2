@@ -22,16 +22,17 @@
         <thead>
             <tr><th  colspan="7" style="font-weight: bold;font-size: 16px;text-align: center;"> Details des reglements de la facture : {{ Facture.numFacture}} </th></tr>
             <tr>
-                <th style="font-weight: bold;font-size: 14px;">Code Facture</th>
-                <th style="font-weight: bold;font-size: 14px;">Montant TTC</th>
-                <th style="font-weight: bold;font-size: 14px;">Montant Payé</th>
-                <th style="font-weight: bold;font-size: 14px;">Montant Restant</th>
+                <th style="font-weight: bold;font-size: 14px;">Date Création</th>
+                <th style="font-weight: bold;font-size: 14px;">Mode</th>
+                <th style="font-weight: bold;font-size: 14px;">Reférence</th>
+                <th style="font-weight: bold;font-size: 14px;">Montant Reglement</th>
+                <th style="font-weight: bold;font-size: 14px;">Montant Reglement Facture</th>
             </tr>
         </thead>
         <tbody>
-            {% for entity in factures %}
+            {% for entity in reglements %}
                 <tr>
-                    <td>{{ entity.DateCreation||date('Y-m-d H:i:s') }}</td>
+                    <td>{{ entity.DateCreation|date('Y-m-d H:i:s') }}</td>
                     <td>{{ entity.mode }}</td>
                     <td>{{ entity.ref}}</td>
                     <td>{{ entity.MTRegl|number_format(2, '.', ',')}}</td>

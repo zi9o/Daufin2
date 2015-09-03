@@ -209,7 +209,7 @@ class ReglementFactureController extends Controller {
         $connection = $em->getConnection();
         $Reglement = $em->getRepository('ComDaufinBundle:Reglement')->find($id);
         $request = "select 
-
+        f.id as id,
         f.code_facture as CodeFacture,
         f.montantTTC as TTC,
         sum(case  when rf.montantReglement is not null then rf.montantReglement else 0 end) as Paye,
@@ -356,10 +356,10 @@ class ReglementFactureController extends Controller {
         return new Response(json_encode($response));
     }
 
-    public function showDetailsFactureAction($idfacture, $idReglement) {
+    public function showDetailsFactureAction($id, $idReglement) {
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
-        $Facture = $em->getRepository('ComDaufinBundle:Facture')->find($idfacture);
+        $Facture = $em->getRepository('ComDaufinBundle:Facture')->find($id);
         $request = "select  r.date_creation as DateCreation,
         r.mode_reglement as mode,
         r.ref_reglement as ref,
@@ -370,7 +370,7 @@ class ReglementFactureController extends Controller {
         where rf.facture=:idFacture";
 
         $statement = $connection->prepare($request);
-        $statement->bindValue('idFacture', $idfacture);
+        $statement->bindValue('idFacture', $id);
         $statement->execute();
         $results = $statement->fetchAll();
 

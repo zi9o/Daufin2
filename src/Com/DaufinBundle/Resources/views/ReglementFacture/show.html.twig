@@ -66,7 +66,7 @@
         <tbody>
             {% for fact in factures %}
                 <tr>
-                    <td><a href="{{ path('com_RegleFacture_show', { 'id': fact.id ,'idReglement': entity.id}) }}">{{ fact.CodeFacture }}</a></td>
+                    <td><a href="{{ path('com_daufin_com_reglement_facture', { 'id': fact.id ,'idReglement': entity.id}) }}">{{ fact.CodeFacture }}</a></td>
                     <td>{{ fact.TTC|number_format(2, '.', ',')}}</td>
                     <td>{{ fact.Paye|number_format(2, '.', ',')}}</td>
                     <td>{{ fact.Rest|number_format(2, '.', ',')}}</td>
