@@ -141,12 +141,21 @@ class Reglement {
         $this->refReglement = $refReglement;
         return $this;
     }
-
+    
+    
+    /**
+     *
+     * @return the DateTime
+     */
     public function getDateEffet() {
         return $this->dateEffet;
     }
-
-    public function setDateEffet(\DateTime $dateEffet) {
+    
+    /**
+     *
+     * @param \DateTime|null $dateEffet        	
+     */
+    public function setDateEffet(\DateTime $dateEffet=null) {
         $this->dateEffet = $dateEffet;
     }
     public function __toString() {

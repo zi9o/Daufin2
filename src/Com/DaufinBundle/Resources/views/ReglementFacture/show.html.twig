@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <th>Date Effet</th>
-                <td>{{ entity.dateEffet|date('Y-m-d H:i:s') }}</td>
+                <td>{% if entity.dateEffet !=null %} {{ entity.dateEffet|date('Y-m-d H:i:s') }} {% endif %}</td>
             </tr>
         </tbody>
     </table>

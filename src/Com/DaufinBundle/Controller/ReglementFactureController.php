@@ -120,6 +120,7 @@ class ReglementFactureController extends Controller {
                 from facture f 
                 left join reglement_facture rf on (rf.facture=f.id)
                 where f.id IN(" . $inQuery . ")
+                and f.statutFacture<>'Reglee'
                 group by f.id";
 
         $statement = $connection->prepare($requete);
@@ -168,6 +169,7 @@ class ReglementFactureController extends Controller {
         $Reglement->setRefReglement($refRegl);
         $Reglement->setMontantReglement($montantRegl);
         $Reglement->setDateCreation(new \DateTime());
+        if($DateEffet!='')
         $Reglement->setDateEffet(new \DateTime($DateEffet));
 
         $em->persist($Reglement);
@@ -175,9 +177,14 @@ class ReglementFactureController extends Controller {
 
         foreach ($ListIDsFacture as $key => $value) {
             $facture = $em->getRepository('ComDaufinBundle:Facture')->find($value);
-            if ($ListMontantsFacture[$key] < $facture->getTotalMontantTTC()) {
+            $lesAncienReglement = $em->getRepository('ComDaufinBundle:ReglementFacture')->findBy(array('facture' => $facture->getId()));
+            $mtRestFacture=0;
+            foreach ($lesAncienReglement as $reglfact) {
+                $mtRestFacture+=$reglfact->getMontant();
+            }
+            if (($ListMontantsFacture[$key]+$mtRestFacture )< $facture->getTotalMontantTTC()) {
                 $facture->setStatutFacture("Partiel");
-            } else if ($ListMontantsFacture[$key] = $facture->getTotalMontantTTC()) {
+            } else if (($ListMontantsFacture[$key]+$mtRestFacture ) ==$facture->getTotalMontantTTC()) {
                 $facture->setStatutFacture("Reglee");
             }
             $ReglementFacture = new ReglementFacture();
@@ -241,6 +248,14 @@ class ReglementFactureController extends Controller {
         $params = $this->getRequest()->request->all();
 
         $idRegl = $params['idRegl'];
+        $ListIDsFacture = $params['ListIDsFacture'];
+
+        $ids = array();
+        foreach ($ListIDsFacture as $value) {
+            array_push($ids, intval($value));
+        }
+
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
 
         $requete = "select f.id as ID,
         f.code_facture as CodeFacture,
@@ -252,11 +267,16 @@ class ReglementFactureController extends Controller {
         left join reglement_facture rf on (rf.facture=f.id)
         join reglement r on (rf.reglement=r.id)
         where r.id=:regl
-
-        group by f.id";
+         group by f.id";
 
         $statement = $connection->prepare($requete);
+        // $i=0;
+        // foreach ($ids as $k => $id) {
+        //     $statement->bindValue(($k + 1), $id);
+        //     $i++;
+        // }
         $statement->bindValue('regl', intval($idRegl));
+        
 
         $statement->execute();
         $results = $statement->fetchAll();
@@ -328,15 +348,32 @@ class ReglementFactureController extends Controller {
         $Reglement->setModeReglement($ModeRegl);
         $Reglement->setRefReglement($refRegl);
         $Reglement->setMontantReglement($montantRegl);
-        $Reglement->setDateEffet(new \DateTime($DateEffet));
+        if($DateEffet!='')
+        {
+            $Reglement->setDateEffet(new \DateTime($DateEffet));
+            $em->flush();
+        }
+        else
+        {
+            $em->flush();
+            $request = "update reglement set date_effet=NULL where id=:idregl";
+            $statement = $connection->prepare($request);
+            $statement->bindValue('idregl', $id);
+            $statement->execute();
+        }
 
-        $em->flush();
+        
 
         foreach ($ListIDsFacture as $key => $value) {
             $facture = $em->getRepository('ComDaufinBundle:Facture')->find($value);
-            if ($ListMontantsFacture[$key] < $facture->getTotalMontantTTC()) {
+            $lesAncienReglement = $em->getRepository('ComDaufinBundle:ReglementFacture')->findBy(array('facture' => $facture->getId()));
+            $mtRestFacture=0;
+            foreach ($lesAncienReglement as $reglfact) {
+                $mtRestFacture+=$reglfact->getMontant();
+            }
+            if (($ListMontantsFacture[$key]+$mtRestFacture )< $facture->getTotalMontantTTC()) {
                 $facture->setStatutFacture("Partiel");
-            } else if ($ListMontantsFacture[$key] = $facture->getTotalMontantTTC()) {
+            } else if (($ListMontantsFacture[$key]+$mtRestFacture ) == $facture->getTotalMontantTTC()) {
                 $facture->setStatutFacture("Reglee");
             }
             $ReglementFacture = $em->getRepository('ComDaufinBundle:ReglementFacture')->findOneBy(

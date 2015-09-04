@@ -31,7 +31,7 @@
         <div class="col-md-2 col-md-offset-0">
             <div class="form-group">
                 <label for="ModeReglement">Mode Reglement:</label>
-                <select class="form-control" id="ModeReglement" onchange="ISEnableRef_Paiement();">
+                <select class="form-control" id="ModeReglement" onchange="verifMontant();">
 
                     <option value="0" {% if Reglement.modeReglement=='Cheque' %} selected {% endif %}>Cheque</option>
                     <option value="0" {% if Reglement.modeReglement=='Traite' %} selected {% endif %}>Traite</option>
@@ -50,7 +50,7 @@
         <div class="col-md-2 col-md-offset-0">
             <div class="form-group">
                 <label for="dateEffet">Date Effet:</label>
-                <input type="text" class="form-control datetime" size="20"  id="dateEffet" value="{{Reglement.dateEffet|date('Y-m-d H:i:s')}}" /> 
+                <input type="text" onChange="verifMontant();" class="form-control datetime" size="20"  id="dateEffet"{% if Reglement.dateEffet !=null %} value="{{Reglement.dateEffet|date('Y-m-d H:i:s')}}" {% else %} disabled="disabled" {% endif %} /> 
 
             </div>
         </div>
@@ -143,12 +143,14 @@
             IDFactures = document.getElementById("ListFacture");
             // var ListTextsFacture = getSelectTexts(IDFactures);
             var idRegl = '{{Reglement.id}}';
+            var ListIDsFacture = getSelectValues(IDFactures);
 
             $.ajax({
                 url: Routing.generate('com_daufin_com_reglement_Edit_search_montant'),
                 type: "POST",
                 data: {
-                    "idRegl": idRegl
+                    "idRegl": idRegl,
+                    "ListIDsFacture": ListIDsFacture
                 },
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
@@ -166,16 +168,24 @@
                         var content = '';
                         for (var i = 0; i < obj.length; i++)
                         {
-                            content += '<div class="col-md-2 col-md-offset-0">';
+                            content+='<div class="row">';
+                            content += '<div class="col-md-3 col-md-offset-0">';
                             content += '<input type="checkbox" onclick="HandleClick(this);" name="ListeMontant[]" value="' + obj[i].IDFacture + '"/> ';
                             content += '<label for="facture' + i + '" >' + obj[i].CodeFacture + '   : </label> ';
                             content += ' <label id="labelTTC' + obj[i].IDFacture + '" for="' + obj[i].TTC + '" > (TTC      :' + obj[i].TTC + ')  </label>  ';
-                            content += '</div> <div id="error' + obj[i].IDFacture + '"></div>';
+                            content += '</div> ';
+                            
                             content += '<div class="col-md-3 col-md-offset-0">';
                             content += '  <input class="form-control" type="number" disabled="disabled" onChange="verifMontant();" id="' + obj[i].IDFacture + '" value="' + obj[i].paye + '" /> ';
 
                             content += ' <label id="labelRest' + obj[i].IDFacture + '" for="' + obj[i].rest + '" >  (Le reste :' + obj[i].rest + ')</label>';
-                            content += '</div> <label id="labelMax' + obj[i].IDFacture + '" for="' + obj[i].max + '" >  (Le Max :' + obj[i].max + ')</label>';
+                            content += '</div> ';
+                            content += '<div class="col-md-2 col-md-offset-0">';
+                            content+='<label id="labelMax' + obj[i].IDFacture + '" for="' + obj[i].max + '" >  (Le Max :' + obj[i].max + ')</label>';
+                            content += '</div> ';
+
+                            content+='<div id="error' + obj[i].IDFacture + '" class="col-md-4 col-md-offset-0"></div>';
+                            content+='</div>';
                             content += '<br>';
                         }
                         ;
@@ -197,6 +207,7 @@
             if (valMode == -2)
             {
                 document.getElementById("RefPaiement").disabled = true;
+                document.getElementById("dateEffet").disabled = true;
                 return true;//activer le boutton Save
             }
             else if (valMode == -1)
@@ -206,7 +217,8 @@
             else
             {
                 document.getElementById("RefPaiement").disabled = false;
-                return (document.getElementById("RefPaiement").value !== '');
+                document.getElementById("dateEffet").disabled = false;
+                return (document.getElementById("RefPaiement").value !== '') && (document.getElementById("dateEffet").value !== '');
             }
         }
         function HandleClick(ChBox) {
@@ -281,8 +293,16 @@
             var mode = document.getElementById("ModeReglement");
             var ModeRegl = mode.options[mode.selectedIndex].text;
             var montantRegl = document.getElementById("MontantReglement").value;
-            var refRegl = document.getElementById("RefPaiement").value;
-            var DateEffet = document.getElementById("dateEffet").value;
+            if(document.getElementById("RefPaiement").disabled === true)
+            {
+                var DateEffet='';
+                var refRegl = '';
+            }
+            else
+            {
+                var DateEffet=document.getElementById("dateEffet").value;
+                var refRegl = document.getElementById("RefPaiement").value;
+            }
             var idRegl = '{{Reglement.id}}';
 
             var montantsFactures = [];
