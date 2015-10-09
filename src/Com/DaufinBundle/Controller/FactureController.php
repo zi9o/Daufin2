@@ -995,7 +995,7 @@ class FactureController extends Controller {
             'Montant HT',
             'Montant TVA',
             'Montant TTC',
-        ])->addStyles(new StyleCollection([(new Fill())->setColor('ff0000'), new Font()]));
+        ]);
         $sheet->setRowHeight(20, 1);
 
         $sheet->setColumnWidth(20, 0);
